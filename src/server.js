@@ -30,7 +30,8 @@ const PORT = process.env.PORT || 9000
 
 const app = express()
 
-app.use(bodyParser.json())
+app.use(bodyParser.json({ limit: '50mb' }))
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 app.use(cors())
 
 const getMe = async req => {

@@ -9,6 +9,7 @@ export default gql`
 		filename: String!
 		mimetype: String!
 		encoding: String!
+		file_url: String
 	}
 
 	extend type Mutation {

@@ -16,7 +16,7 @@ export default {
 
 		createPost: combineResolvers(
 			isAuthenticated,
-			async (parent, { text }, { me, models }) => {	
+			async (parent, { text, file }, { me, models, s3 }) => {	
 				return await models.Post.create({
 					text,
 					userId: me.id

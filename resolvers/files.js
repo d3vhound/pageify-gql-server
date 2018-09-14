@@ -3,6 +3,35 @@ import { isAuthenticated } from './authorization'
 const fs = require('fs')
 import uuidv4 from 'uuid/v4'
 
+const storeUpload = ({ stream, mimetype, s3 }) => 
+	new Promise((resolve, reject) => {
+		const uuidFilename = uuidv4()
+
+		const params = {
+			Bucket: 'pageify',
+			Body: stream,
+			Key: uuidFilename,
+			ContentType: mimetype,
+			ACL: 'public-read'
+		}
+		
+
+		s3.upload(params, (err, data) => {
+			if (err) {
+				return console.error('Error', err)
+			}
+
+			if (data) {
+				console.log(data)
+				resolve(data.Location)
+			}
+		})
+		
+		stream.on('end', () => console.log('end'))
+		stream.on('error', reject)
+	})
+
+
 export default {
 	Query: {
 		uploads: () => {
@@ -13,37 +42,14 @@ export default {
 	Mutation: {
 		async singleUpload(parent, { file }, { s3 }) {
 			const { stream, filename, mimetype, encoding } = await file
-			// 1. validate metadata
+			let file_url = ''
 
-			if (!filename) {
-				return false
-			} else {
-				// stream.on('data', (chunk) => {
-				// 	console.log(`Received ${chunk.length} bytes of data.`);
-				// })
+			await storeUpload({ stream, s3, mimetype }).then((value) => {
+				console.log(value)
+				file_url = value
+			})
 
-				const uuidFilename = uuidv4()
-
-				const params = {
-					Bucket: 'pageify',
-					Body: stream,
-					Key: uuidFilename,
-					ContentType: mimetype,
-					ACL: 'public-read'
-				}
-
-				s3.upload(params, (err, data) => {
-					if (err) {
-						console.log('Error', err)
-					}
-
-					if (data) {
-						console.log('Uploaded:', data)
-					}
-				})
-
-				return { filename, mimetype, encoding }
-			}
+			return { filename, mimetype, encoding, file_url }
 
 			// 2. Stream file contents into cloud storage
 

@@ -63,7 +63,9 @@ const server = new ApolloServer({
 
 		if (req) {
 			const me = await getMe(req);
-			console.log(me)
+			console.log('-------------')
+			console.log('me user >', me)
+			console.log('-------------')
 
 			return {
 				models,
@@ -86,7 +88,7 @@ const server = new ApolloServer({
 
 server.applyMiddleware({ app })
 
-const eraseDatabaseOnSync = true
+const eraseDatabaseOnSync = false
 
 sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
 	if (eraseDatabaseOnSync) {

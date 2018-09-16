@@ -51,9 +51,9 @@ const getMe = async req => {
 const server = new ApolloServer({
 	typeDefs: schema,
 	resolvers,
-	// engine: {
-	// 	apiKey: "service:d3vhound-pageify090418:IJ9a3TLVbX3q8TUJ_AfWhw"
-	// },
+	engine: {
+		apiKey: "service:d3vhound-pageify090418:IJ9a3TLVbX3q8TUJ_AfWhw"
+	},
 	context: async ({ req, connection }) => {
 		if (connection) {
 			console.log('connection')

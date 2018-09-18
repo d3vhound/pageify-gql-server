@@ -35,13 +35,20 @@ export default {
 			{ models, secret },
 		) => {
 			
-			const user = await models.User.create({
-				username,
-				email,
-				password
-			})
+			try {
+				const user = await models.User.create({
+					username,
+					email,
+					password
+				})
 
-			return { token: createToken(user, secret, '30m') }
+				return { token: createToken(user, secret, '30m') }
+			}
+
+			catch (error) {
+				throw new Error(error)
+			}
+
 		},
 
 		signIn: async (

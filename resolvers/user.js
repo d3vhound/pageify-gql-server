@@ -34,7 +34,7 @@ export default {
 			{ username, email, password },
 			{ models, secret },
 		) => {
-			
+
 			try {
 				const user = await models.User.create({
 					username,
@@ -46,7 +46,7 @@ export default {
 			}
 
 			catch (error) {
-				throw new Error(error)
+				throw new Error(error.errors[0].message)
 			}
 
 		},

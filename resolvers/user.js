@@ -3,9 +3,7 @@ import { AuthenticationError, UserInputError } from 'apollo-server-express'
 
 const createToken = async (user, secret, expiresIn) => {
 	const { id, email, username } = user
-	return await jwt.sign({ id, email, username }, secret, {
-		expiresIn
-	})
+	return await jwt.sign({ id, email, username }, secret)
 }
 
 export default {
@@ -42,7 +40,7 @@ export default {
 					password
 				})
 
-				return { token: createToken(user, secret, '30m') }
+				return { token: createToken(user, secret) }
 			}
 
 			catch (error) {
@@ -70,7 +68,7 @@ export default {
 				throw new AuthenticationError('Invalid password')
 			}
 
-			return { token: createToken(user, secret, '1m') }
+			return { token: createToken(user, secret) }
 		},
 
 		followUser: async (

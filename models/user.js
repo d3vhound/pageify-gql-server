@@ -26,6 +26,15 @@ const user = (sequelize, DataTypes) => {
 				notEmpty: true,
 				len: [7, 42]
 			}
+		},
+		avatar: {
+			type: DataTypes.STRING,
+		},
+		bio: {
+			type: DataTypes.STRING,
+			validate: {
+				len: [0, 140]
+			}
 		}
 	});
 

@@ -20,6 +20,10 @@ export default gql`
 		unfollowUser(userId: ID!): Boolean!
 
 		likePost(postId: ID!): Boolean!
+
+		updateAvatar(file: Upload!): Boolean!
+
+		updateBio(text: String!): Boolean!
 	}
 
 	type Token {
@@ -35,7 +39,9 @@ export default gql`
     id: ID!
     username: String!
 		email: String!
-		posts: [Post!]
+		posts: [Post!],
+		avatar: String,
+		bio: String,
     messages: [Message!]
 		following: Boolean
 		following_count: Int

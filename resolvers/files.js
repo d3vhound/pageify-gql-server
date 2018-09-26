@@ -40,13 +40,22 @@ export default {
 	},
 
 	Mutation: {
-		async singleUpload(parent, { file }, { s3 }) {
-			const { stream, filename, mimetype, encoding } = await file
-			let file_url = ''
+		async singleUpload(parent, { file }, { models, me, s3 }) {
+			const { stream, filename, mimetype, encoding } = await file 
 
-			await storeUpload({ stream, s3, mimetype }).then((value) => {
+			let file_url = await storeUpload({ stream, s3, mimetype }).then((value) => {
 				console.log(value)
-				file_url = value
+				// file_url = value
+				return value
+			})
+
+
+			await models.User.update({
+				avatar: file_url
+			}, {
+				where: {
+					id: me.id
+				}
 			})
 
 			return { filename, mimetype, encoding, file_url }

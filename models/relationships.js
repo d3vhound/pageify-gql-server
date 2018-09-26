@@ -1,5 +1,11 @@
 const relationship = (sequelize, DataTypes) => {
 	const Relationship = sequelize.define('relationship', {
+		id: {
+			type: DataTypes.INTEGER,
+			primaryKey: true,
+			autoIncrement: true
+		},
+
 		follower_id: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
@@ -19,8 +25,6 @@ const relationship = (sequelize, DataTypes) => {
 	}, {
 		freezeTableName: false,
 	});
-
-	
 
 	Relationship.associate = models => {
 		Relationship.belongsTo(models.User, { as: 'follower', foreignKey: 'follower_id' });

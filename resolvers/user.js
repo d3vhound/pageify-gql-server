@@ -1,10 +1,39 @@
 import jwt from 'jsonwebtoken'
 import { AuthenticationError, UserInputError } from 'apollo-server-express'
+import uuidv4 from 'uuid/v4'
 
 const createToken = async (user, secret, expiresIn) => {
 	const { id, email, username } = user
 	return await jwt.sign({ id, email, username }, secret)
 }
+
+const storeUpload = ({ stream, mimetype, s3 }) =>
+	new Promise((resolve, reject) => {
+		const uuidFilename = uuidv4()
+
+		const params = {
+			Bucket: 'pageify',
+			Body: stream,
+			Key: uuidFilename,
+			ContentType: mimetype,
+			ACL: 'public-read'
+		}
+
+
+		s3.upload(params, (err, data) => {
+			if (err) {
+				return console.error('Error', err)
+			}
+
+			if (data) {
+				console.log(data)
+				resolve(data.Location)
+			}
+		})
+
+		stream.on('end', () => console.log('end'))
+		stream.on('error', reject)
+	})
 
 export default {
 	Query: {
@@ -69,6 +98,30 @@ export default {
 			}
 
 			return { token: createToken(user, secret) }
+		},
+
+		updateAvatar: async (parent, { file }, { models, me, s3 }) => {
+			const { stream, filename, mimetype, encoding } = await file
+
+			let file_url = await storeUpload({ stream, s3, mimetype }).then((value) => {
+				console.log('update avatar resolver', value)
+				// file_url = value
+				return value
+			})
+
+			const updateAvi = await models.User.update({
+				avatar: file_url
+			}, {
+				where: {
+					id: me.id
+				}
+			})
+
+			if (updateAvi) {
+				return true
+			}
+
+			return false
 		},
 
 		followUser: async (

@@ -5,7 +5,7 @@ export default gql`
 extend type Query {
 	posts: [Post!]
 	post(id: ID!): Post
-	userFeed: [Post!]
+	feed(offset: Int, limit: Int): [Post!]
 }
 
 extend type Mutation {
@@ -26,6 +26,7 @@ type Post {
 	media: [File2]
 	likes: Int
 	replies: [Post]
+	createdAt: String!
 }
 
 type File2 {

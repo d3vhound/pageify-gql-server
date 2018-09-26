@@ -69,8 +69,8 @@ export default {
 		// 	return await models.User.findById(post.userId)
 		// },
 
-		// createdAt: async (post, args, { models }) => {
-		// 	console.log(typeof post.createdAt)
-		// }
+		createdAt: async (post, args, { models }) => {
+			return JSON.stringify(post.createdAt)
+		}
 	}
 }

@@ -89,7 +89,7 @@ const server = new ApolloServer({
 
 server.applyMiddleware({ app })
 
-const eraseDatabaseOnSync = true
+const eraseDatabaseOnSync = false
 
 sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
 	if (eraseDatabaseOnSync) {

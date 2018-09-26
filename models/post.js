@@ -2,11 +2,13 @@ const post = (sequelize, DataTypes) => {
 	const Post = sequelize.define('post', {
 		text: {
 			type: DataTypes.STRING,
-			validate: { notEmpty: true }
+			validate: { notEmpty: true },
 		},
 		media_url: {
 			type: DataTypes.JSON
 		}
+	}, {
+		charset: 'utf8mb4',
 	})
 
 	Post.associate = models => {

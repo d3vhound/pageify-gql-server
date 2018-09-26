@@ -70,7 +70,7 @@ export default {
 		// },
 
 		createdAt: async (post, args, { models }) => {
-			return JSON.stringify(post.createdAt)
+			return post.createdAt.toString()
 		}
 	}
 }

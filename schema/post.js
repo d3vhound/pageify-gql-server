@@ -35,5 +35,17 @@ type File2 {
   encoding: String!
 }
 
+extend type Subscription {
+	postCreated: PostCreated!
+	postAddedToFeed(
+		feedOwner: Int!
+	): PostCreated!
+}
+
+type PostCreated {
+	post: Post!
+	followersToNotify: [ID!]
+}
+
 
 `

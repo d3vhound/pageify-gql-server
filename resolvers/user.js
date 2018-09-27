@@ -253,8 +253,18 @@ export default {
 				})
 			},
 
+			followers_array: async (user, args, { me, models }) => {
+				const followers = await models.Relationship.findAll({
+					where: { followed_id: user.id },
+				})
 
-			
+				const arr = await followers.map(user => {
+					return user.dataValues.follower_id
+				})
+
+				return arr
+			}
+
 	},
 	
 };

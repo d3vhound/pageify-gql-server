@@ -46,6 +46,7 @@ export default gql`
 		following: Boolean
 		following_count: Int
 		followers_count: Int
+		followers_array: [ID]
   }
 
 `;

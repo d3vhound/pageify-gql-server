@@ -38,11 +38,11 @@ const storeUpload = ({ stream, mimetype, s3 }) =>
 export default {
 	Query: {
 		users: async (parent, args, { models }) => {
-			return await models.User.findAll({ include: [ models.Message, models.Post ]});
+			return await models.User.findAll({ include: [ models.Message, ]});
 		},
 		user: async (parent, { id }, { models }) => {
 			console.log('jere')
-			return await models.User.findById(id, { include: [models.Message] });
+			return await models.User.findById(id, { include: [models.Message,] });
 		},
 		me: async (parent, args, { models, me }) => {
 			if (!me) {
@@ -51,7 +51,7 @@ export default {
 				);
 			}
 
-			return await models.User.findById(me.id, { include: [models.Message, models.Post] })
+			return await models.User.findById(me.id, { include: [models.Message] })
 		},
 	},
 	
@@ -219,6 +219,20 @@ export default {
 			// 		},
 			// 	});
 			// },
+
+			posts: async (user, { limit, offset }, { models }) => {
+				console.log('POSTS ARGS', limit, offset)
+				return await models.Post.findAll({
+					limit,
+					offset,
+					where: {
+						userId: user.id,
+					},
+					order: [
+						['createdAt', 'DESC']
+					]
+				});
+			},
 
 			following: async (user, args, { me, models }) => {
 				if (!me) {

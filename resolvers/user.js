@@ -234,6 +234,16 @@ export default {
 				});
 			},
 
+			posts_count: async (user, args, { models }) => {
+				return await models.Post.findAndCountAll({
+					where: {
+						userId: user.id
+					}
+				}).then(result => {
+					return result.count
+				})
+			},
+
 			following: async (user, args, { me, models }) => {
 				if (!me) {
 					return null

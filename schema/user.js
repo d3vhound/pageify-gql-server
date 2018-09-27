@@ -40,6 +40,7 @@ export default gql`
     username: String!
 		email: String!
 		posts(limit: Int, offset: Int): [Post!],
+		posts_count: Int
 		avatar: String,
 		bio: String,
     messages: [Message!]

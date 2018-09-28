@@ -61,8 +61,9 @@ export default {
 			isAuthenticated,
 			async (parent, { text, media }, { me, models, s3 }) => {
 
-
-				const { stream, filename, mimetype, encoding } = await media
+				if (media !== null) {
+					const { stream, filename, mimetype, encoding } = await media
+				}
 
 				console.log(filename, mimetype, encoding)
 				

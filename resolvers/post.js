@@ -59,13 +59,12 @@ export default {
 
 		createPost: combineResolvers(
 			isAuthenticated,
-			async (parent, { text, file }, { me, models, s3 }) => {
+			async (parent, { text, media }, { me, models, s3 }) => {
 
-				if (file) {
-					const { stream, filename, mimetype, encoding } = await file
-				}
 
-				const file_url = 'https://blahblah.com/logo.jpg'
+				const { stream, filename, mimetype, encoding } = await media
+
+				console.log(filename, mimetype, encoding)
 				
 				const post = await models.Post.create({
 					text,
@@ -73,20 +72,6 @@ export default {
 				}).then(async (post) => {
 					console.log(post.dataValues.id)
 					const id = post.dataValues.id
-					await models.File.bulkCreate([
-						{
-							url: file_url,
-							postId: id
-						},
-						{
-							url: "https://godaddy.com/logo.png",
-							postId: id
-						},
-						{
-							url: "https://google.com/logo.png",
-							postId: id
-						},
-					])
 					return post
 				})
 

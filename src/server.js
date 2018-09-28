@@ -93,7 +93,7 @@ server.applyMiddleware({ app, path: '/graphql' })
 const httpServer = http.createServer(app)
 server.installSubscriptionHandlers(httpServer)
 
-const eraseDatabaseOnSync = true
+const eraseDatabaseOnSync = false
 
 sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
 	if (eraseDatabaseOnSync) {

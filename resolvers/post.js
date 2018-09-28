@@ -14,7 +14,6 @@ export default {
 		post: async (parent, { id }, { models }) => {
 			return await models.Post.findById(id, { include: [
 				models.User,
-				models.Like
 			]})
 		},
 
@@ -46,9 +45,6 @@ export default {
 					{
 						model: models.User,
 					},
-					{
-						model: models.Like
-					}
 				],
 
 				order: [

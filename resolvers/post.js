@@ -63,9 +63,9 @@ export default {
 
 				if (media !== null) {
 					const { stream, filename, mimetype, encoding } = await media
+					console.log(filename, mimetype, encoding)
 				}
 
-				console.log(filename, mimetype, encoding)
 				
 				const post = await models.Post.create({
 					text,

@@ -63,6 +63,7 @@ export default {
 
 				if (media !== null) {
 					console.log(media)
+					console.log('CHECK MEDIA LENGTH', media.length)
 					const { stream, filename, mimetype, encoding } = await media
 					console.log(filename, mimetype, encoding)
 				}

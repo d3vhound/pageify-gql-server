@@ -4,7 +4,36 @@ import { isAuthenticated } from './authorization'
 import pubsub, { EVENTS } from '../subscription'
 import relationship from "../models/relationships";
 import Sequelize from 'sequelize'
+import uuidv4 from 'uuid/v4'
 const Op = Sequelize.Op
+
+const storeUpload = ({ stream, mimetype, s3 }) => 
+	new Promise((resolve, reject) => {
+		const uuidFilename = uuidv4()
+
+		const params = {
+			Bucket: 'pageify',
+			Body: stream,
+			Key: uuidFilename,
+			ContentType: mimetype,
+			ACL: 'public-read'
+		}
+		
+
+		s3.upload(params, (err, data) => {
+			if (err) {
+				return console.error('Error', err)
+			}
+
+			if (data) {
+				console.log(data)
+				resolve(data.Location)
+			}
+		})
+		
+		stream.on('end', () => console.log('end'))
+		stream.on('error', reject)
+	})
 
 export default {
 	Query: {
@@ -64,19 +93,45 @@ export default {
 				if (media !== null) {
 					console.log(media)
 					console.log('CHECK MEDIA LENGTH', media.length)
-					const { stream, filename, mimetype, encoding } = await media
-					console.log(filename, mimetype, encoding)
+					
+					if (media.length === 1) {
+						console.log(media[0])
+
+						let myVar = 2
+					}
 				}
 
+				console.log(myVar)
 				
 				const post = await models.Post.create({
 					text,
 					userId: me.id
-				}).then(async (post) => {
-					console.log(post.dataValues.id)
-					const id = post.dataValues.id
-					return post
 				})
+					.then(async (post) => {
+						console.log(post.dataValues.id)
+						const id = post.dataValues.id
+						if (media !== null) {
+							console.log(media)
+							if (media.length === 1) {
+								const { stream, filename, mimetype } = await media[0]
+
+								let spaces_file_url = await storeUpload({ stream, s3, mimetype })
+									.then((value) => {
+										console.log(value)
+										return value
+									})
+								await models.File.create({
+									file_url: spaces_file_url,
+									postId: id
+								})
+
+								return post
+							}	
+						}
+
+
+						return post
+					})
 
 				const followers = await models.Relationship.findAll({
 					where: { followed_id: me.id },

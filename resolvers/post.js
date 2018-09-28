@@ -62,6 +62,7 @@ export default {
 			async (parent, { text, media }, { me, models, s3 }) => {
 
 				if (media !== null) {
+					console.log(media)
 					const { stream, filename, mimetype, encoding } = await media
 					console.log(filename, mimetype, encoding)
 				}

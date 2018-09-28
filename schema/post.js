@@ -30,9 +30,10 @@ type Post {
 }
 
 type File2 {
-	filename: String!
-  mimetype: String!
-  encoding: String!
+	filename: String
+  mimetype: String
+  encoding: String
+	url: String
 }
 
 extend type Subscription {

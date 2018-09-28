@@ -13,6 +13,7 @@ const post = (sequelize, DataTypes) => {
 
 	Post.associate = models => {
 		Post.belongsTo(models.User)
+		Post.hasMany(models.File)
 		Post.belongsToMany(models.User, {
 			as: 'likes',
 			through: {

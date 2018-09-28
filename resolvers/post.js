@@ -12,7 +12,10 @@ export default {
 			return await models.Post.findAll()
 		},
 		post: async (parent, { id }, { models }) => {
-			return await models.Post.findById(id)
+			return await models.Post.findById(id, { include: [
+				models.User,
+				models.Like
+			]})
 		},
 
 
@@ -39,9 +42,14 @@ export default {
 					} 
 				},
 
-				include: [{
-					model: models.User
-				}],
+				include: [
+					{
+						model: models.User,
+					},
+					{
+						model: models.Like
+					}
+				],
 
 				order: [
 					['createdAt', 'DESC' ]
@@ -56,11 +64,34 @@ export default {
 		createPost: combineResolvers(
 			isAuthenticated,
 			async (parent, { text, file }, { me, models, s3 }) => {
-				
+
+				if (file) {
+					const { stream, filename, mimetype, encoding } = await file
+				}
+
+				const file_url = 'https://blahblah.com/logo.jpg'
 				
 				const post = await models.Post.create({
 					text,
 					userId: me.id
+				}).then(async (post) => {
+					console.log(post.dataValues.id)
+					const id = post.dataValues.id
+					await models.File.bulkCreate([
+						{
+							url: file_url,
+							postId: id
+						},
+						{
+							url: "https://godaddy.com/logo.png",
+							postId: id
+						},
+						{
+							url: "https://google.com/logo.png",
+							postId: id
+						},
+					])
+					return post
 				})
 
 				const followers = await models.Relationship.findAll({
@@ -91,6 +122,22 @@ export default {
 
 		createdAt: async (post, args, { models }) => {
 			return post.createdAt.toString()
+		},
+
+		likes: async (post, args, { models }) => {
+			return await models.Like.findAndCountAll({
+				where: {
+					post_id: post.id
+				}
+			}).then((count) => {
+				return count.count
+			})
+		},
+
+		media: async (post, args, { models }) => {
+			return await models.File.findAll({
+				where: { postId: post.id }
+			})
 		}
 	},
 

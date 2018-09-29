@@ -89,19 +89,6 @@ export default {
 		createPost: combineResolvers(
 			isAuthenticated,
 			async (parent, { text, media }, { me, models, s3 }) => {
-
-				if (media !== null) {
-					console.log(media)
-					console.log('CHECK MEDIA LENGTH', media.length)
-					
-					if (media.length === 1) {
-						console.log(media[0])
-
-						let myVar = 2
-					}
-				}
-
-				console.log(myVar)
 				
 				const post = await models.Post.create({
 					text,

@@ -75,6 +75,9 @@ export default {
 					{
 						model: models.User,
 					},
+					{
+						model: models.File
+					}
 				],
 
 				order: [

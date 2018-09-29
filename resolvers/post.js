@@ -108,7 +108,7 @@ export default {
 										return value
 									})
 								await models.File.create({
-									file_url: spaces_file_url,
+									url: spaces_file_url,
 									postId: id
 								})
 

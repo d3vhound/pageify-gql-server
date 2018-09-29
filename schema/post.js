@@ -33,7 +33,7 @@ type File2 {
 	filename: String
   mimetype: String
   encoding: String
-	url: String
+	key: String
 }
 
 extend type Subscription {

@@ -27,7 +27,8 @@ const storeUpload = ({ stream, mimetype, s3 }) =>
 
 			if (data) {
 				console.log(data)
-				resolve(data.Location)
+				resolve(data.key)
+					// file_url: data.Location,data.key)
 			}
 		})
 		
@@ -102,13 +103,13 @@ export default {
 							if (media.length === 1) {
 								const { stream, filename, mimetype } = await media[0]
 
-								let spaces_file_url = await storeUpload({ stream, s3, mimetype })
+								let fileKey = await storeUpload({ stream, s3, mimetype })
 									.then((value) => {
 										console.log(value)
 										return value
 									})
 								await models.File.create({
-									url: spaces_file_url,
+									key: fileKey,
 									postId: id
 								})
 

@@ -1,11 +1,11 @@
 const file = (sequelize, DataTypes) => {
 	const File = sequelize.define('file', {
-		url: {
+		key: {
 			type: DataTypes.STRING,
 			validate: {
 				notEmpty: true
 			}
-		}
+		},
 	})
 
 	File.associate = models => {

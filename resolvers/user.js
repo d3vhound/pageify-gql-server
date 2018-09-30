@@ -38,7 +38,7 @@ const storeUpload = ({ stream, mimetype, s3 }) =>
 export default {
 	Query: {
 		users: async (parent, args, { models }) => {
-			return await models.User.findAll({ include: [ models.Message, ]});
+			return await models.User.findAll({ include: [models.Message,] });
 		},
 		user: async (parent, { id }, { models }) => {
 			console.log('jere')
@@ -54,7 +54,7 @@ export default {
 			return await models.User.findById(me.id, { include: [models.Message] })
 		},
 	},
-	
+
 	Mutation: {
 		signUp: async (
 			parent,
@@ -112,10 +112,10 @@ export default {
 			const updateAvi = await models.User.update({
 				avatar: file_url
 			}, {
-				where: {
-					id: me.id
-				}
-			})
+					where: {
+						id: me.id
+					}
+				})
 
 			if (updateAvi) {
 				return true
@@ -153,7 +153,7 @@ export default {
 			else if (followSuccess) {
 				return true
 			}
-			
+
 			return false
 
 		},
@@ -161,7 +161,7 @@ export default {
 		unfollowUser: async (
 			parent,
 			{ userId },
-			{ models, me } 
+			{ models, me }
 		) => {
 
 			if (!me) {
@@ -199,7 +199,7 @@ export default {
 			const postLikeSuccess = await current_user.setLike(post)
 
 			console.log('--------------------')
-			console.log(postLikeSuccess)
+			console.log(postLikeSuccess[0][0].like)
 			console.log('--------------------')
 
 			if (postLikeSuccess) {
@@ -212,83 +212,83 @@ export default {
 
 	User: {
 
-			// messages: async (user, args, { models }) => {
-			// 	return await models.Message.findAll({
-			// 		where: {
-			// 			userId: user.id,
-			// 		},
-			// 	});
-			// },
+		// messages: async (user, args, { models }) => {
+		// 	return await models.Message.findAll({
+		// 		where: {
+		// 			userId: user.id,
+		// 		},
+		// 	});
+		// },
 
-			posts: async (user, { limit, offset }, { models }) => {
-				console.log('POSTS ARGS', limit, offset)
-				return await models.Post.findAll({
-					limit,
-					offset,
-					where: {
-						userId: user.id,
-					},
-					order: [
-						['createdAt', 'DESC']
-					]
-				});
-			},
-
-			posts_count: async (user, args, { models }) => {
-				return await models.Post.findAndCountAll({
-					where: {
-						userId: user.id
-					}
-				}).then(result => {
-					return result.count
-				})
-			},
-
-			following: async (user, args, { me, models }) => {
-				if (!me) {
-					return null
-				}
-
-				const current_user = await models.User.findById(me.id)
-				const other_user = await models.User.findById(user.id)
-
-				return await current_user.following(other_user)
-			},
-
-			followers_count: async (user, args, { me, models }) => {
-				return await models.Relationship.findAndCountAll({
-					where: {
-						followed_id: user.id
-					}
-				})
-				.then(result => {
-					return result.count
-				})
-			},
-
-			following_count: async (user, args, { me, models }) => {
-				return await models.Relationship.findAndCountAll({
+		posts: async (user, { limit, offset }, { models }) => {
+			console.log('POSTS ARGS', limit, offset)
+			return await models.Post.findAll({
+				limit,
+				offset,
 				where: {
-						follower_id: user.id
-					}
-				})
-				.then(result => {
-					return result.count
-				})
-			},
+					userId: user.id,
+				},
+				order: [
+					['createdAt', 'DESC']
+				]
+			});
+		},
 
-			followers_array: async (user, args, { me, models }) => {
-				const followers = await models.Relationship.findAll({
-					where: { followed_id: user.id },
-				})
+		posts_count: async (user, args, { models }) => {
+			return await models.Post.findAndCountAll({
+				where: {
+					userId: user.id
+				}
+			}).then(result => {
+				return result.count
+			})
+		},
 
-				const arr = await followers.map(user => {
-					return user.dataValues.follower_id
-				})
-
-				return arr
+		following: async (user, args, { me, models }) => {
+			if (!me) {
+				return null
 			}
 
+			const current_user = await models.User.findById(me.id)
+			const other_user = await models.User.findById(user.id)
+
+			return await current_user.following(other_user)
+		},
+
+		followers_count: async (user, args, { me, models }) => {
+			return await models.Relationship.findAndCountAll({
+				where: {
+					followed_id: user.id
+				}
+			})
+				.then(result => {
+					return result.count
+				})
+		},
+
+		following_count: async (user, args, { me, models }) => {
+			return await models.Relationship.findAndCountAll({
+				where: {
+					follower_id: user.id
+				}
+			})
+				.then(result => {
+					return result.count
+				})
+		},
+
+		followers_array: async (user, args, { me, models }) => {
+			const followers = await models.Relationship.findAll({
+				where: { followed_id: user.id },
+			})
+
+			const arr = await followers.map(user => {
+				return user.dataValues.follower_id
+			})
+
+			return arr
+		}
+
 	},
-	
+
 };

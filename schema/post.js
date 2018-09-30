@@ -27,6 +27,7 @@ type Post {
 	likes: Int
 	replies: [Post]
 	createdAt: String!
+	liked: Boolean
 }
 
 type File2 {

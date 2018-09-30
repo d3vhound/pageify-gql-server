@@ -7,7 +7,7 @@ import Sequelize from 'sequelize'
 import uuidv4 from 'uuid/v4'
 const Op = Sequelize.Op
 
-const storeUpload = ({ stream, mimetype, s3 }) => 
+const storeUpload = ({ stream, mimetype, s3 }) =>
 	new Promise((resolve, reject) => {
 		const uuidFilename = uuidv4()
 
@@ -18,7 +18,7 @@ const storeUpload = ({ stream, mimetype, s3 }) =>
 			ContentType: mimetype,
 			ACL: 'public-read'
 		}
-		
+
 
 		s3.upload(params, (err, data) => {
 			if (err) {
@@ -28,10 +28,10 @@ const storeUpload = ({ stream, mimetype, s3 }) =>
 			if (data) {
 				console.log(data)
 				resolve(data.key)
-					// file_url: data.Location,data.key)
+				// file_url: data.Location,data.key)
 			}
 		})
-		
+
 		stream.on('end', () => console.log('end'))
 		stream.on('error', reject)
 	})
@@ -42,9 +42,11 @@ export default {
 			return await models.Post.findAll()
 		},
 		post: async (parent, { id }, { models }) => {
-			return await models.Post.findById(id, { include: [
-				models.User,
-			]})
+			return await models.Post.findById(id, {
+				include: [
+					models.User,
+				]
+			})
 		},
 
 
@@ -65,10 +67,10 @@ export default {
 			return await models.Post.findAll({
 				limit,
 				offset,
-				where: { 
+				where: {
 					userId: {
 						[Op.or]: usersArr
-					} 
+					}
 				},
 
 				include: [
@@ -81,7 +83,7 @@ export default {
 				],
 
 				order: [
-					['createdAt', 'DESC' ]
+					['createdAt', 'DESC']
 				]
 			})
 
@@ -93,7 +95,7 @@ export default {
 		createPost: combineResolvers(
 			isAuthenticated,
 			async (parent, { text, media }, { me, models, s3 }) => {
-				
+
 				const post = await models.Post.create({
 					text,
 					userId: me.id
@@ -101,7 +103,7 @@ export default {
 					.then(async (post) => {
 						console.log(post.dataValues.id)
 						const id = post.dataValues.id
-						if (media !== null) {
+						if (media !== null && media !== undefined) {
 							console.log(media)
 							if (media.length === 1) {
 								const { stream, filename, mimetype } = await media[0]
@@ -117,7 +119,7 @@ export default {
 								})
 
 								return post
-							}	
+							}
 						}
 
 
@@ -133,13 +135,13 @@ export default {
 				})
 
 				pubsub.publish(EVENTS.POST.CREATED, {
-					postAddedToFeed: { 
+					postAddedToFeed: {
 						post,
 						followersToNotify: usersArr
 					},
 				})
 
-				return post	
+				return post
 			}
 		),
 
@@ -168,6 +170,27 @@ export default {
 			return await models.File.findAll({
 				where: { postId: post.id }
 			})
+		},
+
+		liked: async (post, args, { models, me }) => {
+			if (!me) {
+				return null
+			}
+
+			const likedStatus = await models.Like.findOne({
+				where: {
+					post_id: post.id,
+					user_id: me.id
+				}
+			})
+
+			if (likedStatus === null) {
+				return false
+			}
+
+
+			return true
+
 		}
 	},
 

@@ -1,10 +1,13 @@
 import { gql } from 'apollo-server-express';
 
 export default gql`
+	union Results = User | Post
+
   extend type Query {
     users: [User!]
     user(id: ID!): User
     me: User
+		search(query: String!): [Results]
   }
 
 	extend type Mutation {
@@ -24,6 +27,7 @@ export default gql`
 		updateAvatar(file: Upload!): Boolean!
 
 		updateBio(text: String!): Boolean!
+
 	}
 
 	type Token {

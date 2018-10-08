@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken'
 import { AuthenticationError, UserInputError } from 'apollo-server-express'
 import uuidv4 from 'uuid/v4'
+import Sequelize from 'sequelize'
+const Op = Sequelize.Op
 
 const createToken = async (user, secret, expiresIn) => {
 	const { id, email, username } = user
@@ -36,6 +38,20 @@ const storeUpload = ({ stream, mimetype, s3 }) =>
 	})
 
 export default {
+	Results: {
+    __resolveType(obj, context, info){
+      if(obj.username){
+        return 'User'
+      }
+
+      if(obj.text){
+        return 'Post'
+      }
+
+      return null;
+    },
+	},
+
 	Query: {
 		users: async (parent, args, { models }) => {
 			return await models.User.findAll({ include: [models.Message,] });
@@ -53,6 +69,27 @@ export default {
 
 			return await models.User.findById(me.id, { include: [models.Message] })
 		},
+		search: async (parent, { query }, { models, me}) => {
+			const Users =  await models.User.findAll({
+				where: {
+					username: {
+						[Op.like]: `%${query}%`
+					}
+				},
+			})
+
+			const Posts = await models.Post.findAll({
+				where: {
+					text: {
+						[Op.like]: `%${query}%`
+					}
+				}
+			})
+			
+			const Results = Users.concat(Posts)
+
+			return Results
+		}
 	},
 
 	Mutation: {
@@ -195,18 +232,35 @@ export default {
 			const current_user = await models.User.findById(me.id)
 			const post = await models.Post.findById(postId)
 
+			return await current_user.getLikes({
+				where: {
+					id: postId
+				}
+			})
+				.then(like => {
+					if (like[0] === undefined) {
+						console.log('no like found')
+						current_user.setLike(post)
+						return true
+					} else {
+						// console.log(like[0])
+						current_user.removeLike(post)
+						return false
+					}
+				})
 
-			const postLikeSuccess = await current_user.setLike(post)
 
-			console.log('--------------------')
-			console.log(postLikeSuccess[0][0].like)
-			console.log('--------------------')
+			// const postLikeSuccess = await current_user.setLike(post)
 
-			if (postLikeSuccess) {
-				return true
-			}
+			// console.log('--------------------')
+			// console.log(postLikeSuccess)
+			// console.log('--------------------')
 
-			return false
+			// if (postLikeSuccess) {
+			// 	return true
+			// }
+
+			// return false
 		}
 	},
 

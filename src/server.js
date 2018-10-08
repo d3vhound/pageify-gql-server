@@ -4,10 +4,10 @@ import * as bodyParser from 'body-parser'
 import express from 'express'
 import http from 'http'
 import jwt from 'jsonwebtoken'
-import { 
+import {
 	ApolloServer,
 	AuthenticationError
- } from 'apollo-server-express';
+} from 'apollo-server-express';
 import aws from 'aws-sdk'
 
 
@@ -93,14 +93,14 @@ server.applyMiddleware({ app, path: '/graphql' })
 const httpServer = http.createServer(app)
 server.installSubscriptionHandlers(httpServer)
 
-const eraseDatabaseOnSync = true
+const eraseDatabaseOnSync = false
 
 sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
 	if (eraseDatabaseOnSync) {
 		createUsersWithMessages()
 	}
 
-	httpServer.listen({port: PORT}, () => {
+	httpServer.listen({ port: PORT }, () => {
 		console.log(`🚀 Server running on localhost:${PORT}${server.graphqlPath}`)
 	})
 })

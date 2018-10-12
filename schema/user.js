@@ -1,6 +1,18 @@
 import { gql } from 'apollo-server-express';
 
+
+
 export default gql`
+	directive @cacheControl(
+		maxAge: Int,
+		scope: CacheControlScope
+	) on OBJECT | FIELD_DEFINITION
+
+	enum CacheControlScope {
+		PUBLIC
+		PRIVATE
+	}
+	
 	union Results = User | Post
 
   extend type Query {
@@ -39,14 +51,14 @@ export default gql`
 		followed_id: ID!
 	}
 
-  type User {
+  type User @cacheControl(maxAge: 240) {
     id: ID!
-    username: String!
-		email: String!
-		posts(limit: Int, offset: Int): [Post!],
-		posts_count: Int
-		avatar: String,
-		bio: String,
+    username: String! 
+		email: String! @cacheControl(maxAge: 240)
+		posts(limit: Int, offset: Int): [Post!]
+		posts_count: Int 
+		avatar: String
+		bio: String
     messages: [Message!]
 		following: Boolean
 		following_count: Int

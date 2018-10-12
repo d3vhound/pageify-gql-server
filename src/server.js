@@ -1,5 +1,5 @@
 require('dotenv').config()
-import cors from 'cors';
+import cors from 'cors'
 import * as bodyParser from 'body-parser'
 import express from 'express'
 import http from 'http'
@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken'
 import {
 	ApolloServer,
 	AuthenticationError
-} from 'apollo-server-express';
+} from 'apollo-server-express'
 import aws from 'aws-sdk'
 
 

@@ -37,20 +37,6 @@ const storeUpload = ({ stream, mimetype, s3 }) =>
 	})
 
 export default {
-	Results: {
-    __resolveType(obj, context, info){
-      if(obj.username){
-        return 'User'
-      }
-
-      if(obj.text){
-        return 'Post'
-      }
-
-      return null;
-    },
-	},
-
 	Query: {
 		posts: async (parent, { limit }, { models }) => {
 			return await models.Post.findAll()

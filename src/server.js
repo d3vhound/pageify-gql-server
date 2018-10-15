@@ -3,6 +3,7 @@ import cors from 'cors'
 import * as bodyParser from 'body-parser'
 import express from 'express'
 import http from 'http'
+import timber from 'timber'
 import jwt from 'jsonwebtoken'
 import {
 	ApolloServer,
@@ -10,6 +11,10 @@ import {
 } from 'apollo-server-express'
 import aws from 'aws-sdk'
 
+const transport = new timber.transports.HTTPS(`${process.env.TIMBER_API}`)
+if (process.env.NODE_ENV === 'production') {
+	timber.install(transport)
+}
 
 aws.config.update({
 	accessKeyId: process.env.AWS_ACCESS_KEY_ID,

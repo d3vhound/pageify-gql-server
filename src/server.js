@@ -10,6 +10,7 @@ import {
 	AuthenticationError
 } from 'apollo-server-express'
 import aws from 'aws-sdk'
+import Mixpanel from 'mixpanel'
 
 const transport = new timber.transports.HTTPS(`${process.env.TIMBER_API}`)
 if (process.env.NODE_ENV === 'production') {

@@ -94,7 +94,7 @@ export default {
 
 		createPost: combineResolvers(
 			isAuthenticated,
-			async (parent, { text, media, type }, { me, models, s3 }) => {
+			async (parent, { text, media, type }, { me, models, s3, mixpanel }) => {
 				
 				if (!type) {
 					type = 'Default'

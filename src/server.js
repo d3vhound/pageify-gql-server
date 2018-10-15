@@ -28,7 +28,7 @@ const s3 = new aws.S3({
 	endpoint: spacesEndpoint
 })
 
-let mixpanel = Mixpanel.init('32c2b2c06b54826c4f2d0006c665b533')
+let mixpanel = Mixpanel.init('cf9c61b9e7ac9e9d8b06f8b91c0023b4')
 
 import schema from '../schema';
 import resolvers from '../resolvers';

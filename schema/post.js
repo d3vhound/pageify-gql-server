@@ -12,6 +12,7 @@ extend type Mutation {
 	createPost(
 		text: String!
 		media: [Upload]
+		type: String
 	): Post!
 
 	deletePost(
@@ -28,6 +29,7 @@ type Post {
 	replies: [Post]
 	createdAt: String!
 	liked: Boolean
+	type: String
 }
 
 type File2 {

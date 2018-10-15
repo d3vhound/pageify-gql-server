@@ -94,11 +94,16 @@ export default {
 
 		createPost: combineResolvers(
 			isAuthenticated,
-			async (parent, { text, media }, { me, models, s3 }) => {
+			async (parent, { text, media, type }, { me, models, s3 }) => {
+				
+				if (!type) {
+					type = 'Default'
+				}
 
 				const post = await models.Post.create({
 					text,
-					userId: me.id
+					userId: me.id,
+					type
 				})
 					.then(async (post) => {
 						console.log(post.dataValues.id)

@@ -6,6 +6,9 @@ const post = (sequelize, DataTypes) => {
 		},
 		media_url: {
 			type: DataTypes.JSON
+		},
+		type: {
+			type: DataTypes.STRING,
 		}
 	}, {
 		charset: 'utf8mb4',

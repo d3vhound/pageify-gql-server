@@ -27,6 +27,7 @@ const s3 = new aws.S3({
 	endpoint: spacesEndpoint
 })
 
+let mixpanel = Mixpanel.init('32c2b2c06b54826c4f2d0006c665b533')
 
 import schema from '../schema';
 import resolvers from '../resolvers';
@@ -77,6 +78,7 @@ const server = new ApolloServer({
 			return {
 				models,
 				me,
+				mixpanel,
 				secret: process.env.SECRET,
 				s3
 			}

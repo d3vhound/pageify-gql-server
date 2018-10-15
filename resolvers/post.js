@@ -124,6 +124,19 @@ export default {
 								})
 
 								return post
+							} else if (media.length > 1) {
+								media.map(file => {
+									const { stream, filename, mimetype } = file
+									let fileKey = await storeUpload({ stream, s3, mimetype })
+									.then((value) => {
+										console.log(value)
+										return value
+									})
+									await models.File.create({
+										key: fileKey,
+										postId: id
+									})
+								})
 							}
 						}
 

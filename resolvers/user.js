@@ -104,6 +104,19 @@ export default {
 					username,
 					email,
 					password
+				}).then(user => {
+					mixpanel.track('Created account', {
+						distinct_id: user.dataValues.id,
+						time: new Date()
+					})
+
+					mixpanel.people.set(user.dataValues.id, {
+						$name: user.dataValues.username,
+						$email: user.dataValues.email,
+						$created: (new Date()).toISOString(),
+					})
+					
+					return user
 				})
 
 				return { token: createToken(user, secret) }

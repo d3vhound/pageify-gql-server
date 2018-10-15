@@ -126,7 +126,7 @@ export default {
 								return post
 							} else if (media.length > 1) {
 								await media.forEach(async file => {
-									const { stream, filename, mimetype } = file
+									const { stream, filename, mimetype } = await file
 									console.log(">>>>>>>>>>>>>", stream, filename, mimetype)
 									await storeUpload({ stream, s3, mimetype })
 									.then((value) => {

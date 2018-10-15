@@ -127,7 +127,7 @@ export default {
 							} else if (media.length > 1) {
 								media.map(file => {
 									const { stream, filename, mimetype } = file
-									console.log(file)
+									console.log(">>>>>>>>>>>>>", stream, filename, mimetype)
 									storeUpload({ stream, s3, mimetype })
 									.then((value) => {
 										console.log(value)

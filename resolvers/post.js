@@ -100,6 +100,11 @@ export default {
 					type = 'Default'
 				}
 
+				mixpanel.track('Created post', {
+					distinct_id: me.id,
+					time: new Date()
+				})
+
 				const post = await models.Post.create({
 					text,
 					userId: me.id,

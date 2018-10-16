@@ -71,6 +71,7 @@ export default {
 		},
 		search: async (parent, { query }, { models, me}) => {
 			const Users =  await models.User.findAll({
+				limit: 20,
 				where: {
 					username: {
 						[Op.like]: `%${query}%`

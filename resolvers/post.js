@@ -102,7 +102,7 @@ export default {
 
 				await mixpanel.track('Created post', {
 					distinct_id: me.id,
-					media: media.length >= 1 ? true : false,
+					media: media !== undefined ? true : false,
 					text: text,
 					type: type,
 					time: new Date()

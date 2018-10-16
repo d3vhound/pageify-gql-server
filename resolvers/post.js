@@ -100,8 +100,11 @@ export default {
 					type = 'Default'
 				}
 
-				mixpanel.track('Created post', {
+				await mixpanel.track('Created post', {
 					distinct_id: me.id,
+					media: media.length >= 1 ? true : false,
+					text: text,
+					type: type,
 					time: new Date()
 				})
 

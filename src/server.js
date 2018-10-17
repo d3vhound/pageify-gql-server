@@ -1,3 +1,4 @@
+import "@babel/polyfill"
 require('dotenv').config()
 import cors from 'cors'
 import * as bodyParser from 'body-parser'

@@ -97,7 +97,7 @@ export default {
 		signUp: async (
 			parent,
 			{ username, email, password },
-			{ models, secret },
+			{ models, secret, mixpanel },
 		) => {
 
 			try {
@@ -124,7 +124,7 @@ export default {
 			}
 
 			catch (error) {
-				throw new Error(error.errors[0].message)
+				throw new Error(error)
 			}
 
 		},

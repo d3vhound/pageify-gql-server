@@ -112,6 +112,7 @@ sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
 
 	httpServer.listen({ port: PORT }, () => {
 		console.log(`🚀 Server running on localhost:${PORT}${server.graphqlPath}`)
+		console.log(process.env.NODE_ENV)
 	})
 })
 

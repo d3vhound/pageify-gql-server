@@ -7,7 +7,7 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "nodemon --exec babel-node src/server.js",
 		"start": "pm2 start --interpreter babel-node ecosystem.config.js --env production",
-		"deploy": "npm run build && pm2 restart ecosystem.config.js --env production",
+		"deploy": "npm run build && pm2 restart ecosystem.config.js --env production --update-env",
 		"build": "babel src -d build"
 	},
 	"author": "",

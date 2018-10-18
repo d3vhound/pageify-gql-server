@@ -62,6 +62,7 @@ export default gql`
 		posts(limit: Int, offset: Int): [Post!]
 		posts_count: Int 
 		avatar: String
+		cover_image: String
 		bio: String
     messages: [Message!]
 		following: Boolean

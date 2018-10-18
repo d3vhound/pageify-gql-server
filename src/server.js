@@ -142,7 +142,7 @@ const createUsersWithMessages = async () => {
 					text: 'SQL god'
 				},
 				{
-					text: 'PHP over everything',
+					text: 'PHP over everything lol',
 				},
 			],
 		},

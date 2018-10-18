@@ -33,8 +33,11 @@ const user = (sequelize, DataTypes) => {
 		bio: {
 			type: DataTypes.STRING,
 			validate: {
-				len: [0, 140]
+				len: [0, 120]
 			}
+		},
+		cover_image: {
+			type: DataTypes.STRING
 		}
 	});
 

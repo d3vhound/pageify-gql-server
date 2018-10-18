@@ -175,6 +175,30 @@ export default {
 			return false
 		},
 
+		updateCoverImage: async (parent, { file }, { models, me, s3 }) => {
+			const { stream, filename, mimetype, encoding } = await file
+
+			let file_url = await storeUpload({ stream, s3, mimetype }).then((value) => {
+				console.log('update avatar resolver', value)
+				// file_url = value
+				return value
+			})
+
+			const updateCover = await models.User.update({
+				cover_image: file_url
+			}, {
+					where: {
+						id: me.id
+					}
+				})
+
+			if (updateCover) {
+				return true
+			}
+
+			return false
+		},
+
 		followUser: async (
 			parent,
 			{ userId },

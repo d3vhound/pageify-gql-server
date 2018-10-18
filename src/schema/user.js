@@ -38,6 +38,8 @@ export default gql`
 
 		updateAvatar(file: Upload!): Boolean!
 
+		updateCoverImage(file: Upload!): Boolean!
+
 		updateBio(text: String!): Boolean!
 
 		updateUser(bio: String, name: String, username: String): Boolean!
@@ -53,10 +55,10 @@ export default gql`
 		followed_id: ID!
 	}
 
-  type User @cacheControl(maxAge: 240) {
+  type User {
     id: ID!
     username: String! 
-		email: String! @cacheControl(maxAge: 240)
+		email: String!
 		posts(limit: Int, offset: Int): [Post!]
 		posts_count: Int 
 		avatar: String

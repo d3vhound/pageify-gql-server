@@ -64,6 +64,18 @@ const server = new ApolloServer({
 	engine: {
 		apiKey: "service:d3vhound-pageify090418:IJ9a3TLVbX3q8TUJ_AfWhw"
 	},
+	formatError: error => {
+    // remove the internal sequelize error message
+    // leave only the important validation error
+    const message = error.message
+      .replace('SequelizeValidationError: ', '')
+      .replace('Validation error: ', '')
+
+    return {
+      ...error,
+      message,
+    }
+  },
 	context: async ({ req, connection }) => {
 		if (connection) {
 			console.log('connection')

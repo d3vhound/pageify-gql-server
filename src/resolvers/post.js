@@ -174,9 +174,9 @@ export default {
 	},
 
 	Post: {
-		// user: async (post, args, { models }) => {
-		// 	return await models.User.findById(post.userId)
-		// },
+		user: async (post, args, { models }) => {
+			return await models.User.findById(post.userId)
+		},
 
 		createdAt: async (post, args, { models }) => {
 			return post.createdAt.toString()

@@ -96,7 +96,7 @@ export default {
 	Mutation: {
 		signUp: async (
 			parent,
-			{ username, email, password },
+			{ username, email, real_name, location, birthday, password },
 			{ models, secret, mixpanel },
 		) => {
 
@@ -104,6 +104,9 @@ export default {
 				const user = await models.User.create({
 					username,
 					email,
+					real_name,
+					location,
+					birthday,
 					password
 				}).then(user => {
 					mixpanel.track('Created account', {

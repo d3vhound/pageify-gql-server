@@ -121,6 +121,7 @@ const createUsersWithMessages = async () => {
 			username: 'dvillegas',
 			email: 'devion.villegas@ttu.edu',
 			password: 'test123',
+			real_name: 'Devion Villegas',
 			messages: [
 				{
 					text: 'GraphQL is lit',
@@ -137,6 +138,7 @@ const createUsersWithMessages = async () => {
 			username: 'jp',
 			email: 'jp@nextgencode.io',
 			password: 'test123',
+			real_name: 'John Paul',
 			messages: [
 				{
 					text: 'SQL god'

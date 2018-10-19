@@ -76,7 +76,7 @@ const server = new ApolloServer({
       ...error,
       message,
     }
-  },
+	},
 	context: async ({ req, connection }) => {
 		if (connection) {
 			console.log('connection')
@@ -87,9 +87,9 @@ const server = new ApolloServer({
 
 		if (req) {
 			const me = await getMe(req);
-			console.log('-------------')
+			console.log('--------------')
 			console.log('me user >', me)
-			console.log('-------------')
+			console.log('--------------')
 
 			return {
 				models,

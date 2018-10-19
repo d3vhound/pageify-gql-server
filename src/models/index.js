@@ -24,6 +24,8 @@ const models = {
 	User: sequelize.import('./user'),
 	File: sequelize.import('./files'),
 	Message: sequelize.import('./message'),
+	Replies: sequelize.import('./replies'),
+	Comment: sequelize.import('./comments'),
 	Relationship: sequelize.import('./relationships'),
 	Post: sequelize.import('./post'),
 	Like: sequelize.import('./likes'),

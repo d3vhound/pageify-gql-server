@@ -171,6 +171,24 @@ export default {
 			}
 		),
 
+		createComment: combineResolvers(
+			isAuthenticated,
+			async (parent, { postId, text }, { me, models, s3, mixpanel }) => {
+				const addComment = await models.Comment.create({
+					text: text,
+					postId: postId,
+					userId: me.id
+				})
+
+				console.log(addComment)
+
+				if (addComment) {
+					return true
+				}
+
+				return false
+			})
+
 	},
 
 	Post: {
@@ -180,6 +198,14 @@ export default {
 
 		createdAt: async (post, args, { models }) => {
 			return post.createdAt.toString()
+		},
+
+		comments: async (post, args, { models }) => {
+			return await models.Comment.findAll({
+				where: {
+					postId: post.id
+				}
+			})
 		},
 
 		likes: async (post, args, { models }) => {
@@ -217,6 +243,20 @@ export default {
 
 			return true
 
+		}
+	},
+
+	Comment: {
+		user: async (comment, args, { models, me }) => {
+			return await models.User.findOne({
+				where: {
+					id: comment.userId
+				}
+			})
+		},
+		post: async (comment, args, { models, me}) => {
+			console.log(comment, args)
+			return null
 		}
 	},
 

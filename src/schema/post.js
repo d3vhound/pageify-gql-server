@@ -18,18 +18,35 @@ extend type Mutation {
 	deletePost(
 		id: ID!
 	): Boolean!
+
+	createComment(
+		postId: ID!
+		text: String!
+	): Boolean!
+
+	deleteComment(
+		postId: ID!
+	): Boolean!
 }
 
 type Post {
 	id: ID!
 	user: User!
 	text: String!
+	interactions: Int
 	media: [File2]
 	likes: Int
-	replies: [Post]
+	comments: [Comment]
 	createdAt: String!
 	liked: Boolean
 	type: String
+}
+
+type Comment {
+	user: User!
+	post: Post!
+	text: String!
+	id: ID!
 }
 
 type File2 {

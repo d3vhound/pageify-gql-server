@@ -62,6 +62,9 @@ export default gql`
     id: ID!
     username: String! 
 		email: String!
+		real_name: String!
+		location: String
+		birthday: String
 		posts(limit: Int, offset: Int): [Post!]
 		posts_count: Int 
 		avatar: String

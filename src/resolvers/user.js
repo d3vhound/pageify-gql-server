@@ -350,6 +350,14 @@ export default {
 			return await current_user.following(other_user)
 		},
 
+		same_user: async(user, args, { me, models }) => {
+			if (me.id === user.id) {
+				return true
+			}
+
+			return false
+		},
+
 		followers_count: async (user, args, { me, models }) => {
 			return await models.Relationship.findAndCountAll({
 				where: {

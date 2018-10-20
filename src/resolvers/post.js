@@ -204,7 +204,10 @@ export default {
 			return await models.Comment.findAll({
 				where: {
 					postId: post.id
-				}
+				},
+				order: [
+					['createdAt', 'DESC']
+				]
 			})
 		},
 
@@ -253,6 +256,9 @@ export default {
 					id: comment.userId
 				}
 			})
+		},
+		createdAt: async (comment, args, { models }) => {
+			return comment.createdAt.toString()
 		},
 		post: async (comment, args, { models, me}) => {
 			console.log(comment, args)

@@ -46,6 +46,7 @@ type Comment {
 	user: User!
 	post: Post!
 	text: String!
+	createdAt: String!
 	id: ID!
 }
 

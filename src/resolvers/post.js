@@ -161,9 +161,9 @@ export default {
 				})
 
 				pubsub.publish(EVENTS.POST.CREATED, {
-					postAddedToFeed: {
+					postCreated: {
 						post,
-						followersToNotify: usersArr
+						// followersToNotify: usersArr
 					},
 				})
 
@@ -267,6 +267,9 @@ export default {
 	},
 
 	Subscription: {
+		postCreated: {
+			subscribe: () => pubsub.asyncIterator(EVENTS.POST.CREATED)
+		},
 		postAddedToFeed: {
 			subscribe: withFilter(
 				() => pubsub.asyncIterator(EVENTS.POST.CREATED),

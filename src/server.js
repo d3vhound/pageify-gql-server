@@ -102,6 +102,14 @@ const server = new ApolloServer({
 			}
 		}
 	},
+	subscriptions: {
+    onConnect: (connectionParams, webSocket, context) => {
+      console.log(connectionParams, webSocket, context)
+    },
+    onDisconnect: (webSocket, context) => {
+      console.log(webSocket, context)
+    },
+  },
 	introspection: true,
 	playground: true,
 	tracing: true,

@@ -33,9 +33,9 @@ type Post {
 	id: ID!
 	user: User!
 	text: String!
-	interactions: Int
 	media: [File2]
 	likes: Int
+	interactions: Int!
 	comments: [Comment]
 	createdAt: String!
 	liked: Boolean

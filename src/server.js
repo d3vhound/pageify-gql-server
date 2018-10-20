@@ -13,6 +13,7 @@ import {
 import aws from 'aws-sdk'
 import Mixpanel from 'mixpanel'
 import morgan from 'morgan'
+import DataLoader from 'dataloader'
 
 
 const transport = new timber.transports.HTTPS(`${process.env.TIMBER_API}`)
@@ -60,6 +61,18 @@ const getMe = async req => {
 	}
 }
 
+const batchUsers = async (keys, models) => {
+  const users = await models.User.findAll({
+    where: {
+      id: {
+        $in: keys,
+      },
+    },
+  })
+
+  return keys.map(key => users.find(user => user.id === key))
+}
+
 const server = new ApolloServer({
 	typeDefs: schema,
 	resolvers,
@@ -98,6 +111,9 @@ const server = new ApolloServer({
 				me,
 				mixpanel,
 				secret: process.env.SECRET,
+				loaders: {
+					user: new DataLoader(keys => batchUsers(keys, models)),
+				},
 				s3
 			}
 		}

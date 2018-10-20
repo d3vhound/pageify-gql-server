@@ -192,12 +192,30 @@ export default {
 	},
 
 	Post: {
-		user: async (post, args, { models }) => {
-			return await models.User.findById(post.userId)
+		user: async (post, args, { models, loaders }) => {
+			// return await models.User.findById(post.userId)
+			return await loaders.user.load(post.userId)
 		},
 
 		createdAt: async (post, args, { models }) => {
 			return post.createdAt.toString()
+		},
+
+		interactions: async (post, args, { models }) => {
+			const likesCount = await models.Like.findAndCountAll({
+				where: {
+					post_id: post.id
+				}
+			})
+			const commentCount = await models.Comment.findAndCountAll({
+				where: {
+					postId: post.id
+				}
+			})
+
+			let count = likesCount.count + commentCount.count
+
+			return count
 		},
 
 		comments: async (post, args, { models }) => {
@@ -250,12 +268,13 @@ export default {
 	},
 
 	Comment: {
-		user: async (comment, args, { models, me }) => {
-			return await models.User.findOne({
-				where: {
-					id: comment.userId
-				}
-			})
+		user: async (comment, args, { models, me, loaders }) => {
+			// return await models.User.findOne({
+			// 	where: {
+			// 		id: comment.userId
+			// 	}
+			// })
+			return await loaders.user.load(comment.userId)
 		},
 		createdAt: async (comment, args, { models }) => {
 			return comment.createdAt.toString()

@@ -104,10 +104,10 @@ const server = new ApolloServer({
 	},
 	subscriptions: {
     onConnect: (connectionParams, webSocket, context) => {
-      console.log(connectionParams, webSocket, context)
+      console.log('New client ws connection')
     },
     onDisconnect: (webSocket, context) => {
-      console.log(webSocket, context)
+      console.log('client ws disconnected')
     },
   },
 	introspection: true,

@@ -12,6 +12,7 @@ import {
 } from 'apollo-server-express'
 import aws from 'aws-sdk'
 import Mixpanel from 'mixpanel'
+import morgan from 'morgan'
 
 
 const transport = new timber.transports.HTTPS(`${process.env.TIMBER_API}`)
@@ -43,6 +44,7 @@ const app = express()
 app.use(bodyParser.json({ limit: '50mb' }))
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 app.use(cors())
+app.use(morgan('combined'))
 
 const getMe = async req => {
 	const token = req.headers['x-token']

@@ -161,9 +161,9 @@ export default {
 				})
 
 				pubsub.publish(EVENTS.POST.CREATED, {
-					postCreated: {
+					postAddedToFeed: {
 						post,
-						// followersToNotify: usersArr
+						followersToNotify: usersArr
 					},
 				})
 

@@ -6,6 +6,7 @@ import express from 'express'
 import http from 'http'
 import timber from 'timber'
 import jwt from 'jsonwebtoken'
+import { RedisCache } from 'apollo-server-cache-redis'
 import {
 	ApolloServer,
 	AuthenticationError
@@ -69,8 +70,35 @@ const batchUsers = async (keys, models) => {
       },
     },
   })
-
   return keys.map(key => users.find(user => user.id === key))
+}
+
+const batchLikesCount = async (keys, models) => {
+	const likes = await models.Like.findAll({
+		where: {
+			post_id: {
+				$in: keys
+			}
+		}
+	})
+	return keys.map(key => {
+		let filterArr = likes.filter(like => like.post_id === key)
+		return filterArr.length
+	})
+}
+
+const batchCommentsCount = async (keys, models) => {
+	const comments = await models.Comment.findAll({
+		where: {
+			postId: {
+				$in: keys
+			}
+		}
+	})
+	return keys.map(key => {
+		let filterArr = comments.filter(comment => comment.postId === key)
+		return filterArr.length
+	})
 }
 
 const server = new ApolloServer({
@@ -113,6 +141,8 @@ const server = new ApolloServer({
 				secret: process.env.SECRET,
 				loaders: {
 					user: new DataLoader(keys => batchUsers(keys, models)),
+					likes: new DataLoader(keys => batchLikesCount(keys, models)),
+					commentsCount: new DataLoader(keys => batchCommentsCount(keys, models))
 				},
 				s3
 			}
@@ -134,6 +164,12 @@ const server = new ApolloServer({
 			'editor.theme': 'dark',
 			"editor.cursorShape": "block",
 		},
+	},
+	persistedQueries: {
+		cache: process.env.NODE_ENV === 'production' ? new RedisCache({
+			host: '127.0.0.1',
+			// Options are passed through to the Redis client
+		}) : null,
 	}
 })
 
@@ -142,7 +178,7 @@ server.applyMiddleware({ app, path: '/graphql' })
 const httpServer = http.createServer(app)
 server.installSubscriptionHandlers(httpServer)
 
-const eraseDatabaseOnSync = true
+const eraseDatabaseOnSync = false
 
 sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
 	if (eraseDatabaseOnSync) {

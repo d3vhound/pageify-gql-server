@@ -65,7 +65,7 @@ export default gql`
 		real_name: String!
 		location: String
 		birthday: String
-		same_user: Boolean!
+		same_user: Boolean
 		posts(limit: Int, offset: Int): [Post!]
 		posts_count: Int 
 		avatar: String

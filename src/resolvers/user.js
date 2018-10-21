@@ -351,6 +351,10 @@ export default {
 		},
 
 		same_user: async(user, args, { me, models }) => {
+			if(!me) {
+				return null
+			}
+			
 			if (me.id === user.id) {
 				return true
 			}

@@ -39,7 +39,12 @@ const storeUpload = ({ stream, mimetype, s3 }) =>
 export default {
 	Query: {
 		posts: async (parent, { limit }, { models }) => {
-			return await models.Post.findAll()
+			return await models.Post.findAll({
+				include: [
+					models.User,
+					models.Comment
+				]
+			})
 		},
 		post: async (parent, { id }, { models }) => {
 			return await models.Post.findById(id, {
@@ -192,30 +197,36 @@ export default {
 	},
 
 	Post: {
-		user: async (post, args, { models, loaders }) => {
-			// return await models.User.findById(post.userId)
-			return await loaders.user.load(post.userId)
-		},
+		// user: async (post, args, { models, loaders }) => {
+		// 	// return await models.User.findById(post.userId)
+		// 	return await loaders.user.load(post.userId)
+		// },
 
 		createdAt: async (post, args, { models }) => {
 			return post.createdAt.toString()
 		},
 
-		interactions: async (post, args, { models }) => {
-			const likesCount = await models.Like.findAndCountAll({
-				where: {
-					post_id: post.id
-				}
-			})
-			const commentCount = await models.Comment.findAndCountAll({
-				where: {
-					postId: post.id
-				}
-			})
+		interactions: async (post, args, { models, loaders }) => {
+			// const likesCount = await models.Like.count({
+			// 	where: {
+			// 		post_id: post.id
+			// 	}
+			// })
 
-			let count = likesCount.count + commentCount.count
+			const likesCount2 = await loaders.likes.load(post.id)
+			// console.log(post.id, likesCount2)
 
-			return count
+			// const commentCount = await models.Comment.count({
+			// 	where: {
+			// 		postId: post.id
+			// 	}
+			// })
+
+			const commentCount2 = await loaders.commentsCount.load(post.id)
+
+			// console.log(post.id, commentCount2)
+
+			return likesCount2 + commentCount2
 		},
 
 		comments: async (post, args, { models }) => {

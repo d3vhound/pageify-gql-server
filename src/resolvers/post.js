@@ -105,7 +105,19 @@ export default {
 					type = 'Default'
 				}
 
-				if (media === null || undefined) {
+				// if (media === null || undefined) {
+				// 	throw new UserInputError(
+				// 		'Please try again'
+				// 	)
+				// }
+
+				if (type === 'single_image' && media === null) { 
+					throw new UserInputError(
+						'Please try again'
+					)
+				}
+
+				if (type === 'multi_images' && media === null) { 
 					throw new UserInputError(
 						'Please try again'
 					)
@@ -123,7 +135,7 @@ export default {
 				// 	time: new Date()
 				// })
 
-				await models.Post.create({
+				const post = await models.Post.create({
 					text,
 					userId: me.id,
 					type
@@ -144,7 +156,6 @@ export default {
 										})
 									})
 									.catch(err => console.log(err))
-								return post
 							} 
 							if (media.length > 1) {
 								await media.forEach(async file => {

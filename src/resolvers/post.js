@@ -111,12 +111,6 @@ export default {
 					)
 				}
 
-				if (type === 'single_image' && media === null) { 
-					throw new UserInputError(
-						'Please try again'
-					)
-				}
-
 				console.log('><><><><><><><><><><><')
 				console.log('expanse000', media)
 				console.log('><><><><><><><><><><><')

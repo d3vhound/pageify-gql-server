@@ -6,7 +6,6 @@ import express from 'express'
 import http from 'http'
 import timber from 'timber'
 import jwt from 'jsonwebtoken'
-import { RedisCache } from 'apollo-server-cache-redis'
 import {
 	ApolloServer,
 	AuthenticationError
@@ -165,12 +164,6 @@ const server = new ApolloServer({
 			"editor.cursorShape": "block",
 		},
 	},
-	persistedQueries: {
-		cache: process.env.NODE_ENV === 'production' ? new RedisCache({
-			host: '127.0.0.1',
-			// Options are passed through to the Redis client
-		}) : null,
-	}
 })
 
 server.applyMiddleware({ app, path: '/graphql' })

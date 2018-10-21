@@ -105,13 +105,13 @@ export default {
 					type = 'Default'
 				}
 
-				await mixpanel.track('Created post', {
-					distinct_id: me.id,
-					media: media !== undefined ? true : false,
-					text: text,
-					type: type,
-					time: new Date()
-				})
+				// await mixpanel.track('Created post', {
+				// 	distinct_id: me.id,
+				// 	media: media !== undefined ? true : false,
+				// 	text: text,
+				// 	type: type,
+				// 	time: new Date()
+				// })
 
 				const post = await models.Post.create({
 					text,
@@ -153,24 +153,24 @@ export default {
 							}
 						}
 
-
+						
 						return post
 					})
 
-				const followers = await models.Relationship.findAll({
-					where: { followed_id: me.id },
-				})
+				// const followers = await models.Relationship.findAll({
+				// 	where: { followed_id: me.id },
+				// })
 
-				let usersArr = await followers.map(user => {
-					return user.dataValues.follower_id
-				})
+				// let usersArr = await followers.map(user => {
+				// 	return user.dataValues.follower_id
+				// })
 
-				pubsub.publish(EVENTS.POST.CREATED, {
-					postAddedToFeed: {
-						post,
-						followersToNotify: usersArr
-					},
-				})
+				// pubsub.publish(EVENTS.POST.CREATED, {
+				// 	postAddedToFeed: {
+				// 		post,
+				// 		followersToNotify: usersArr
+				// 	},
+				// })
 
 				return post
 			}

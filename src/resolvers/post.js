@@ -105,8 +105,14 @@ export default {
 					type = 'Default'
 				}
 
-				if (!media === null || undefined) {
+				if (media === null || undefined) {
 					type = 'text'
+				}
+
+				if (type === 'single_image' && media === null) {
+					throw new UserInputError(
+						'Please try again'
+					)
 				}
 
 				console.log('><><><><><><><><><><><')

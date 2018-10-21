@@ -67,6 +67,7 @@ export default {
 				return user.dataValues.followed_id
 			})
 
+			
 			usersArr.push(me.id)
 
 			return await models.Post.findAll({

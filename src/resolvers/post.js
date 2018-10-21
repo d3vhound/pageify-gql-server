@@ -105,6 +105,14 @@ export default {
 					type = 'Default'
 				}
 
+				if (!media === null || undefined) {
+					type = 'text'
+				}
+
+				console.log('><><><><><><><><><><><')
+				console.log(media)
+				console.log('><><><><><><><><><><><')
+
 				// await mixpanel.track('Created post', {
 				// 	distinct_id: me.id,
 				// 	media: media !== undefined ? true : false,
@@ -113,7 +121,7 @@ export default {
 				// 	time: new Date()
 				// })
 
-				const post = await models.Post.create({
+				await models.Post.create({
 					text,
 					userId: me.id,
 					type

@@ -133,30 +133,30 @@ export default {
 							console.log(media)
 							if (media.length === 1) {
 								const { stream, filename, mimetype } = await media[0]
-
-								let fileKey = await storeUpload({ stream, s3, mimetype })
+								await storeUpload({ stream, s3, mimetype })
 									.then((value) => {
 										console.log(value)
-										return value
+										await models.File.create({
+											key: value,
+											postId: id
+										})
 									})
-								await models.File.create({
-									key: fileKey,
-									postId: id
-								})
-
+									.catch(err => console.log(err))
 								return post
-							} else if (media.length > 1) {
+							} 
+							if (media.length > 1) {
 								await media.forEach(async file => {
 									const { stream, filename, mimetype } = await file
 									console.log(">>>>>>>>>>>>>", stream, filename, mimetype)
 									await storeUpload({ stream, s3, mimetype })
 									.then((value) => {
 										console.log(value)
-										models.File.create({
+										await models.File.create({
 											key: value,
 											postId: id
 										})
 									})
+									.catch(err => console.log(err))
 								})
 							}
 						}

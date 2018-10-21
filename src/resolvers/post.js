@@ -106,17 +106,19 @@ export default {
 				}
 
 				if (media === null || undefined) {
-					type = 'text'
+					throw new UserInputError(
+						'Please try again'
+					)
 				}
 
-				if (type === 'single_image' && media === null) {
+				if (type === 'single_image' && media === null) { 
 					throw new UserInputError(
 						'Please try again'
 					)
 				}
 
 				console.log('><><><><><><><><><><><')
-				console.log(media)
+				console.log('expanse000', media)
 				console.log('><><><><><><><><><><><')
 
 				// await mixpanel.track('Created post', {

@@ -134,7 +134,7 @@ export default {
 							if (media.length === 1) {
 								const { stream, filename, mimetype } = await media[0]
 								await storeUpload({ stream, s3, mimetype })
-									.then((value) => {
+									.then(async (value) => {
 										console.log(value)
 										await models.File.create({
 											key: value,
@@ -149,7 +149,7 @@ export default {
 									const { stream, filename, mimetype } = await file
 									console.log(">>>>>>>>>>>>>", stream, filename, mimetype)
 									await storeUpload({ stream, s3, mimetype })
-									.then((value) => {
+									.then(async (value) => {
 										console.log(value)
 										await models.File.create({
 											key: value,

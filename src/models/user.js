@@ -52,6 +52,9 @@ const user = (sequelize, DataTypes) => {
 				len: [0, 120]
 			}
 		},
+		location: {
+			type: DataTypes.STRING,
+		},
 		cover_image: {
 			type: DataTypes.STRING
 		}

@@ -45,7 +45,7 @@ export default gql`
 
 		updateBio(text: String!): Boolean!
 
-		updateUser(bio: String, name: String, username: String): Boolean!
+		updateUser(location: String, bio: String, real_name: String, username: String): Boolean!
 
 	}
 

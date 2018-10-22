@@ -302,6 +302,32 @@ export default {
 			// }
 
 			// return false
+		},
+
+		updateUser: async (parent, { username, real_name, location, bio }, { models, me}) => {
+ 			return await models.User.findOne({
+				where: {
+					id: me.id
+				}
+			}).then(async (user) => {
+				// console.log(user)
+				const userUpdate = await models.User.update({
+					username: !username ? user._previousDataValues.username : username,
+					real_name: !real_name ? user._previousDataValues.real_name : real_name,
+					location: !location ? user._previousDataValues.location : location,
+					bio: !bio ? user._previousDataValues.bio : bio,
+				}, {
+					where: { 
+						id: me.id 
+					}
+				}).then(() => {
+					return true
+				})
+
+				if (userUpdate) {
+					return true
+				}
+			})
 		}
 	},
 

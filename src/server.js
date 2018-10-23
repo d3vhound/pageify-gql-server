@@ -195,9 +195,36 @@ const createUsersWithMessages = async () => {
 					text: 'GraphQL is lit',
 				},
 			],
+			posts: [
+				{
+					text: 'Testing',
+					type: 'text',
+					category: 'default'
+				},
+				{
+					text: 'Testing2',
+					type: 'text',
+					category: 'default'
+				},
+				{
+					text: 'Testing3',
+					type: 'text',
+					category: 'default'
+				},
+				{
+					text: 'Testing4',
+					type: 'text',
+					category: 'default'
+				},
+				{
+					text: 'Testing5',
+					type: 'text',
+					category: 'default'
+				},
+			]
 		},
 		{
-			include: [models.Message]
+			include: [models.Message, models.Post],
 		},
 	);
 
@@ -215,10 +242,37 @@ const createUsersWithMessages = async () => {
 					text: 'PHP over everything lol',
 				},
 			],
+			posts: [
+				{
+					text: 'Testing',
+					type: 'text',
+					category: 'default'
+				},
+				{
+					text: 'Testing2',
+					type: 'text',
+					category: 'default'
+				},
+				{
+					text: 'Testing3',
+					type: 'text',
+					category: 'default'
+				},
+				{
+					text: 'Testing4',
+					type: 'text',
+					category: 'default'
+				},
+				{
+					text: 'Testing5',
+					type: 'text',
+					category: 'default'
+				},
+			]
 		},
 		{
-			include: [models.Message]
-		}
+			include: [models.Message, models.Post],
+		},
 	);
 };
 

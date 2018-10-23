@@ -53,6 +53,74 @@ export default {
 				]
 			})
 		},
+		foryouposts: async (parent, { limit }, { models }) => {
+			return await models.Post.findAll({
+				
+			})
+		},
+		recentposts: async (parent, { limit, category }, { models }) => {
+			return await models.Post.findAll({
+				where: {
+					category: category ? category : 'default'
+				},
+				order: [
+					['createdAt', 'DESC']
+				],
+				include: [
+					models.User 
+				],
+				limit,
+			})
+		},
+		topposts: async (parent, { limit, category }, { models }) => {
+			return await models.Post.findAll({
+				where: {
+					category: category ? category : 'default'
+				},
+				attributes: [
+					'id',
+					'text',
+					'type',
+					'userId',
+					[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN likes AS L ON L.post_id = P.id WHERE P.id = post.id)'),'likes'],
+					[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN comments AS C ON C.postId = P.id WHERE P.id = post.id)'),'comments'],
+					[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN likes AS L ON L.post_id = P.id WHERE P.id = post.id) + (SELECT count(*) FROM posts AS P INNER JOIN comments AS C ON C.postId = P.id WHERE P.id = post.id)'), 'interactions']
+				],
+				include: [
+					models.User,
+				],
+				order: [
+					[Sequelize.literal('interactions'), 'DESC']
+				],
+				limit,
+			})
+		},
+		trendingposts: async (parent, { category, limit }, { models }) => {
+			return await models.Post.findAll({
+				where: {
+					createdAt: {
+						[Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000)
+					},
+					category: category ? category : 'default'
+				},
+				attributes: [
+					'id',
+					'text',
+					'type',
+					'userId',
+					[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN likes AS L ON L.post_id = P.id WHERE P.id = post.id)'),'likes'],
+					[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN comments AS C ON C.postId = P.id WHERE P.id = post.id)'),'comments'],
+					[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN likes AS L ON L.post_id = P.id WHERE P.id = post.id) + (SELECT count(*) FROM posts AS P INNER JOIN comments AS C ON C.postId = P.id WHERE P.id = post.id)'), 'interactions']
+				],
+				include: [
+					models.User,
+				],
+				order: [
+					[Sequelize.literal('interactions'), 'DESC']
+				],
+				limit,
+			})
+		},
 
 
 		feed: async (parent, { offset, limit }, { models, me }) => {
@@ -100,10 +168,14 @@ export default {
 
 		createPost: combineResolvers(
 			isAuthenticated,
-			async (parent, { text, media, type }, { me, models, s3, mixpanel }) => {
+			async (parent, { text, media, type, category }, { me, models, s3, mixpanel }) => {
 				
 				if (!type) {
 					type = 'Default'
+				}
+
+				if (!category) {
+					category = 'default'
 				}
 
 				// if (media === null || undefined) {

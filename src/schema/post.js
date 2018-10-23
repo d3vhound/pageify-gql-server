@@ -6,6 +6,10 @@ extend type Query {
 	posts: [Post!]
 	post(id: ID!): Post
 	feed(offset: Int, limit: Int): [Post!]
+	trendingposts(limit: Int!, category: String): [Post!]
+	foryouposts(limit: Int!, category: String): [Post!]
+	recentposts(limit: Int!, category: String): [Post!]
+	topposts(limit: Int!, category: String): [Post!]
 }
 
 extend type Mutation {
@@ -13,6 +17,7 @@ extend type Mutation {
 		text: String!
 		media: [Upload]
 		type: String
+		category: String
 	): Post!
 
 	deletePost(
@@ -39,6 +44,7 @@ type Post {
 	comments: [Comment]
 	createdAt: String!
 	liked: Boolean
+	category: String
 	type: String
 }
 

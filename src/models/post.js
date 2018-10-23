@@ -9,6 +9,13 @@ const post = (sequelize, DataTypes) => {
 		},
 		type: {
 			type: DataTypes.STRING,
+		},
+		category: {
+			type: DataTypes.STRING,
+			allowNull: false,
+			validate: {
+				notEmpty: true
+			}
 		}
 	}, {
 		charset: 'utf8mb4',

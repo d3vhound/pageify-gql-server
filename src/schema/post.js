@@ -18,6 +18,8 @@ extend type Mutation {
 		media: [Upload]
 		type: String
 		category: String
+		bg_color: String!
+		text_color: String!
 	): Post!
 
 	deletePost(
@@ -46,6 +48,8 @@ type Post {
 	liked: Boolean
 	category: String
 	type: String
+	bg_color: String
+	text_color: String
 }
 
 type Comment {

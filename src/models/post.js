@@ -10,6 +10,12 @@ const post = (sequelize, DataTypes) => {
 		type: {
 			type: DataTypes.STRING,
 		},
+		bg_color: {
+			type: DataTypes.STRING,
+		},
+		text_color: {
+			type: DataTypes.STRING,
+		},
 		category: {
 			type: DataTypes.STRING,
 			allowNull: false,

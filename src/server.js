@@ -199,27 +199,37 @@ const createUsersWithMessages = async () => {
 				{
 					text: 'Testing',
 					type: 'text',
-					category: 'default'
+					category: 'default',
+					text_color: '#FFF',
+					bg_color: '#2E75F6'
 				},
 				{
 					text: 'Testing2',
 					type: 'text',
-					category: 'default'
+					category: 'default',
+					text_color: '#FFF',
+					bg_color: '#2E75F6'
 				},
 				{
 					text: 'Testing3',
 					type: 'text',
-					category: 'default'
+					category: 'default',
+					text_color: '#FFF',
+					bg_color: '#2E75F6'
 				},
 				{
 					text: 'Testing4',
 					type: 'text',
-					category: 'default'
+					category: 'default',
+					text_color: '#FFF',
+					bg_color: '#2E75F6'
 				},
 				{
 					text: 'Testing5',
 					type: 'text',
-					category: 'default'
+					category: 'default',
+					text_color: '#FFF',
+					bg_color: '#2E75F6'
 				},
 			]
 		},
@@ -246,27 +256,37 @@ const createUsersWithMessages = async () => {
 				{
 					text: 'Testing',
 					type: 'text',
-					category: 'default'
+					category: 'default',
+					text_color: '#FFF',
+					bg_color: '#2E75F6'
 				},
 				{
 					text: 'Testing2',
 					type: 'text',
-					category: 'default'
+					category: 'default',
+					text_color: '#FFF',
+					bg_color: '#2E75F6'
 				},
 				{
 					text: 'Testing3',
 					type: 'text',
-					category: 'default'
+					category: 'default',
+					text_color: '#FFF',
+					bg_color: '#2E75F6'
 				},
 				{
 					text: 'Testing4',
 					type: 'text',
-					category: 'default'
+					category: 'default',
+					text_color: '#FFF',
+					bg_color: '#2E75F6'
 				},
 				{
 					text: 'Testing5',
 					type: 'text',
-					category: 'default'
+					category: 'default',
+					text_color: '#FFF',
+					bg_color: '#2E75F6'
 				},
 			]
 		},

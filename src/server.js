@@ -208,7 +208,7 @@ const createUsersWithMessages = async () => {
 					type: 'text',
 					category: 'default',
 					text_color: '#FFF',
-					bg_color: '#2E75F6'
+					bg_color: '#B533F5'
 				},
 				{
 					text: 'Testing3',
@@ -222,14 +222,14 @@ const createUsersWithMessages = async () => {
 					type: 'text',
 					category: 'default',
 					text_color: '#FFF',
-					bg_color: '#2E75F6'
+					bg_color: '#691B26'
 				},
 				{
 					text: 'Testing5',
 					type: 'text',
 					category: 'default',
 					text_color: '#FFF',
-					bg_color: '#2E75F6'
+					bg_color: '#CF2D41'
 				},
 			]
 		},
@@ -258,14 +258,14 @@ const createUsersWithMessages = async () => {
 					type: 'text',
 					category: 'default',
 					text_color: '#FFF',
-					bg_color: '#2E75F6'
+					bg_color: '#B533F5'
 				},
 				{
 					text: 'Testing2',
 					type: 'text',
 					category: 'default',
 					text_color: '#FFF',
-					bg_color: '#2E75F6'
+					bg_color: '#691B26'
 				},
 				{
 					text: 'Testing3',
@@ -279,7 +279,7 @@ const createUsersWithMessages = async () => {
 					type: 'text',
 					category: 'default',
 					text_color: '#FFF',
-					bg_color: '#2E75F6'
+					bg_color: '#CF2D41'
 				},
 				{
 					text: 'Testing5',

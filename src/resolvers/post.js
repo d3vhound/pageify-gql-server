@@ -211,7 +211,8 @@ export default {
 				const post = await models.Post.create({
 					text,
 					userId: me.id,
-					type
+					type,
+					category
 				})
 					.then(async (post) => {
 						console.log(post.dataValues.id)

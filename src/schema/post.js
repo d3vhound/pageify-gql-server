@@ -18,8 +18,8 @@ extend type Mutation {
 		media: [Upload]
 		type: String
 		category: String
-		bg_color: String!
-		text_color: String!
+		bg_color: String
+		text_color: String
 	): Post!
 
 	deletePost(

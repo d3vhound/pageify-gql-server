@@ -204,6 +204,7 @@ export default {
 				console.log('expanse000', media)
 				console.log('><><><><><><><><><><><')
 
+				
 				// await mixpanel.track('Created post', {
 				// 	distinct_id: me.id,
 				// 	media: media !== undefined ? true : false,

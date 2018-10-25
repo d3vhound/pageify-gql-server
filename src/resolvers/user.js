@@ -5,8 +5,8 @@ import Sequelize from 'sequelize'
 const Op = Sequelize.Op
 
 const createToken = async (user, secret, expiresIn) => {
-	const { id, email, username } = user
-	return await jwt.sign({ id, email, username }, secret)
+	const { id, email, username, onesignal_id } = user
+	return await jwt.sign({ id, email, username, onesignal_id }, secret)
 }
 
 const storeUpload = ({ stream, mimetype, s3 }) =>
@@ -96,7 +96,7 @@ export default {
 	Mutation: {
 		signUp: async (
 			parent,
-			{ username, email, real_name, location, birthday, password },
+			{ username, email, real_name, location, birthday, password, onesignal_user_id },
 			{ models, secret, mixpanel },
 		) => {
 
@@ -109,6 +109,18 @@ export default {
 					birthday,
 					password
 				}).then(user => {
+					if (onesignal_user_id) {
+						models.User.update({
+							onesignal_id: onesignal_user_id
+						}, {
+							where: {
+								id: user.dataValues.id
+							}
+						})
+
+						user.dataValues.onesignal_id = onesignal_user_id
+					}
+					
 					mixpanel.track('Created account', {
 						distinct_id: user.dataValues.id,
 						time: new Date()
@@ -134,10 +146,25 @@ export default {
 
 		signIn: async (
 			parent,
-			{ login, password },
+			{ login, password, onesignal_user_id },
 			{ models, secret },
 		) => {
 			const user = await models.User.findByLogin(login)
+				.then((user) => {
+					if (onesignal_user_id) {
+						models.User.update({
+							onesignal_id: onesignal_user_id
+						}, {
+							where: {
+								id: user.dataValues.id
+							}
+						})
+
+						user.dataValues.onesignal_id = onesignal_user_id
+					}
+					return user
+				})
+				.catch((err) => console.log(err))
 
 			if (!user) {
 				throw new UserInputError(
@@ -145,13 +172,15 @@ export default {
 				)
 			}
 
+			// console.log(user)
+
 			const isValid = await user.validatePassword(password)
 
 			if (!isValid) {
 				throw new AuthenticationError('Invalid password')
 			}
 
-			return { token: createToken(user, secret) }
+			return { token: createToken(user, secret), id: user.dataValues.id }
 		},
 
 		updateAvatar: async (parent, { file }, { models, me, s3 }) => {

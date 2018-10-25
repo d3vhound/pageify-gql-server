@@ -13,6 +13,9 @@ const user = (sequelize, DataTypes) => {
 				notEmpty: true,
 			}
 		},
+		onesignal_id: {
+			type: DataTypes.STRING,
+		},
 		real_name: {
 			type: DataTypes.STRING,
 			allowNull: false,

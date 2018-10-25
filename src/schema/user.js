@@ -30,9 +30,10 @@ export default gql`
 			birthday: String
 			location: String
 			password: String!
+			onesignal_user_id: String
 		): Token!
 
-		signIn(login: String!, password: String!): Token!
+		signIn(login: String!, password: String!, onesignal_user_id: String): Token!
 
 		followUser(userId: ID!): Boolean!
 		unfollowUser(userId: ID!): Boolean!
@@ -51,6 +52,7 @@ export default gql`
 
 	type Token {
 		token: String!
+		id: ID
 	}
 
 	type Relationship {

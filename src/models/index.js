@@ -29,7 +29,8 @@ const models = {
 	Relationship: sequelize.import('./relationships'),
 	Post: sequelize.import('./post'),
 	Like: sequelize.import('./likes'),
-};
+	Notification: sequelize.import('./notification')
+}
 
 Object.keys(models).forEach(key => {
 	if ('associate' in models[key]) {

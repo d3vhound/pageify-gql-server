@@ -4,6 +4,7 @@ import userSchema from './user';
 import messageSchema from './message';
 import postSchema from './post'
 import fileSchema from './files'
+import notificationSchema from './notifications'
 
 const linkSchema = gql`
   type Query {
@@ -19,4 +20,4 @@ const linkSchema = gql`
   }
 `;
 
-export default [linkSchema, userSchema, messageSchema, postSchema, fileSchema]
+export default [linkSchema, userSchema, messageSchema, postSchema, fileSchema, notificationSchema]

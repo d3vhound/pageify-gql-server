@@ -340,7 +340,14 @@ export default {
 							if (err) {    
 									console.log('Something went wrong...');    
 							} else {    
-									console.log(data);    
+									console.log(data)
+									models.Notification.create({
+										text: 'Liked your post',
+										initiatorId: me.id,
+										read: false,
+										postId: postId,
+										userId: postOwner.dataValues.id
+									})    
 							}    
 						 })
 						}

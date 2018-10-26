@@ -81,6 +81,17 @@ const batchUsers = async (keys, models) => {
   return keys.map(key => users.find(user => user.id === key))
 }
 
+const batchPosts = async (keys, models) => {
+	const posts = await models.Post.findAll({
+		where: {
+			id: {
+				$in: keys
+			}
+		}
+	})
+	return keys.map(key => posts.find(post => post.id === key))
+}
+
 const batchLikesCount = async (keys, models) => {
 	const likes = await models.Like.findAll({
 		where: {
@@ -151,7 +162,8 @@ const server = new ApolloServer({
 				loaders: {
 					user: new DataLoader(keys => batchUsers(keys, models)),
 					likes: new DataLoader(keys => batchLikesCount(keys, models)),
-					commentsCount: new DataLoader(keys => batchCommentsCount(keys, models))
+					commentsCount: new DataLoader(keys => batchCommentsCount(keys, models)),
+					post: new DataLoader(keys => batchPosts(keys, models))
 				},
 				s3
 			}

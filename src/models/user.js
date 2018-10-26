@@ -64,8 +64,9 @@ const user = (sequelize, DataTypes) => {
 	});
 
 	User.associate = models => {
-		User.hasMany(models.Message);
-		User.hasMany(models.Post);
+		User.hasMany(models.Message)
+		User.hasMany(models.Post)
+		User.hasMany(models.Notification)
 		User.belongsToMany(models.Post, {
 			as: 'likes',
 			through: { 

@@ -324,10 +324,17 @@ export default {
 
 						var NewNotification = new OneSignal.Notification({      
 							contents: {      
-									en: "Test notification",      
-									tr: "Test mesajı"      
+									en: "Test notification",     
 							},    
-							include_player_ids: [postOwner.dataValues.onesignal_id]    
+							include_player_ids: [postOwner.dataValues.onesignal_id],
+							filters: [    
+								{
+									"field": "tag", 
+									"key": "userId", 
+									"relation": "=", 
+									"value": postOwner.dataValues.id
+								},  
+							]    
 						})
 
 						OSClient.sendNotification(NewNotification, (err, httpResponse, data) => {    

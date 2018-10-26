@@ -322,9 +322,15 @@ export default {
 						current_user.setLike(post)
 						console.log(postOwner.dataValues.onesignal_id)
 
-						notificationStruct.postBody["include_player_ids"].push[postOwner.dataValues.onesignal_id]
+						var NewNotification = new OneSignal.Notification({      
+							contents: {      
+									en: "Test notification",      
+									tr: "Test mesajı"      
+							},    
+							include_player_ids: [postOwner.dataValues.onesignal_id]    
+						})
 
-						OSClient.sendNotification(notificationStruct, (err, httpResponse, data) => {    
+						OSClient.sendNotification(NewNotification, (err, httpResponse, data) => {    
 							if (err) {    
 									console.log('Something went wrong...');    
 							} else {    

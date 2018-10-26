@@ -18,5 +18,6 @@ export default gql`
 		read: Boolean!
 		postId: Int!
 		post: Post!
+		createdAt: String!
 	}
 `

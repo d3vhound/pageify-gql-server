@@ -31,6 +31,9 @@ export default {
 				return await loaders.user.load(notification.initiatorId)
 			}
 			return null
+		},
+		createdAt: async (notification, { }, { models }) => {
+			return notification.createdAt.toString()
 		}
 	}
 

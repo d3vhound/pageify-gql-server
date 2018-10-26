@@ -320,10 +320,11 @@ export default {
 					if (like[0] === undefined) {
 						console.log('no like found')
 						current_user.setLike(post)
+						console.log(postOwner.dataValues.onesignal_id)
 
-						notificationStruct.postBody["include_player_ids"].push[`${postOwner.dataValues.onesignal_id}`]
+						notificationStruct.postBody["include_player_ids"].push[postOwner.dataValues.onesignal_id]
 
-						myClient.sendNotification(notificationStruct, (err, httpResponse, data) => {    
+						OSClient.sendNotification(notificationStruct, (err, httpResponse, data) => {    
 							if (err) {    
 									console.log('Something went wrong...');    
 							} else {    

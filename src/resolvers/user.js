@@ -320,9 +320,9 @@ export default {
 					if (like[0] === undefined) {
 						console.log('no like found')
 						current_user.setLike(post)
+						if (postOwner.dataValues.id !== me.id) {
 						console.log(postOwner.dataValues.onesignal_id)
-
-						var NewNotification = new OneSignal.Notification({      
+						var NewNotification = new OneSignal.Notification({
 							contents: {      
 									en: "Test notification",     
 							},    
@@ -336,14 +336,14 @@ export default {
 								},  
 							]    
 						})
-
 						OSClient.sendNotification(NewNotification, (err, httpResponse, data) => {    
 							if (err) {    
 									console.log('Something went wrong...');    
 							} else {    
 									console.log(data);    
 							}    
-					 	})
+						 })
+						}
 
 						return true
 

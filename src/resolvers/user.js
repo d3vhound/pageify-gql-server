@@ -143,7 +143,7 @@ export default {
 					return user
 				})
 
-				return { token: createToken(user, secret) }
+				return { token: createToken(user, secret), id: user.dataValues.id }
 			}
 
 			catch (error) {

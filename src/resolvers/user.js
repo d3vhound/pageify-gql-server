@@ -3,6 +3,14 @@ import { AuthenticationError, UserInputError } from 'apollo-server-express'
 import uuidv4 from 'uuid/v4'
 import Sequelize from 'sequelize'
 const Op = Sequelize.Op
+import OneSignal from 'onesignal-node'
+
+var notificationStruct = new OneSignal.Notification({    
+	contents: {    
+			en: "Test notification",    
+			tr: "Test mesajı"    
+	}    
+})
 
 const createToken = async (user, secret, expiresIn) => {
 	const { id, email, username, onesignal_id } = user
@@ -120,7 +128,7 @@ export default {
 
 						user.dataValues.onesignal_id = onesignal_user_id
 					}
-					
+
 					mixpanel.track('Created account', {
 						distinct_id: user.dataValues.id,
 						time: new Date()
@@ -293,7 +301,7 @@ export default {
 		likePost: async (
 			parent,
 			{ postId },
-			{ models, me }
+			{ models, me, OSClient }
 		) => {
 			if (!me) {
 				return new AuthenticationError('Must be signed in to like posts')
@@ -301,6 +309,7 @@ export default {
 
 			const current_user = await models.User.findById(me.id)
 			const post = await models.Post.findById(postId)
+			const postOwner = await models.User.findById(post.dataValues.userId)
 
 			return await current_user.getLikes({
 				where: {
@@ -311,13 +320,27 @@ export default {
 					if (like[0] === undefined) {
 						console.log('no like found')
 						current_user.setLike(post)
+
+						notificationStruct.postBody["include_player_ids"].push[`${postOwner.dataValues.onesignal_id}`]
+
+						myClient.sendNotification(notificationStruct, (err, httpResponse, data) => {    
+							if (err) {    
+									console.log('Something went wrong...');    
+							} else {    
+									console.log(data);    
+							}    
+					 	})
+
 						return true
+
 					} else {
 						// console.log(like[0])
 						current_user.removeLike(post)
 						return false
 					}
 				})
+			
+			
 
 
 			// const postLikeSuccess = await current_user.setLike(post)

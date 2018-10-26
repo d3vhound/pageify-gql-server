@@ -6,6 +6,7 @@ import relationship from "../models/relationships";
 import Sequelize from 'sequelize'
 import uuidv4 from 'uuid/v4'
 const Op = Sequelize.Op
+import OneSignal from 'onesignal-node'
 
 const storeUpload = ({ stream, mimetype, s3 }) =>
 	new Promise((resolve, reject) => {

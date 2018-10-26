@@ -32,6 +32,7 @@
 		"multer": "^1.3.1",
 		"multer-s3": "^2.7.0",
 		"mysql2": "^1.6.1",
+		"onesignal-node": "^2.0.1",
 		"sequelize": "^4.38.0",
 		"timber": "^3.1.3",
 		"uuid": "^3.3.2"

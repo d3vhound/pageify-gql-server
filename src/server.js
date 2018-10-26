@@ -14,6 +14,7 @@ import aws from 'aws-sdk'
 import Mixpanel from 'mixpanel'
 import morgan from 'morgan'
 import DataLoader from 'dataloader'
+import OneSignal from 'onesignal-node'
 
 
 const transport = new timber.transports.HTTPS(`${process.env.TIMBER_API}`)
@@ -24,6 +25,14 @@ if (process.env.NODE_ENV === 'production') {
 aws.config.update({
 	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
 	secretAccessKey: process.env.AWS_SECRET_KEY
+})
+
+const OSClient = new OneSignal.Client({
+	userAuthKey: process.env.ONESIGNAL_USERAUTH,
+	app: {
+		appAuthKey: process.env.ONESIGNAL_APPAUTH,
+		appId: process.env.ONESIGNAL_APPID
+	}
 })
 
 const spacesEndpoint = new aws.Endpoint(process.env.SPACE_ENDPOINT)
@@ -135,6 +144,7 @@ const server = new ApolloServer({
 
 			return {
 				models,
+				OSClient,
 				me,
 				mixpanel,
 				secret: process.env.SECRET,

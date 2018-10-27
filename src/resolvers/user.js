@@ -324,7 +324,7 @@ export default {
 						console.log(postOwner.dataValues.onesignal_id)
 						var NewNotification = new OneSignal.Notification({
 							contents: {      
-									en: "Test notification",     
+									en: `${current_user.dataValues.real_name} liked your post`,     
 							},    
 							"ios_badgeType": "Increase",
 							"ios_badgeCount": 1,

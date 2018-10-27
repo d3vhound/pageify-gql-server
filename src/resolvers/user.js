@@ -326,6 +326,8 @@ export default {
 							contents: {      
 									en: "Test notification",     
 							},    
+							ios_badgeType: "Increase",
+							ios_badgeCount: 1,
 							include_player_ids: [postOwner.dataValues.onesignal_id],
 							filters: [    
 								{
@@ -334,7 +336,7 @@ export default {
 									"relation": "=", 
 									"value": postOwner.dataValues.id
 								},  
-							]    
+							],    
 						})
 						OSClient.sendNotification(NewNotification, (err, httpResponse, data) => {    
 							if (err) {    

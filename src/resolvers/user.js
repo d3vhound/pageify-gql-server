@@ -326,8 +326,8 @@ export default {
 							contents: {      
 									en: "Test notification",     
 							},    
-							ios_badgeType: "Increase",
-							ios_badgeCount: 1,
+							"ios_badgeType": "Increase",
+							"ios_badgeCount": 1,
 							include_player_ids: [postOwner.dataValues.onesignal_id],
 							filters: [    
 								{

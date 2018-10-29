@@ -128,7 +128,9 @@ const engine = new ApolloEngine({
 const server = new ApolloServer({
 	typeDefs: schema,
 	resolvers,
-	cacheControl: true,
+	cacheControl: {
+    defaultMaxAge: 10
+  },
 	engine: false,
 	formatError: error => {
     // remove the internal sequelize error message

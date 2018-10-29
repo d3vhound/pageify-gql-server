@@ -129,7 +129,9 @@ const server = new ApolloServer({
 	typeDefs: schema,
 	resolvers,
 	cacheControl: {
-    defaultMaxAge: 10
+		defaultMaxAge: 10,
+		stripFormattedExtensions: false,
+    calculateCacheControlHeaders: false,
   },
 	engine: false,
 	formatError: error => {

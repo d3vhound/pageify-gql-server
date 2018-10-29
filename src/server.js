@@ -123,6 +123,14 @@ const batchCommentsCount = async (keys, models) => {
 
 const engine = new ApolloEngine({
 	apiKey: "service:pageify:_aVxPgfzIbpujP7wMl5_uQ",
+	frontends: [
+		{
+			extensions: {
+				strip: [],
+				blacklist: []
+			}
+		}
+	]
 })
 
 const server = new ApolloServer({
@@ -147,11 +155,11 @@ const server = new ApolloServer({
       message,
     }
 	},
-	formatResponse: response => {
-    console.log(response)
-    console.log(response.extensions.cacheControl.hints)
-		return response
-  },
+	// formatResponse: response => {
+  //   console.log(response)
+  //   console.log(response.extensions.cacheControl.hints)
+	// 	return response
+  // },
 	context: async ({ req, connection }) => {
 		if (connection) {
 			console.log('connection')

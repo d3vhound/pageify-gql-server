@@ -123,8 +123,11 @@ const batchCommentsCount = async (keys, models) => {
 const server = new ApolloServer({
 	typeDefs: schema,
 	resolvers,
+	cacheControl: {
+		defaultMaxAge: 5,
+	},
 	engine: {
-		apiKey: "service:d3vhound-pageify090418:IJ9a3TLVbX3q8TUJ_AfWhw"
+		apiKey: "service:d3vhound-pageify090418:IJ9a3TLVbX3q8TUJ_AfWhw",
 	},
 	formatError: error => {
     // remove the internal sequelize error message
@@ -139,6 +142,11 @@ const server = new ApolloServer({
       message,
     }
 	},
+	formatResponse: response => {
+    console.log(response)
+    console.log(response.extensions.cacheControl.hints)
+		return response
+  },
 	context: async ({ req, connection }) => {
 		if (connection) {
 			console.log('connection')

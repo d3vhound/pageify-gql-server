@@ -123,9 +123,7 @@ const batchCommentsCount = async (keys, models) => {
 const server = new ApolloServer({
 	typeDefs: schema,
 	resolvers,
-	cacheControl: {
-		defaultMaxAge: 5,
-	},
+	cacheControl: true,
 	engine: {
 		apiKey: "service:d3vhound-pageify090418:IJ9a3TLVbX3q8TUJ_AfWhw",
 	},

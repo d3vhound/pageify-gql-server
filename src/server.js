@@ -15,6 +15,7 @@ import Mixpanel from 'mixpanel'
 import morgan from 'morgan'
 import DataLoader from 'dataloader'
 import OneSignal from 'onesignal-node'
+import { ApolloEngine } from 'apollo-engine'
 
 
 const transport = new timber.transports.HTTPS(`${process.env.TIMBER_API}`)
@@ -120,13 +121,15 @@ const batchCommentsCount = async (keys, models) => {
 	})
 }
 
+const engine = new ApolloEngine({
+	apiKey: "service:pageify:_aVxPgfzIbpujP7wMl5_uQ",
+})
+
 const server = new ApolloServer({
 	typeDefs: schema,
 	resolvers,
 	cacheControl: true,
-	engine: {
-		apiKey: "service:pageify:_aVxPgfzIbpujP7wMl5_uQ",
-	},
+	engine: false,
 	formatError: error => {
     // remove the internal sequelize error message
     // leave only the important validation error
@@ -206,8 +209,12 @@ sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
 		createUsersWithMessages()
 	}
 
-	httpServer.listen({ port: PORT }, () => {
-		console.log(`🚀 Server running on localhost:${PORT}${server.graphqlPath}`)
+	// httpServer.listen({ port: PORT }, () => {
+	// 	console.log(`🚀 Server running on localhost:${PORT}${server.graphqlPath}`)
+	// })
+	engine.listen({
+		port: PORT,
+		httpServer
 	})
 })
 

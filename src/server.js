@@ -123,14 +123,6 @@ const batchCommentsCount = async (keys, models) => {
 
 const engine = new ApolloEngine({
 	apiKey: "service:pageify:_aVxPgfzIbpujP7wMl5_uQ",
-	frontends: [
-		{
-			extensions: {
-				strip: [],
-				blacklist: []
-			}
-		}
-	]
 })
 
 const server = new ApolloServer({

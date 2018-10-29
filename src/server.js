@@ -121,9 +121,9 @@ const batchCommentsCount = async (keys, models) => {
 	})
 }
 
-// const engine = new ApolloEngine({
-// 	apiKey: "service:pageify:_aVxPgfzIbpujP7wMl5_uQ",
-// })
+const engine = new ApolloEngine({
+	apiKey: "service:pageify:_aVxPgfzIbpujP7wMl5_uQ",
+})
 
 const server = new ApolloServer({
 	typeDefs: schema,
@@ -133,9 +133,9 @@ const server = new ApolloServer({
 		stripFormattedExtensions: false,
     calculateCacheControlHeaders: false,
   },
-	engine: {
-		apiKey: "service:pageify:_aVxPgfzIbpujP7wMl5_uQ",
-	},
+	// engine: {
+	// 	apiKey: "service:pageify:_aVxPgfzIbpujP7wMl5_uQ",
+	// },
 	formatError: error => {
     // remove the internal sequelize error message
     // leave only the important validation error
@@ -215,13 +215,15 @@ sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
 		createUsersWithMessages()
 	}
 
-	httpServer.listen({ port: PORT }, () => {
+	// httpServer.listen({ port: PORT }, () => {
+	// 	console.log(`🚀 Server running on localhost:${PORT}${server.graphqlPath}`)
+	// })
+	engine.listen({
+		port: PORT,
+		httpServer
+	}, () => {
 		console.log(`🚀 Server running on localhost:${PORT}${server.graphqlPath}`)
 	})
-	// engine.listen({
-	// 	port: PORT,
-	// 	httpServer
-	// })
 })
 
 const createUsersWithMessages = async () => {

@@ -36,7 +36,7 @@ extend type Mutation {
 	): Boolean!
 }
 
-type Post @cacheControl(maxAge: 60) {
+type Post @cacheControl(maxAge: 60, scope: PUBLIC) {
 	id: ID!
 	user: User!
 	text: String!

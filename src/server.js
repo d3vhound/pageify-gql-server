@@ -133,9 +133,7 @@ const server = new ApolloServer({
 		stripFormattedExtensions: false,
     calculateCacheControlHeaders: false,
   },
-	// engine: {
-	// 	apiKey: "service:pageify:_aVxPgfzIbpujP7wMl5_uQ",
-	// },
+	engine: false,
 	formatError: error => {
     // remove the internal sequelize error message
     // leave only the important validation error

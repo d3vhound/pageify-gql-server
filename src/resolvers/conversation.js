@@ -76,7 +76,7 @@ export default {
 			return await models.User.findById(conversation.senderId)
 		},
 		receiver: async (conversation, args, { models }) => {
-			return await models.Post.findById(conversation.receiverId)
+			return await models.User.findById(conversation.receiverId)
 		},
 		meId: async (conversation, args, { me, models }) => {
 			return me.id

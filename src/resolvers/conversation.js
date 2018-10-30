@@ -6,10 +6,23 @@ const Op = Sequelize.Op
 
 export default {
 	Query: {
-		conversations: async (parent, { id }, { me, models }) => {
-			return await models.Conversation.findAll()
-		}
-		
+		conversations: combineResolvers(
+			isAuthenticated,
+			async (parent, { id }, { me, models }) => {
+				return await models.Conversation.findAll({
+					where: {
+						[Op.or]: [
+							{
+								senderId: me.id
+							},
+							{
+								receiverId: me.id
+							}
+						]
+					}
+				})
+			}
+		)
 	},
 
 	Mutation: {

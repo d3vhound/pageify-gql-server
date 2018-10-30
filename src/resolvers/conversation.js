@@ -15,9 +15,9 @@ export default {
 	Mutation: {
 		createConversation: combineResolvers(
 			isAuthenticated,
-			async (parent, { recieverId }, { me, models }) => {
+			async (parent, { receiverId }, { me, models }) => {
 				console.log(typeof(me.id))
-				if (recieverId === me.id) {
+				if (receiverId === me.id) {
 					throw new UserInputError(
 						'can not message yourself'
 					)
@@ -25,15 +25,15 @@ export default {
 				return await models.Conversation.findOrCreate({
 					where: {
 						senderId: {
-							[Op.or]: [me.id, recieverId]
+							[Op.or]: [me.id, receiverId]
 						},
-						recieverId: {
-							[Op.or]: [me.id, recieverId]
+						receiverId: {
+							[Op.or]: [me.id, receiverId]
 						}
 					},
 					defaults: {
 						senderId: me.id,
-						recieverId,
+						receiverId,
 					}
 				})
 				.spread((conversation, created) => {

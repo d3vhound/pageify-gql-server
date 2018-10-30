@@ -82,7 +82,7 @@ const user = (sequelize, DataTypes) => {
 		User.hasMany(models.Conversation, {
 			as: 'reciever',
 			foreignKey: {
-				name: 'recieverId',
+				name: 'receiverId',
 				allowNull: false
 			} 
 		})

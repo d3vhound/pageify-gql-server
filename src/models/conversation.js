@@ -14,7 +14,7 @@ const conversation = (sequelize, DataTypes) => {
 		Conversation.belongsTo(models.User, {
 			as: 'reciever',
 			foreignKey: {
-				name: 'recieverId',
+				name: 'receiverId',
 				allowNull: false
 			}  
 		})

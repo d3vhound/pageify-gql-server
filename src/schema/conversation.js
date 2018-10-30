@@ -8,7 +8,7 @@ export default gql`
 	type Conversation {
 		id: Int!
 		senderId: Int!
-		recieverId: Int!
+		receiverId: Int!
 		sender: User!
 		reviever: User!
 		lastMessage: Message
@@ -16,8 +16,8 @@ export default gql`
 	}
 
 	extend type Mutation {
-		createConversation(recieverId: Int!): String!
-		deleteConversation(Id: ID! senderId: Int recieverId: Int): Boolean!
+		createConversation(receiverId: Int!): String!
+		deleteConversation(Id: ID! senderId: Int receiverId: Int): Boolean!
 	}
 
 `

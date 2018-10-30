@@ -13,6 +13,7 @@ export default gql`
 		receiver: User!
 		lastMessage: Message
 		messages: [Message!]
+		meId: Int!
 	}
 
 	extend type Mutation {

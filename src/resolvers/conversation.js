@@ -77,6 +77,9 @@ export default {
 		},
 		receiver: async (conversation, args, { models }) => {
 			return await models.Post.findById(conversation.receiverId)
+		},
+		meId: async (conversation, args, { me, models }) => {
+			return me.id
 		}
 	}
 	

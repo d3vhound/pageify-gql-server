@@ -64,12 +64,13 @@ export default {
 	},
 
 	Conversation: {
-		messages: async (conversation, args, { models }) => {
+		messages: async (conversation, { limit }, { models }) => {
 			return await models.Message.findAll({
 				where: {
 					conversationId: conversation.id
 				},
-				order: [[ 'createdAt', 'DESC' ]]
+				order: [[ 'createdAt', 'DESC' ]],
+				limit
 			})
 		},
 		sender: async (conversation, args, { models }) => {

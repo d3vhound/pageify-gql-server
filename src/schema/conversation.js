@@ -12,7 +12,7 @@ export default gql`
 		sender: User!
 		receiver: User!
 		lastMessage: Message
-		messages: [Message!]
+		messages(limit: Int): [Message!]
 		meId: Int!
 	}
 

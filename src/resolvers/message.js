@@ -1,6 +1,8 @@
 import { combineResolvers } from 'graphql-resolvers'
 import { isAuthenticated } from './authorization'
 import uuidv4 from 'uuid/v4'
+import Sequelize from 'sequelize'
+const Op = Sequelize.Op
 
 export default {
 	Query: {
@@ -20,11 +22,17 @@ export default {
 	Mutation: {
 		createMessage: combineResolvers(
 			isAuthenticated,
-			async (parent, { text }, { me, models }) => {
-				return await models.Message.create({
-					text,
-					userId: me.id,
-				});
+			async (parent, { text, conversationId }, { me, models }) => {
+				
+					return await models.Message.create({
+						text,
+						userId: me.id,
+						conversationId
+					})
+					.then(message => {
+						console.log(message)
+						return message
+					})
 			},
 		),
 
@@ -34,8 +42,12 @@ export default {
 	},
 
 	Message: {
-		user: async (message, args, { models }) => {
-			return await models.User.findById(message.userId);
+		user: async (message, args, { models, loaders }) => {
+			// return await models.User.findById(message.userId);
+			return await loaders.user.load(message.userId)
 		},
+		createdAt: async (message, args, { models }) => {
+			return message.createdAt.toString()
+		}
 	},
 };

@@ -13,6 +13,9 @@ const user = (sequelize, DataTypes) => {
 				notEmpty: true,
 			}
 		},
+		verified: {
+			type: DataTypes.BOOLEAN
+		},
 		onesignal_id: {
 			type: DataTypes.STRING,
 		},
@@ -60,12 +63,29 @@ const user = (sequelize, DataTypes) => {
 		},
 		cover_image: {
 			type: DataTypes.STRING
+		},
+		banned: {
+			type: DataTypes.BOOLEAN
 		}
 	});
 
 	User.associate = models => {
 		User.hasMany(models.Message)
 		User.hasMany(models.Post)
+		User.hasMany(models.Conversation, {
+			as: 'sender',
+			foreignKey: {
+				name: 'senderId',
+				allowNull: false
+			} 
+		})
+		User.hasMany(models.Conversation, {
+			as: 'reciever',
+			foreignKey: {
+				name: 'recieverId',
+				allowNull: false
+			} 
+		})
 		User.hasMany(models.Notification)
 		User.belongsToMany(models.Post, {
 			as: 'likes',

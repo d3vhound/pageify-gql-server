@@ -4,13 +4,14 @@ const message = (sequelize, DataTypes) => {
 			type: DataTypes.STRING,
 			validate: { notEmpty: true }
 		},
-	});
+	})
 
 	Message.associate = models => {
-		Message.belongsTo(models.User);
-	};
+		Message.belongsTo(models.Conversation)
+		Message.belongsTo(models.User)
+	}
 
-	return Message;
-};
+	return Message
+}
 
-export default message;
+export default message

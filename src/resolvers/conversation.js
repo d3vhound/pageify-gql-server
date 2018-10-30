@@ -72,6 +72,12 @@ export default {
 				order: [[ 'createdAt', 'DESC' ]]
 			})
 		},
+		sender: async (conversation, args, { models }) => {
+			return await models.User.findById(conversation.senderId)
+		},
+		receiver: async (conversation, args, { models }) => {
+			return await models.Post.findById(conversation.receiverId)
+		}
 	}
 	
 }

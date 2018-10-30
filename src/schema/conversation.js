@@ -10,7 +10,7 @@ export default gql`
 		senderId: Int!
 		receiverId: Int!
 		sender: User!
-		reviever: User!
+		receiver: User!
 		lastMessage: Message
 		messages: [Message!]
 	}

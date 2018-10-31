@@ -16,8 +16,8 @@ export default gql`
 		initiatorId: Int!
 		initiator: User!
 		read: Boolean!
-		postId: Int!
-		post: Post!
+		postId: Int
+		post: Post
 		createdAt: String!
 	}
 `

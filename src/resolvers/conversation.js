@@ -22,7 +22,10 @@ export default {
 					}
 				})
 			}
-		)
+		),
+		conversation: async (parent, { id }, { me, models }) => {
+			return await models.Conversation.findById(id)
+		}
 	},
 
 	Mutation: {

@@ -121,8 +121,8 @@ export default {
 
 	Message: {
 		user: async (message, args, { models, loaders }) => {
-			// return await models.User.findById(message.userId);
-			return await loaders.user.load(message.userId)
+			return await models.User.findById(message.userId);
+			// return await loaders.user.load(message.userId)
 		},
 		createdAt: async (message, args, { models }) => {
 			return message.createdAt.toString()
@@ -134,9 +134,9 @@ export default {
 			subscribe: withFilter(
 				() => pubsub.asyncIterator(EVENTS.MESSAGE.ADDED),
 				(payload, variables, context) => {
-					console.log('payload', payload)
-					console.log('variables', variables)
-					console.log(context)
+					// console.log('payload', payload)
+					// console.log('variables', variables)
+					// console.log(context)
 					let convoId = parseInt(payload.messageAdded.message.dataValues.conversationId, 10)
 					if (variables.conversationId === convoId) {
 						return true

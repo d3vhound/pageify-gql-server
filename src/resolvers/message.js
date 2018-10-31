@@ -2,7 +2,31 @@ import { combineResolvers } from 'graphql-resolvers'
 import { isAuthenticated } from './authorization'
 import uuidv4 from 'uuid/v4'
 import Sequelize from 'sequelize'
+import pubsub, { EVENTS } from '../subscription'
+import { withFilter } from 'apollo-server-express'
+import OneSignal from 'onesignal-node'
 const Op = Sequelize.Op
+
+
+const constructNotification = ({ message, user }) => {
+	// console.log('get user inside construct func', user, message)
+	return new OneSignal.Notification({
+		contents: {      
+				en: message,     
+		},    
+		"ios_badgeType": "Increase",
+		"ios_badgeCount": 1,
+		include_player_ids: [user.dataValues.onesignal_id],
+		filters: [    
+			{
+				"field": "tag", 
+				"key": "userId", 
+				"relation": "=", 
+				"value": user.dataValues.id
+			},  
+		],    
+	})
+}
 
 export default {
 	Query: {
@@ -22,17 +46,71 @@ export default {
 	Mutation: {
 		createMessage: combineResolvers(
 			isAuthenticated,
-			async (parent, { text, conversationId }, { me, models }) => {
+			async (parent, { text, conversationId }, { me, models, OSClient }) => {
 				
-					return await models.Message.create({
-						text,
-						userId: me.id,
-						conversationId
-					})
-					.then(message => {
-						console.log(message)
-						return message
-					})
+				const message = await models.Message.create({
+					text,
+					userId: me.id,
+					conversationId
+				})
+
+				const conversation = await models.Conversation.findById(conversationId)
+
+				// console.log(conversation.dataValues)
+				let user1 = conversation.dataValues.senderId
+				let user2 = conversation.dataValues.receiverId
+
+
+				if (user1 !== me.id) {
+
+					// console.log('sending notification to', conversation.dataValues.senderId)
+					const userToNotify = await models.User.findById(user1)
+					var NewNotification = constructNotification({ message: `New message from ${me.username}`, user: userToNotify })
+					OSClient.sendNotification(NewNotification, (err, httpResponse, data) => {    
+						if (err) {    
+								console.log('Something went wrong...')    
+						} else {    
+								// console.log(data)
+								models.Notification.create({
+									text: 'Message from',
+									initiatorId: me.id,
+									read: false,
+									userId: user1
+								})    
+						}    
+					 })
+
+				} else if (user2 !== me.id) {
+
+					// console.log('sending notification to', conversation.dataValues.receiverId)
+					const userToNotify = await models.User.findById(user2)
+					var NewNotification = constructNotification({ message: `New message from ${me.username}`, user: userToNotify })
+					OSClient.sendNotification(NewNotification, (err, httpResponse, data) => {    
+						if (err) {    
+								console.log('Something went wrong...')    
+						} else {    
+								// console.log(data)
+								models.Notification.create({
+									text: 'Message from',
+									initiatorId: me.id,
+									read: false,
+									userId: user2
+								})    
+						}    
+					 })
+
+				}
+
+				
+				
+				pubsub.publish(EVENTS.MESSAGE.ADDED, {
+					messageAdded: {
+						message
+					}
+				})
+
+				return message
+
 			},
 		),
 
@@ -50,4 +128,26 @@ export default {
 			return message.createdAt.toString()
 		}
 	},
+
+	Subscription: {
+		messageAdded: {
+			subscribe: withFilter(
+				() => pubsub.asyncIterator(EVENTS.MESSAGE.ADDED),
+				(payload, variables, context) => {
+					console.log('payload', payload)
+					console.log('variables', variables)
+					console.log(context)
+					let convoId = parseInt(payload.messageAdded.message.dataValues.conversationId, 10)
+					if (variables.conversationId === convoId) {
+						return true
+					} else {
+						console.log('here')
+						return false
+					}
+
+					// return true
+				}
+			)
+		}
+	}
 };

@@ -17,5 +17,15 @@ export default gql`
     text: String!
     user: User!
 		createdAt: String!
+		conversationId: Int!
   }
+
+	extend type Subscription {
+		messageAdded(conversationId: Int!): MessageAdded!
+	}
+
+	type MessageAdded {
+		message: Message!
+	}
+
 `;

@@ -45,6 +45,9 @@ export default {
 					models.User,
 					models.Comment
 				]
+			}).then(post => {
+				console.log(post)
+				return post
 			})
 		},
 		post: async (parent, { id }, { models }) => {

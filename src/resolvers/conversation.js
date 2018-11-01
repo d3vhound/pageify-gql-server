@@ -73,7 +73,10 @@ export default {
 					conversationId: conversation.id
 				},
 				order: [[ 'createdAt', 'DESC' ]],
-				limit
+				limit,
+				include: [
+					models.User,
+				]
 			})
 		},
 		sender: async (conversation, args, { models }) => {

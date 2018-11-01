@@ -33,10 +33,16 @@ export default {
 		messages: async (parent, { limit }, { models }) => {
 
 			if (!limit) {
-				return await models.Message.findAll();
+				return await models.Message.findAll({
+					include: [
+						models.User,
+					]
+				})
 			}
 
-			return await models.Message.findAll({ limit });
+			return await models.Message.findAll({ limit, include: [
+				models.User,
+			]})
 		},
 		message: async (parent, { id }, { models }) => {
 			return await models.Message.findById(id);
@@ -52,7 +58,16 @@ export default {
 					text,
 					userId: me.id,
 					conversationId
+				}).then(async message => {
+					const user = await models.User.findById(me.id)
+					message.user = user
+					console.log(message)
+					return message
 				})
+
+
+
+				// console.log(message._options.includeMap.user)
 
 				const conversation = await models.Conversation.findById(conversationId)
 
@@ -103,7 +118,7 @@ export default {
 
 				
 				
-				pubsub.publish(EVENTS.MESSAGE.ADDED, {
+				await pubsub.publish(EVENTS.MESSAGE.ADDED, {
 					messageAdded: {
 						message
 					}
@@ -120,10 +135,15 @@ export default {
 	},
 
 	Message: {
-		user: async (message, args, { models, loaders }) => {
-			return await models.User.findById(message.userId);
-			// return await loaders.user.load(message.userId)
-		},
+		// user: async (message, args, { models, loaders }) => {
+		// 	// console.log(message)
+		// 	const user1 = await models.User.findById(message.userId);
+		// 	// const user2 = await loaders.user.load(message.userId)
+		// 	console.log('SEQ', user1)
+		// 	// console.log('LOADER', user2)
+
+		// 	return user1
+		// },
 		createdAt: async (message, args, { models }) => {
 			return message.createdAt.toString()
 		}
@@ -134,7 +154,7 @@ export default {
 			subscribe: withFilter(
 				() => pubsub.asyncIterator(EVENTS.MESSAGE.ADDED),
 				(payload, variables, context) => {
-					// console.log('payload', payload)
+					console.log('payload', payload)
 					// console.log('variables', variables)
 					// console.log(context)
 					let convoId = parseInt(payload.messageAdded.message.dataValues.conversationId, 10)

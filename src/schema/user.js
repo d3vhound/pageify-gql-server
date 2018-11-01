@@ -60,7 +60,7 @@ export default gql`
 		followed_id: ID!
 	}
 
-  type User {
+  type User @cacheControl(maxAge: 60, scope: PUBLIC) {
     id: ID!
     username: String! 
 		email: String!

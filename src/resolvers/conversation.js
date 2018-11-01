@@ -40,16 +40,12 @@ export default {
 				}
 				return await models.Conversation.findOrCreate({
 					where: {
-						[Op.or]: [
-							{
-								senderId: me.id,
-								receiverId: receiverId
-							},
-							{
-								senderId: receiverId,
-								receiverId: me.id
-							}
-						]
+						senderId: {
+							[Op.or]: [me.id, receiverId]
+						},
+						receiverId: {
+							[Op.or]: [me.id, receiverId]
+						}
 					},
 					defaults: {
 						senderId: me.id,

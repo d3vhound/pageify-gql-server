@@ -52,12 +52,13 @@ export default {
 	Mutation: {
 		createMessage: combineResolvers(
 			isAuthenticated,
-			async (parent, { text, conversationId }, { me, models, OSClient }) => {
+			async (parent, { text, conversationId, _id }, { me, models, OSClient }) => {
 				
 				const message = await models.Message.create({
 					text,
 					userId: me.id,
-					conversationId
+					conversationId,
+					_id
 				}).then(async message => {
 					const user = await models.User.findById(me.id)
 					message.user = user

@@ -207,7 +207,7 @@ server.applyMiddleware({ app, path: '/graphql' })
 const httpServer = http.createServer(app)
 server.installSubscriptionHandlers(httpServer)
 
-const eraseDatabaseOnSync = false
+const eraseDatabaseOnSync = true
 
 sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
 	if (eraseDatabaseOnSync) {
@@ -232,11 +232,11 @@ const createUsersWithMessages = async () => {
 			email: 'devion.villegas@ttu.edu',
 			password: 'test123',
 			real_name: 'Devion Villegas',
-			messages: [
-				{
-					text: 'GraphQL is lit',
-				},
-			],
+			// messages: [
+			// 	{
+			// 		text: 'GraphQL is lit',
+			// 	},
+			// ],
 			posts: [
 				{
 					text: 'Testing',
@@ -286,14 +286,14 @@ const createUsersWithMessages = async () => {
 			email: 'jp@nextgencode.io',
 			password: 'test123',
 			real_name: 'John Paul',
-			messages: [
-				{
-					text: 'SQL god'
-				},
-				{
-					text: 'PHP over everything lol',
-				},
-			],
+			// messages: [
+			// 	{
+			// 		text: 'SQL god'
+			// 	},
+			// 	{
+			// 		text: 'PHP over everything lol',
+			// 	},
+			// ],
 			posts: [
 				{
 					text: 'Testing',

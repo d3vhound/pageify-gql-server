@@ -12,6 +12,8 @@ const message = (sequelize, DataTypes) => {
 			type: DataTypes.STRING,
 			validate: { notEmpty: true }
 		},
+	}, {
+		charset: 'utf8mb4',
 	})
 
 	Message.associate = models => {

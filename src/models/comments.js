@@ -6,6 +6,8 @@ const comment = (sequelize, DataTypes) => {
 				notEmpty: true 
 			}
 		},
+	}, {
+		charset: 'utf8mb4',
 	});
 
 	Comment.associate = models => {

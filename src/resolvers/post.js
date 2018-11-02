@@ -130,22 +130,14 @@ export default {
 			})
 		},
 
-
 		feed: async (parent, { offset, limit }, { models, me }) => {
-
-			// console.log(limit, offset)
-
 			const users = await models.Relationship.findAll({
 				where: { follower_id: me.id },
 			})
-
 			let usersArr = await users.map(user => {
 				return user.dataValues.followed_id
 			})
-
-			
 			usersArr.push(me.id)
-
 			return await models.Post.findAll({
 				limit,
 				offset,
@@ -154,7 +146,6 @@ export default {
 						[Op.or]: usersArr
 					}
 				},
-
 				include: [
 					{
 						model: models.User,
@@ -163,12 +154,10 @@ export default {
 						model: models.File
 					}
 				],
-
 				order: [
 					['createdAt', 'DESC']
 				]
 			})
-
 		}
 	},
 

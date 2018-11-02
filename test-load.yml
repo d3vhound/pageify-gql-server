@@ -1,0 +1,14 @@
+config:
+  target: 'https://api.pageifyapp.com'
+  phases:
+    - duration: 60
+      arrivalRate: 1000
+  defaults:
+    headers:
+      x-my-service-auth: '987401838271002188298567'
+scenarios:
+  - flow:
+    - post:
+        url: "/graphql"
+        json :
+          query: '{posts{text type text_color user{username}}}'

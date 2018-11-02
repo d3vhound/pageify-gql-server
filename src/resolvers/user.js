@@ -4,6 +4,7 @@ import uuidv4 from 'uuid/v4'
 import Sequelize from 'sequelize'
 const Op = Sequelize.Op
 import OneSignal from 'onesignal-node'
+import { Lambda } from 'aws-sdk';
 
 var notificationStruct = new OneSignal.Notification({    
 	contents: {    
@@ -416,7 +417,7 @@ export default {
 		// 	});
 		// },
 
-		posts: async (user, { limit, offset }, { models }) => {
+		posts: async (user, { limit, offset, comment_id }, { models }) => {
 			// console.log('POSTS ARGS', limit, offset)
 			return await models.Post.findAll({
 				limit,

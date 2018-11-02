@@ -148,11 +148,11 @@ const server = new ApolloServer({
       message,
     }
 	},
-	// formatResponse: response => {
-  //   console.log(response)
-  //   console.log(response.extensions.cacheControl.hints)
-	// 	return response
-  // },
+	formatResponse: response => {
+    console.log(response)
+    console.log(response.extensions.cacheControl.hints)
+		return response
+  },
 	context: async ({ req, connection }) => {
 		if (connection) {
 			// console.log('connection')
@@ -162,6 +162,7 @@ const server = new ApolloServer({
 		}
 
 		if (req) {
+			console.log(req)
 			const me = await getMe(req);
 			console.log('--------------')
 			console.log('me user >', me)
@@ -214,15 +215,15 @@ sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
 		createUsersWithMessages()
 	}
 
-	// httpServer.listen({ port: PORT }, () => {
-	// 	console.log(`🚀 Server running on localhost:${PORT}${server.graphqlPath}`)
-	// })
-	engine.listen({
-		port: PORT,
-		httpServer
-	}, () => {
+	httpServer.listen({ port: PORT }, () => {
 		console.log(`🚀 Server running on localhost:${PORT}${server.graphqlPath}`)
 	})
+	// engine.listen({
+	// 	port: PORT,
+	// 	httpServer
+	// }, () => {
+	// 	console.log(`🚀 Server running on localhost:${PORT}${server.graphqlPath}`)
+	// })
 })
 
 const createUsersWithMessages = async () => {

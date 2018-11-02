@@ -32,7 +32,7 @@ export default {
 		createConversation: combineResolvers(
 			isAuthenticated,
 			async (parent, { receiverId }, { me, models }) => {
-				console.log(typeof(me.id))
+				// console.log(typeof(me.id))
 				if (receiverId === me.id) {
 					throw new UserInputError(
 						'can not message yourself'

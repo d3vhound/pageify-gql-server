@@ -27,7 +27,7 @@ const storeUpload = ({ stream, mimetype, s3 }) =>
 			}
 
 			if (data) {
-				console.log(data)
+				// console.log(data)
 				resolve(data.key)
 				// file_url: data.Location,data.key)
 			}
@@ -46,7 +46,7 @@ export default {
 					models.Comment
 				]
 			}).then(post => {
-				console.log(post)
+				// console.log(post)
 				return post
 			})
 		},
@@ -133,7 +133,7 @@ export default {
 
 		feed: async (parent, { offset, limit }, { models, me }) => {
 
-			console.log(limit, offset)
+			// console.log(limit, offset)
 
 			const users = await models.Relationship.findAll({
 				where: { follower_id: me.id },
@@ -204,9 +204,9 @@ export default {
 					)
 				}
 
-				console.log('><><><><><><><><><><><')
-				console.log('expanse000', media)
-				console.log('><><><><><><><><><><><')
+				// console.log('><><><><><><><><><><><')
+				// console.log('expanse000', media)
+				// console.log('><><><><><><><><><><><')
 
 				
 				// await mixpanel.track('Created post', {
@@ -226,15 +226,15 @@ export default {
 					text_color
 				})
 					.then(async (post) => {
-						console.log(post.dataValues.id)
+						// console.log(post.dataValues.id)
 						const id = post.dataValues.id
 						if (media !== null && media !== undefined) {
-							console.log(media)
+							// console.log(media)
 							if (media.length === 1) {
 								const { stream, filename, mimetype } = await media[0]
 								await storeUpload({ stream, s3, mimetype })
 									.then(async (value) => {
-										console.log(value)
+										// console.log(value)
 										await models.File.create({
 											key: value,
 											postId: id
@@ -245,10 +245,10 @@ export default {
 							if (media.length > 1) {
 								await media.forEach(async file => {
 									const { stream, filename, mimetype } = await file
-									console.log(">>>>>>>>>>>>>", stream, filename, mimetype)
+									// console.log(">>>>>>>>>>>>>", stream, filename, mimetype)
 									await storeUpload({ stream, s3, mimetype })
 									.then(async (value) => {
-										console.log(value)
+										// console.log(value)
 										await models.File.create({
 											key: value,
 											postId: id
@@ -291,7 +291,7 @@ export default {
 					userId: me.id
 				})
 
-				console.log(addComment)
+				// console.log(addComment)
 
 				if (addComment) {
 					return true
@@ -397,7 +397,7 @@ export default {
 			return comment.createdAt.toString()
 		},
 		post: async (comment, args, { models, me}) => {
-			console.log(comment, args)
+			// console.log(comment, args)
 			return null
 		}
 	},
@@ -410,7 +410,7 @@ export default {
 			subscribe: withFilter(
 				() => pubsub.asyncIterator(EVENTS.POST.CREATED),
 				(payload, variables) => {
-					console.log(payload, '||', variables)
+					// console.log(payload, '||', variables)
 					return payload.postAddedToFeed.followersToNotify.includes(variables.feedOwner)
 				},
 			),

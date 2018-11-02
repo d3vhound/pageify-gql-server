@@ -62,7 +62,7 @@ export default {
 				}).then(async message => {
 					const user = await models.User.findById(me.id)
 					message.user = user
-					console.log(message)
+					// console.log(message)
 					return message
 				})
 
@@ -155,7 +155,7 @@ export default {
 			subscribe: withFilter(
 				() => pubsub.asyncIterator(EVENTS.MESSAGE.ADDED),
 				(payload, variables, context) => {
-					console.log('payload', payload)
+					// console.log('payload', payload)
 					// console.log('variables', variables)
 					// console.log(context)
 					let convoId = parseInt(payload.messageAdded.message.dataValues.conversationId, 10)

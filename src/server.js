@@ -72,7 +72,7 @@ const getMe = async req => {
 }
 
 const batchUsers = async (keys, models) => {
-	console.log(keys)
+	// console.log(keys)
   const users = await models.User.findAll({
     where: {
       id: {
@@ -155,7 +155,7 @@ const server = new ApolloServer({
   // },
 	context: async ({ req, connection }) => {
 		if (connection) {
-			console.log('connection')
+			// console.log('connection')
 			return {
 				models
 			}
@@ -214,15 +214,15 @@ sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
 		createUsersWithMessages()
 	}
 
-	// httpServer.listen({ port: PORT }, () => {
-	// 	console.log(`🚀 Server running on localhost:${PORT}${server.graphqlPath}`)
-	// })
-	engine.listen({
-		port: PORT,
-		httpServer
-	}, () => {
+	httpServer.listen({ port: PORT }, () => {
 		console.log(`🚀 Server running on localhost:${PORT}${server.graphqlPath}`)
 	})
+	// engine.listen({
+	// 	port: PORT,
+	// 	httpServer
+	// }, () => {
+	// 	console.log(`🚀 Server running on localhost:${PORT}${server.graphqlPath}`)
+	// })
 })
 
 const createUsersWithMessages = async () => {

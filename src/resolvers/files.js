@@ -22,7 +22,7 @@ const storeUpload = ({ stream, mimetype, s3 }) =>
 			}
 
 			if (data) {
-				console.log(data)
+				// console.log(data)
 				resolve(data.Location)
 			}
 		})

@@ -36,7 +36,7 @@ const storeUpload = ({ stream, mimetype, s3 }) =>
 			}
 
 			if (data) {
-				console.log(data)
+				// console.log(data)
 				resolve(data.key)
 			}
 		})
@@ -195,7 +195,7 @@ export default {
 			const { stream, filename, mimetype, encoding } = await file
 
 			let file_url = await storeUpload({ stream, s3, mimetype }).then((value) => {
-				console.log('update avatar resolver', value)
+				// console.log('update avatar resolver', value)
 				// file_url = value
 				return value
 			})
@@ -219,7 +219,7 @@ export default {
 			const { stream, filename, mimetype, encoding } = await file
 
 			let file_url = await storeUpload({ stream, s3, mimetype }).then((value) => {
-				console.log('update avatar resolver', value)
+				// console.log('update avatar resolver', value)
 				// file_url = value
 				return value
 			})
@@ -288,7 +288,7 @@ export default {
 
 			const unfollowSuccess = await current_user.unfollow(other_user)
 
-			console.log('asdasdasd', unfollowSuccess)
+			// console.log('asdasdasd', unfollowSuccess)
 
 			if (unfollowSuccess) {
 				return true
@@ -318,10 +318,10 @@ export default {
 			})
 				.then(like => {
 					if (like[0] === undefined) {
-						console.log('no like found')
+						// console.log('no like found')
 						current_user.setLike(post)
 						if (postOwner.dataValues.id !== me.id) {
-						console.log(postOwner.dataValues.onesignal_id)
+						// console.log(postOwner.dataValues.onesignal_id)
 						var NewNotification = new OneSignal.Notification({
 							contents: {      
 									en: `${current_user.dataValues.real_name} liked your post`,     
@@ -340,9 +340,9 @@ export default {
 						})
 						OSClient.sendNotification(NewNotification, (err, httpResponse, data) => {    
 							if (err) {    
-									console.log('Something went wrong...');    
+									// console.log('Something went wrong...');    
 							} else {    
-									console.log(data)
+									// console.log(data)
 									models.Notification.create({
 										text: 'Liked your post',
 										initiatorId: me.id,
@@ -417,7 +417,7 @@ export default {
 		// },
 
 		posts: async (user, { limit, offset }, { models }) => {
-			console.log('POSTS ARGS', limit, offset)
+			// console.log('POSTS ARGS', limit, offset)
 			return await models.Post.findAll({
 				limit,
 				offset,

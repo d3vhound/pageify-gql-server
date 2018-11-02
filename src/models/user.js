@@ -51,6 +51,7 @@ const user = (sequelize, DataTypes) => {
 		},
 		avatar: {
 			type: DataTypes.STRING,
+			defaultValue: "DONT_DELETE/default_avatar.png"
 		},
 		bio: {
 			type: DataTypes.STRING,

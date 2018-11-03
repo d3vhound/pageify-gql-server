@@ -1,7 +1,9 @@
 module.exports = {
   apps: [{
     name: 'app',
-    script: './build/server.js',
+		script: './build/server.js',
+		instances: "max",
+    exec_mode: "cluster",
     env: {
       NODE_ENV: 'development'
     },

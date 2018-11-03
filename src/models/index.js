@@ -1,5 +1,6 @@
 require('dotenv').config()
-import Sequelize from 'sequelize';
+import Sequelize from 'sequelize'
+const Op = Sequelize.Op
 
 const sequelize = new Sequelize(
 	process.env.DATABASE,
@@ -9,6 +10,7 @@ const sequelize = new Sequelize(
 		host: process.env.DB_HOST,
 		port: 3306,
 		dialect: 'mysql',
+		operatorsAliases: Op,
 		pool: {
 			max: 100,
 			min: 0,

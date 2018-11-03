@@ -130,11 +130,13 @@ const server = new ApolloServer({
 	typeDefs: schema,
 	resolvers,
 	cacheControl: {
-		defaultMaxAge: 0,
+		defaultMaxAge: 10,
 		stripFormattedExtensions: false,
     calculateCacheControlHeaders: false,
   },
-	engine: false,
+	engine: {
+		apiKey: "service:pageify:_aVxPgfzIbpujP7wMl5_uQ",
+	},
 	formatError: error => {
     // remove the internal sequelize error message
     // leave only the important validation error

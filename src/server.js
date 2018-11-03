@@ -178,8 +178,8 @@ const server = new ApolloServer({
 			}
 		}
 	},
-	// introspection: true,
-	// playground: true,
+	introspection: true,
+	playground: true,
 	playground: {
 		settings: {
 			'editor.theme': 'dark',

@@ -203,9 +203,8 @@ sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
 	// httpServer.listen({ port: PORT }, () => {
 	// 	console.log(`🚀 Server running on localhost:${PORT}${server.graphqlPath}`)
 	// })
-	server.listen({ port: PORT }, () => {
-		console.log(`🚀 Server running on localhost:${PORT}${server.graphqlPath}`)
-	}).then(({ url, subscriptionsUrl }) => {
+	server.listen({ port: PORT })
+	.then(({ url, subscriptionsUrl }) => {
 		console.log(`🚀 Server ready at ${url}`)
   	console.log(`🚀 Subscriptions ready at ${subscriptionsUrl}`)
 	})

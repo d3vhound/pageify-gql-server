@@ -36,7 +36,7 @@ extend type Mutation {
 	): Boolean!
 }
 
-type Post @cacheControl(maxAge: 60, scope: PUBLIC) {
+type Post {
 	id: ID!
 	user: User!
 	text: String!
@@ -60,7 +60,7 @@ type Comment {
 	id: ID!
 }
 
-type File2 {
+type File2 @cacheControl(maxAge: 60, scope: PUBLIC) {
 	filename: String
   mimetype: String
   encoding: String

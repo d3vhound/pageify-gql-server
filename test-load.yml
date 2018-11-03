@@ -6,6 +6,6 @@ config:
 scenarios:
   - flow:
     - post:
-        url: /graphql
+        url: /
         json :
           query: '{posts{text type text_color user{username}}}'

@@ -162,11 +162,11 @@ const server = new ApolloServer({
 		}
 
 		if (req) {
-			console.log(req)
+			// console.log(req)
 			const me = await getMe(req);
-			console.log('--------------')
-			console.log('me user >', me)
-			console.log('--------------')
+			// console.log('--------------')
+			// console.log('me user >', me)
+			// console.log('--------------')
 
 			return {
 				models,
@@ -185,12 +185,12 @@ const server = new ApolloServer({
 		}
 	},
 	subscriptions: {
-    onConnect: (connectionParams, webSocket, context) => {
-      console.log('New client ws connection')
-    },
-    onDisconnect: (webSocket, context) => {
-      console.log('client ws disconnected')
-    },
+    // onConnect: (connectionParams, webSocket, context) => {
+    //   console.log('New client ws connection')
+    // },
+    // onDisconnect: (webSocket, context) => {
+    //   console.log('client ws disconnected')
+    // },
   },
 	introspection: true,
 	playground: true,

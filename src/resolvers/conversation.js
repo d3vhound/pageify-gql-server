@@ -59,7 +59,7 @@ export default {
 					return 'Successfully created conversation'
 				})
 				.catch(err => {
-					console.log(err)
+					// console.log(err)
 					return err
 				})
 			}

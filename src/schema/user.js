@@ -3,15 +3,15 @@ import { gql } from 'apollo-server-express';
 
 
 export default gql`
-	directive @cacheControl(
-		maxAge: Int,
-		scope: CacheControlScope
-	) on OBJECT | FIELD_DEFINITION
+	# directive @cacheControl(
+	# 	maxAge: Int,
+	# 	scope: CacheControlScope
+	# ) on OBJECT | FIELD_DEFINITION
 
-	enum CacheControlScope {
-		PUBLIC
-		PRIVATE
-	}
+	# enum CacheControlScope {
+	# 	PUBLIC
+	# 	PRIVATE
+	# }
 	
 	union Results = User | Post
 

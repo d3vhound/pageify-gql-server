@@ -7,9 +7,11 @@ import http from 'http'
 import timber from 'timber'
 import jwt from 'jsonwebtoken'
 import {
-	ApolloServer,
 	AuthenticationError
 } from 'apollo-server-express'
+import {
+	ApolloServer,
+} from 'apollo-server'
 import aws from 'aws-sdk'
 import Mixpanel from 'mixpanel'
 import morgan from 'morgan'
@@ -122,10 +124,6 @@ const batchCommentsCount = async (keys, models) => {
 	})
 }
 
-const engine = new ApolloEngine({
-	apiKey: "service:pageify:_aVxPgfzIbpujP7wMl5_uQ",
-})
-
 const server = new ApolloServer({
 	typeDefs: schema,
 	resolvers,
@@ -133,13 +131,17 @@ const server = new ApolloServer({
 		defaultMaxAge: 10,
 		stripFormattedExtensions: false,
     calculateCacheControlHeaders: false,
-  },
+	},
+	tracing: true,
 	engine: {
 		apiKey: "service:pageify:_aVxPgfzIbpujP7wMl5_uQ",
 	},
+	subscriptions: {
+		onConnect: () => {
+			console.log('Connection')
+		}
+	},
 	formatError: error => {
-    // remove the internal sequelize error message
-    // leave only the important validation error
     const message = error.message
 			.replace('SequelizeValidationError: ', '')
 			.replace('SequelizeUniqueConstraintError: ', '')
@@ -150,25 +152,15 @@ const server = new ApolloServer({
       message,
     }
 	},
-	// formatResponse: response => {
-  //   console.log(response)
-  //   console.log(response.extensions.cacheControl.hints)
-	// 	return response
-  // },
 	context: async ({ req, connection }) => {
 		if (connection) {
-			// console.log('connection')
 			return {
 				models
 			}
 		}
 
 		if (req) {
-			// console.log(req)
 			const me = await getMe(req);
-			// console.log('--------------')
-			// console.log('me user >', me)
-			// console.log('--------------')
 
 			return {
 				models,
@@ -186,17 +178,8 @@ const server = new ApolloServer({
 			}
 		}
 	},
-	subscriptions: {
-    // onConnect: (connectionParams, webSocket, context) => {
-    //   console.log('New client ws connection')
-    // },
-    // onDisconnect: (webSocket, context) => {
-    //   console.log('client ws disconnected')
-    // },
-  },
-	introspection: true,
-	playground: true,
-	tracing: true,
+	// introspection: true,
+	// playground: true,
 	playground: {
 		settings: {
 			'editor.theme': 'dark',
@@ -205,10 +188,10 @@ const server = new ApolloServer({
 	},
 })
 
-server.applyMiddleware({ app, path: '/graphql' })
+// server.applyMiddleware({ app, path: '/graphql' })
 
-const httpServer = http.createServer(app)
-server.installSubscriptionHandlers(httpServer)
+// const httpServer = http.createServer(app)
+// server.installSubscriptionHandlers(httpServer)
 
 const eraseDatabaseOnSync = false
 
@@ -217,8 +200,14 @@ sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
 		createUsersWithMessages()
 	}
 
-	httpServer.listen({ port: PORT }, () => {
+	// httpServer.listen({ port: PORT }, () => {
+	// 	console.log(`🚀 Server running on localhost:${PORT}${server.graphqlPath}`)
+	// })
+	server.listen({ port: PORT }, () => {
 		console.log(`🚀 Server running on localhost:${PORT}${server.graphqlPath}`)
+	}).then(({ url, subscriptionsUrl }) => {
+		console.log(`🚀 Server ready at ${url}`)
+  	console.log(`🚀 Subscriptions ready at ${subscriptionsUrl}`)
 	})
 	// engine.listen({
 	// 	port: PORT,

@@ -215,15 +215,15 @@ sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
 		createUsersWithMessages()
 	}
 
-	httpServer.listen({ port: PORT }, () => {
-		console.log(`🚀 Server running on localhost:${PORT}${server.graphqlPath}`)
-	})
-	// engine.listen({
-	// 	port: PORT,
-	// 	httpServer
-	// }, () => {
+	// httpServer.listen({ port: PORT }, () => {
 	// 	console.log(`🚀 Server running on localhost:${PORT}${server.graphqlPath}`)
 	// })
+	engine.listen({
+		port: PORT,
+		httpServer
+	}, () => {
+		console.log(`🚀 Server running on localhost:${PORT}${server.graphqlPath}`)
+	})
 })
 
 const createUsersWithMessages = async () => {

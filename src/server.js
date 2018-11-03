@@ -18,10 +18,10 @@ import OneSignal from 'onesignal-node'
 import { ApolloEngine } from 'apollo-engine'
 
 
-const transport = new timber.transports.HTTPS(`${process.env.TIMBER_API}`)
-if (process.env.NODE_ENV === 'production') {
-	timber.install(transport)
-}
+// const transport = new timber.transports.HTTPS(`${process.env.TIMBER_API}`)
+// if (process.env.NODE_ENV === 'production') {
+// 	timber.install(transport)
+// }
 
 aws.config.update({
 	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -55,7 +55,7 @@ const app = express()
 app.use(bodyParser.json({ limit: '50mb' }))
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 app.use(cors())
-app.use(morgan('combined'))
+// app.use(morgan('combined'))
 
 const getMe = async req => {
 	const token = req.headers['x-token']

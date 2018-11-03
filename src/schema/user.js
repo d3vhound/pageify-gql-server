@@ -68,7 +68,7 @@ export default gql`
 		location: String
 		birthday: String
 		same_user: Boolean
-		posts(limit: Int, offset: Int): [Post!]
+		posts(limit: Int, offset: Int, comment_id): [Post!]
 		posts_count: Int 
 		avatar: String
 		cover_image: String

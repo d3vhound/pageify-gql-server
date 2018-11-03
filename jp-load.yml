@@ -1,0 +1,12 @@
+config:
+  target: 'https://vetgraft.nextgencode.io'
+  phases:
+    - duration: 60
+      arrivalRate: 1000
+  defaults:
+    headers:
+      Authorization: 'Bearer 93ZxyyBTCCVbAKQSVQKT4vwJL30NgdgeSu3fKbxhpI6erl1BZIC3Z1YRfnO5'
+scenarios:
+  - flow:
+    - get:
+        url: "/api/v1/clinics/1"

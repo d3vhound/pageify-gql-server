@@ -1,12 +1,11 @@
 config:
-  target: 'https://vetgraft.nextgencode.io'
+  target: 'https://api.pageifyapp.com'
   phases:
     - duration: 60
-      arrivalRate: 1000
-  defaults:
-    headers:
-      Authorization: 'Bearer 93ZxyyBTCCVbAKQSVQKT4vwJL30NgdgeSu3fKbxhpI6erl1BZIC3Z1YRfnO5'
+      arrivalRate: 100
 scenarios:
   - flow:
-    - get:
-        url: "/api/v1/clinics/1"
+    - post:
+        url: /graphql
+        json :
+          query: '{posts{text type text_color user{username}}}'

@@ -10,7 +10,6 @@ const sequelize = new Sequelize(
 		host: process.env.DB_HOST,
 		port: 3306,
 		dialect: 'mysql',
-		operatorsAliases: Op,
 		pool: {
 			max: 100,
 			min: 0,

@@ -337,7 +337,7 @@ export default {
 			})
 		},
 
-		likes: async (post, args, { models }) => {
+		likes: async (post, args, { models, loaders }) => {
 			return await loaders.likes.load(post.id)
 		},
 

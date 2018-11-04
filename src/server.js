@@ -105,7 +105,7 @@ const batchFiles = async (keys, models) => {
 		}
 	})
 	return keys.map(key => {
-		let filterArr = files.filter(file => file.postiId === key)
+		let filterArr = files.filter(file => file.postId === key)
 		return filterArr
 	})
 }
@@ -208,7 +208,7 @@ const server = new ApolloServer({
 // const httpServer = http.createServer(app)
 // server.installSubscriptionHandlers(httpServer)
 
-const eraseDatabaseOnSync = true
+const eraseDatabaseOnSync = false
 
 sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
 	if (eraseDatabaseOnSync) {

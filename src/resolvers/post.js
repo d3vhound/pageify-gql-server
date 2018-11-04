@@ -338,13 +338,7 @@ export default {
 		},
 
 		likes: async (post, args, { models }) => {
-			return await models.Like.findAndCountAll({
-				where: {
-					post_id: post.id
-				}
-			}).then((count) => {
-				return count.count
-			})
+			return await loaders.likes.load(post.id)
 		},
 
 		media: async (post, args, { models, loaders }) => {

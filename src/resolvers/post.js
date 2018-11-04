@@ -130,7 +130,9 @@ export default {
 			})
 		},
 
-		feed: async (parent, { offset, limit }, { models, me }) => {
+		feed: async (parent, { offset, limit }, { models, me }, { cacheControl }) => {
+			cacheControl.setCacheHint({ maxAge: 60 })
+
 			const users = await models.Relationship.findAll({
 				where: { follower_id: me.id },
 			})
@@ -345,10 +347,11 @@ export default {
 			})
 		},
 
-		media: async (post, args, { models }) => {
-			return await models.File.findAll({
-				where: { postId: post.id }
-			})
+		media: async (post, args, { models, loaders }) => {
+			// return await models.File.findAll({
+			// 	where: { postId: post.id }
+			// })
+			return await loaders.file.load(post.id)
 		},
 
 		liked: async (post, args, { models, me }) => {

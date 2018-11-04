@@ -96,6 +96,17 @@ const batchPosts = async (keys, models) => {
 	return keys.map(key => posts.find(post => post.id === key))
 }
 
+const batchFiles = async (keys, models) => {
+	const files = await models.File.findAll({
+		where: {
+			postId: {
+				$in: keys
+			}
+		}
+	})
+	return keys.map(key => files.find(file => file.postId === key))
+}
+
 const batchLikesCount = async (keys, models) => {
 	const likes = await models.Like.findAll({
 		where: {
@@ -130,7 +141,7 @@ const server = new ApolloServer({
 	cacheControl: {
 		defaultMaxAge: 10,
 		stripFormattedExtensions: false,
-    calculateCacheControlHeaders: false,
+    calculateCacheControlHeaders: true,
 	},
 	tracing: true,
 	engine: {
@@ -170,6 +181,7 @@ const server = new ApolloServer({
 				secret: process.env.SECRET,
 				loaders: {
 					user: new DataLoader(keys => batchUsers(keys, models)),
+					file: new DataLoader(keys => batchFiles(keys, models)),
 					likes: new DataLoader(keys => batchLikesCount(keys, models)),
 					commentsCount: new DataLoader(keys => batchCommentsCount(keys, models)),
 					post: new DataLoader(keys => batchPosts(keys, models))

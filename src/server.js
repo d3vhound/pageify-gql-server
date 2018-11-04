@@ -104,7 +104,10 @@ const batchFiles = async (keys, models) => {
 			}
 		}
 	})
-	return keys.map(key => files.find(file => file.postId === key))
+	return keys.map(key => {
+		let filterArr = files.filter(file => file.postiId === key)
+		return filterArr
+	})
 }
 
 const batchLikesCount = async (keys, models) => {

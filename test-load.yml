@@ -2,7 +2,7 @@ config:
   target: 'https://api.pageifyapp.com'
   phases:
     - duration: 60
-      arrivalRate: 1000
+      arrivalRate: 300
 scenarios:
   - flow:
     - post:

@@ -2,25 +2,32 @@ require('dotenv').config()
 import Sequelize from 'sequelize'
 const Op = Sequelize.Op
 
+const config = {
+	host: process.env.DB_HOST,
+	port: 3306,
+	dialect: 'mysql',
+	pool: {
+		max: 100,
+		min: 0,
+		idle: 10000
+	},
+	logging: false,
+	dialectOptions: {
+		charset: 'utf8mb4'
+	},
+}
+
+if (process.env.INSTANCE_CONNECTION_NAME && process.env.NODE_ENV === 'production') {
+  config.dialectOptions.socketPath = `/cloudsql/${process.env.INSTANCE_CONNECTION_NAME}`;
+}
+
 const sequelize = new Sequelize(
 	process.env.DATABASE,
 	process.env.DATABASE_USER,
 	process.env.DATABASE_PASSWORD,
-	{
-		host: process.env.DB_HOST,
-		port: 3306,
-		dialect: 'mysql',
-		pool: {
-			max: 100,
-			min: 0,
-			idle: 10000
-		},
-		// logging: false,
-		dialectOptions: {
-			charset: 'utf8mb4'
-		},
-	},
+	config
 );
+
 
 const models = {
 	User: sequelize.import('./user'),

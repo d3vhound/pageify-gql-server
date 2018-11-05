@@ -6,7 +6,7 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "nodemon --exec babel-node src/server.js",
-		"start": "pm2 start --interpreter babel-node ecosystem.config.js --env production",
+		"start": "NODE_ENV=production node ./build/server.js",
 		"deploy": "npm run build && pm2 restart ecosystem.config.js --env production --update-env",
 		"build": "babel src -d build"
 	},
@@ -33,13 +33,14 @@
 		"multer": "^1.3.1",
 		"multer-s3": "^2.7.0",
 		"mysql2": "^1.6.1",
+		"node-gyp": "^3.8.0",
 		"onesignal-node": "^2.0.1",
 		"sequelize": "^4.38.0",
 		"timber": "^3.1.3",
-		"uuid": "^3.3.2"
+		"uuid": "^3.3.2",
+		"@babel/polyfill": "^7.0.0"
 	},
 	"devDependencies": {
-		"@babel/polyfill": "^7.0.0",
 		"babel-cli": "^6.26.0",
 		"babel-preset-env": "^1.7.0",
 		"babel-preset-stage-2": "^6.24.1",

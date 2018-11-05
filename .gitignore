@@ -74,3 +74,8 @@ typings/
 
 # Serverless directories
 .serverless
+
+#gcloud config
+.gcloudignore
+app.yaml
+

@@ -11,7 +11,7 @@ const config = {
 		min: 0,
 		idle: 10000
 	},
-	logging: false,
+	logging: true,
 	dialectOptions: {
 		charset: 'utf8mb4'
 	},

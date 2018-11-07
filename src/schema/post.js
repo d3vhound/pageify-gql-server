@@ -10,6 +10,7 @@ extend type Query {
 	foryouposts(limit: Int!, category: String): [Post!]
 	recentposts(limit: Int!, category: String): [Post!]
 	topposts(limit: Int!, category: String): [Post!]
+	spotlight(limit: Int offset: Int): [Post!]
 }
 
 extend type Mutation {
@@ -23,6 +24,10 @@ extend type Mutation {
 	): Post!
 
 	deletePost(
+		id: ID!
+	): Boolean!
+
+	spotlightPost(
 		id: ID!
 	): Boolean!
 
@@ -40,6 +45,7 @@ type Post @cacheControl(maxAge: 60, scope: PUBLIC) {
 	id: ID!
 	user: User!
 	text: String!
+	spotlight: Boolean!
 	media: [File2]
 	likes: Int
 	interactions: Int!

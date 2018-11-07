@@ -289,7 +289,36 @@ export default {
 				}
 
 				return false
-			})
+			}),
+		
+			deletePost: combineResolvers(
+				isAuthenticated,
+				async (parent, { id }, { me, models }) => {
+					const isOwner = await models.Post.findOne({ where: { id, userId: me.id }})
+					// console.log(isOwner)
+					if (isOwner) {
+						const deletedPost = await isOwner.destroy()
+						if (deletedPost) {
+							return true
+						}
+						return false
+					} 
+
+					if (me.admin === true) {
+						const post = await models.Post.findOne({ where: { id }})
+						if (post) {
+							const deletedPost = post.destroy()
+							if (deletedPost) {
+								return true
+							}
+							return  false
+						}
+						return false
+					}
+
+					return false
+				}
+			)
 
 	},
 

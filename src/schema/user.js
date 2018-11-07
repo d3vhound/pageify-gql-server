@@ -64,6 +64,7 @@ export default gql`
     id: ID!
     username: String! 
 		email: String!
+		admin: Boolean!
 		real_name: String!
 		location: String
 		birthday: String

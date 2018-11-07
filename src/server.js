@@ -19,7 +19,6 @@ import DataLoader from 'dataloader'
 import OneSignal from 'onesignal-node'
 import { ApolloEngine } from 'apollo-engine'
 
-
 // const transport = new timber.transports.HTTPS(`${process.env.TIMBER_API}`)
 // if (process.env.NODE_ENV === 'production') {
 // 	timber.install(transport)
@@ -156,6 +155,7 @@ const server = new ApolloServer({
 		}
 	},
 	formatError: error => {
+		console.log(error)
     const message = error.message
 			.replace('SequelizeValidationError: ', '')
 			.replace('SequelizeUniqueConstraintError: ', '')
@@ -175,7 +175,7 @@ const server = new ApolloServer({
 
 		if (req) {
 			const me = await getMe(req);
-
+			console.log(me)
 			return {
 				models,
 				OSClient,
@@ -208,7 +208,7 @@ const server = new ApolloServer({
 // const httpServer = http.createServer(app)
 // server.installSubscriptionHandlers(httpServer)
 
-const eraseDatabaseOnSync = false
+const eraseDatabaseOnSync = true
 
 sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
 	if (eraseDatabaseOnSync) {
@@ -238,6 +238,7 @@ const createUsersWithMessages = async () => {
 			email: 'devion.villegas@ttu.edu',
 			password: 'test123',
 			real_name: 'Devion Villegas',
+			admin: true,
 			// messages: [
 			// 	{
 			// 		text: 'GraphQL is lit',

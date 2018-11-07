@@ -14,8 +14,8 @@ var notificationStruct = new OneSignal.Notification({
 })
 
 const createToken = async (user, secret, expiresIn) => {
-	const { id, email, username, onesignal_id } = user
-	return await jwt.sign({ id, email, username, onesignal_id }, secret)
+	const { id, email, username, onesignal_id, admin } = user
+	return await jwt.sign({ id, email, username, onesignal_id, admin }, secret)
 }
 
 const storeUpload = ({ stream, mimetype, s3 }) =>

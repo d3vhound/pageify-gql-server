@@ -16,6 +16,10 @@ const post = (sequelize, DataTypes) => {
 		text_color: {
 			type: DataTypes.STRING,
 		},
+		spotlight: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: false
+		},
 		category: {
 			type: DataTypes.STRING,
 			allowNull: false,
@@ -25,10 +29,14 @@ const post = (sequelize, DataTypes) => {
 		}
 	}, {
 		charset: 'utf8mb4',
+		paranoid: true,
+		timestamps: true
 	})
 
 	Post.associate = models => {
-		Post.belongsTo(models.User)
+		Post.belongsTo(models.User, {
+			onDelete: 'cascade'
+		})
 		Post.hasMany(models.File)
 		Post.hasMany(models.Comment)
 		Post.belongsToMany(models.User, {

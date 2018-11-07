@@ -65,29 +65,39 @@ const user = (sequelize, DataTypes) => {
 		cover_image: {
 			type: DataTypes.STRING
 		},
+		admin: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: false
+		},
 		banned: {
 			type: DataTypes.BOOLEAN
-		}
+		},
 	});
 
 	User.associate = models => {
 		User.hasMany(models.Message)
-		User.hasMany(models.Post)
+		User.hasMany(models.Post, {
+			onDelete: 'cascade'
+		})
 		User.hasMany(models.Conversation, {
 			as: 'sender',
 			foreignKey: {
 				name: 'senderId',
 				allowNull: false
-			} 
+			},
+			onDelete: 'cascade'
 		})
 		User.hasMany(models.Conversation, {
 			as: 'reciever',
 			foreignKey: {
 				name: 'receiverId',
 				allowNull: false
-			} 
+			},
+			onDelete: 'cascade' 
 		})
-		User.hasMany(models.Notification)
+		User.hasMany(models.Notification, {
+			onDelete: 'cascade'
+		})
 		User.belongsToMany(models.Post, {
 			as: 'likes',
 			through: { 

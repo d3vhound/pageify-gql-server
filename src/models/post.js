@@ -4,9 +4,6 @@ const post = (sequelize, DataTypes) => {
 			type: DataTypes.STRING,
 			validate: { notEmpty: true },
 		},
-		media_url: {
-			type: DataTypes.JSON
-		},
 		type: {
 			type: DataTypes.STRING,
 		},

@@ -69,7 +69,7 @@ const user = (sequelize, DataTypes) => {
 			type: DataTypes.BOOLEAN,
 			defaultValue: false
 		},
-		private: {
+		private_status: {
 			type: DataTypes.BOOLEAN,
 			defaultValue: false
 		},

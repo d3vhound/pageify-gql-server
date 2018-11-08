@@ -83,7 +83,7 @@ export default gql`
     username: String! 
 		email: String!
 		admin: Boolean!
-		private: Boolean!
+		private_status: Boolean!
 		real_name: String!
 		location: String
 		birthday: String

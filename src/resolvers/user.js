@@ -430,7 +430,7 @@ export default {
 					real_name: !real_name ? user._previousDataValues.real_name : real_name,
 					location: !location ? user._previousDataValues.location : location,
 					bio: !bio ? user._previousDataValues.bio : bio,
-					private: !private_status ? user._previousDataValues.private : private_status
+					private_status: !private_status ? user._previousDataValues.private_status : private_status
 				}, {
 					where: { 
 						id: me.id 

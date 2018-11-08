@@ -15,7 +15,7 @@ export default gql`
 
 	scalar JSON
 	
-	union Results = User | Post
+	union Results = User | Post | Hashtags
 
   extend type Query {
     users: [User!]
@@ -40,6 +40,9 @@ export default gql`
 		followUser(userId: ID!): Boolean!
 		unfollowUser(userId: ID!): Boolean!
 
+		sendFollowRequest(userId: ID!): SuccessMessage!
+		handleFollowRequest(approve: Boolean!): SuccessMessage!
+
 		likePost(postId: ID!): Boolean!
 
 		updateAvatar(file: Upload!): Boolean!
@@ -48,7 +51,13 @@ export default gql`
 
 		updateBio(text: String!): Boolean!
 
-		updateUser(location: String, bio: String, real_name: String, username: String): Boolean!
+		updateUser(
+			location: String, 
+			bio: String, 
+			real_name: String, 
+			username: String,
+			private_status: Boolean
+		): Boolean!
 
 		setInterests(payload: JSON): Boolean!
 
@@ -57,6 +66,11 @@ export default gql`
 	type Token {
 		token: String!
 		id: ID
+	}
+
+	type SuccessMessage {
+		success: Boolean!
+		message: String!
 	}
 
 	type Relationship {
@@ -69,6 +83,7 @@ export default gql`
     username: String! 
 		email: String!
 		admin: Boolean!
+		private: Boolean!
 		real_name: String!
 		location: String
 		birthday: String

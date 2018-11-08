@@ -6,6 +6,7 @@ import postSchema from './post'
 import fileSchema from './files'
 import notificationSchema from './notifications'
 import ConversationSchema from './conversation'
+import hashtagSchema from './hashtag'
 
 const linkSchema = gql`
   type Query {
@@ -27,6 +28,7 @@ export default [
 	messageSchema, 
 	postSchema, 
 	fileSchema, 
+	hashtagSchema,
 	notificationSchema,
-	ConversationSchema
+	ConversationSchema,
 ]

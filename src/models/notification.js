@@ -12,6 +12,9 @@ const notification = (sequelize, DataTypes) => {
 		},
 		postId: {
 			type: DataTypes.INTEGER,
+		},
+		follow_request: {
+			type: DataTypes.BOOLEAN
 		} 
 	})
 

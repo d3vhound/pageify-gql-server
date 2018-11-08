@@ -49,13 +49,17 @@ const storeUpload = ({ stream, mimetype, s3 }) =>
 export default {
 	Results: {
     __resolveType(obj, context, info){
-      if(obj.username){
+      if (obj.username){
         return 'User'
       }
 
-      if(obj.text){
+      if (obj.text) {
         return 'Post'
-      }
+			}
+			
+			if (obj.hashtag) {
+				return 'Hashtags'
+			}
 
       return null;
     },
@@ -79,6 +83,10 @@ export default {
 			return await models.User.findById(me.id, { include: [models.Message] })
 		},
 		search: async (parent, { query }, { models, me}) => {
+
+			// query.replace('@', '')
+			// query.replace('#', '')
+
 			const Users =  await models.User.findAll({
 				limit: 20,
 				where: {
@@ -89,14 +97,24 @@ export default {
 			})
 
 			const Posts = await models.Post.findAll({
+				limit: 20,
 				where: {
 					text: {
 						[Op.like]: `%${query}%`
 					}
 				}
 			})
+
+			const Hashtags = await models.Hashtag.findAll({
+				limit: 20,
+				where: {
+					hashtag: {
+						[Op.like]: `%${query}%`
+					}
+				}
+			})
 			
-			const Results = Users.concat(Posts)
+			const Results = [...Users, ...Hashtags, ...Posts]
 
 			return Results
 		}
@@ -400,7 +418,7 @@ export default {
 			// return false
 		},
 
-		updateUser: async (parent, { username, real_name, location, bio }, { models, me}) => {
+		updateUser: async (parent, { username, real_name, location, bio, private_status }, { models, me}) => {
  			return await models.User.findOne({
 				where: {
 					id: me.id
@@ -412,6 +430,7 @@ export default {
 					real_name: !real_name ? user._previousDataValues.real_name : real_name,
 					location: !location ? user._previousDataValues.location : location,
 					bio: !bio ? user._previousDataValues.bio : bio,
+					private: !private_status ? user._previousDataValues.private : private_status
 				}, {
 					where: { 
 						id: me.id 

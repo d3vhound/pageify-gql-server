@@ -69,8 +69,13 @@ const user = (sequelize, DataTypes) => {
 			type: DataTypes.BOOLEAN,
 			defaultValue: false
 		},
+		private: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: false
+		},
 		banned: {
-			type: DataTypes.BOOLEAN
+			type: DataTypes.BOOLEAN,
+			defaultValue: false
 		},
 		interests: {
 			type: DataTypes.JSON

@@ -4,6 +4,7 @@ import postResolvers from './post'
 import fileResolvers from './files'
 import notificationResolvers from './notications'
 import conversationResolvers from './conversation'
+import hashtagResolvers from './hashtag'
 
 export default [
 	userResolvers, 
@@ -11,5 +12,6 @@ export default [
 	postResolvers, 
 	fileResolvers, 
 	notificationResolvers,
-	conversationResolvers
+	conversationResolvers,
+	hashtagResolvers
 ]

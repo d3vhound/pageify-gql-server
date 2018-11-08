@@ -19,5 +19,6 @@ export default gql`
 		postId: Int
 		post: Post
 		createdAt: String!
+		follow_request: Boolean!
 	}
 `

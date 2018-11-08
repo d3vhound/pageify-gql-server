@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server-express';
+import { gql } from 'apollo-server-express'
 
 
 
@@ -12,6 +12,8 @@ export default gql`
 	# 	PUBLIC
 	# 	PRIVATE
 	# }
+
+	scalar JSON
 	
 	union Results = User | Post
 
@@ -48,6 +50,8 @@ export default gql`
 
 		updateUser(location: String, bio: String, real_name: String, username: String): Boolean!
 
+		setInterests(payload: JSON): Boolean!
+
 	}
 
 	type Token {
@@ -78,7 +82,9 @@ export default gql`
 		following: Boolean
 		following_count: Int
 		followers_count: Int
-		followers_array: [ID]
+		followers_array: [User]
+		following_array: [User]
+		interests: JSON
   }
 
 `;

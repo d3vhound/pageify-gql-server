@@ -53,7 +53,7 @@ const post = (sequelize, DataTypes) => {
 	Post.prototype.setLike = async function (post) {
 		return this.addLike(post)
 	}
-
+		
 	return Post
 }
 

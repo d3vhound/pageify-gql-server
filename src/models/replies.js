@@ -16,4 +16,4 @@ const replies = (sequelize, DataTypes) => {
 	return Replies
 }
 
-export default replies;
+export default replies

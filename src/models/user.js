@@ -72,6 +72,9 @@ const user = (sequelize, DataTypes) => {
 		banned: {
 			type: DataTypes.BOOLEAN
 		},
+		interests: {
+			type: DataTypes.JSON
+		}
 	});
 
 	User.associate = models => {

@@ -4,7 +4,7 @@ import uuidv4 from 'uuid/v4'
 import Sequelize from 'sequelize'
 const Op = Sequelize.Op
 import OneSignal from 'onesignal-node'
-import { Lambda } from 'aws-sdk';
+import GraphQLJSON from 'graphql-type-json'
 
 var notificationStruct = new OneSignal.Notification({    
 	contents: {    
@@ -234,6 +234,26 @@ export default {
 				})
 
 			if (updateCover) {
+				return true
+			}
+
+			return false
+		},
+
+		setInterests: async (parent, { payload }, { models, me }) => {
+			// if (!me) {
+			// 	return new AuthenticationError('Must be signed in to follow users')
+			// }
+
+			const createInterests = await models.User.update({
+				interests: payload
+			}, {
+				where: {
+					id: me.id
+				}
+			})
+
+			if (createInterests) {
 				return true
 			}
 
@@ -491,11 +511,43 @@ export default {
 				where: { followed_id: user.id },
 			})
 
+			// console.log(followers)
+
 			const arr = await followers.map(user => {
 				return user.dataValues.follower_id
 			})
 
-			return arr
+			return await models.User.findAll({
+				where: {
+					id: {
+						[Op.in]: arr
+					}
+				}
+			})
+		},
+
+		following_array: async (user, args, { me, models}) => {
+			const following = await models.Relationship.findAll({
+				where: { follower_id: user.id }
+			})
+
+			// console.log(following)
+
+			const arr = await following.map(user => {
+				return user.dataValues.followed_id
+			})
+
+			return await models.User.findAll({
+				where: {
+					id: {
+						[Op.in]: arr
+					}
+				}
+			})
+		},
+
+		interests: async (user, args, { me }) => {
+			return GraphQLJSON.parseValue(user.interests)
 		}
 
 	},

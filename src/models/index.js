@@ -18,7 +18,7 @@ const config = {
 }
 
 if (process.env.INSTANCE_CONNECTION_NAME && process.env.NODE_ENV === 'production') {
-  config.dialectOptions.socketPath = `/cloudsql/${process.env.INSTANCE_CONNECTION_NAME}`;
+  config.dialectOptions.socketPath = `/cloudsql/${process.env.INSTANCE_CONNECTION_NAME}`
 }
 
 const sequelize = new Sequelize(
@@ -39,15 +39,17 @@ const models = {
 	Relationship: sequelize.import('./relationships'),
 	Post: sequelize.import('./post'),
 	Like: sequelize.import('./likes'),
-	Notification: sequelize.import('./notification')
+	Notification: sequelize.import('./notification'),
+	Hashtag: sequelize.import('./hashtags'),
+	HashtagOccurrance: sequelize.import('./hashtag_occurrance')
 }
 
 Object.keys(models).forEach(key => {
 	if ('associate' in models[key]) {
 		models[key].associate(models)
 	}
-});
+})
 
 export { sequelize }
 
-export default models;
+export default models

@@ -7,6 +7,9 @@ import Sequelize from 'sequelize'
 import uuidv4 from 'uuid/v4'
 const Op = Sequelize.Op
 import OneSignal from 'onesignal-node'
+import hashtagRegex from 'hashtag-regex'
+
+const regex = hashtagRegex()
 
 const storeUpload = ({ stream, mimetype, s3 }) =>
 	new Promise((resolve, reject) => {
@@ -219,6 +222,7 @@ export default {
 					.then(async (post) => {
 						// console.log(post.dataValues.id)
 						const id = post.dataValues.id
+
 						if (media !== null && media !== undefined) {
 							// console.log(media)
 							if (media.length === 1) {
@@ -250,6 +254,35 @@ export default {
 							}
 						}
 
+						const postText = post.dataValues.text
+						// let foundHashtags = postText.match(/#[a-zA-Z0-9_]+/g)
+						let match;
+						let hashtags = []
+						while (match = regex.exec(postText)) {
+							const hashtag = match[0]
+							hashtags.push(hashtag)
+							// console.log(`Matched sequence ${ hashtag } — code points: ${ [...hashtag].length }`)
+						}
+
+						// console.log(hashtags)
+
+						let uniqueHashtags = [...new Set(hashtags)]
+
+						console.log(uniqueHashtags)
+
+						uniqueHashtags.forEach(async (tag) => {
+							await models.Hashtag.findOrCreate({ where: { hashtag: tag }})
+							.spread(async (hashtag, created) => {
+								let tagObj = hashtag.get({ plain: true })
+								await models.HashtagOccurrance.create({
+									hashtagId: tagObj.id,
+									postId: id
+								})
+							})
+						})
+
+						// let foundHashtags = regex.exec(postText)
+						// console.log(foundHashtags)
 						
 						return post
 					})

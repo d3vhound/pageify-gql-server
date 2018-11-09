@@ -87,14 +87,20 @@ export default {
 								console.log('Something went wrong...')    
 						} else {    
 								// console.log(data)
-								models.Notification.create({
+								const notification = models.Notification.create({
 									text: 'messaged you',
 									initiatorId: me.id,
 									read: false,
 									userId: user1,
 									conversationId: conversationId,
 									messageId: _id
-								})    
+								})  
+								
+								await pubsub.publish(EVENTS.NOTIFICATION.CREATED, {
+									notificationSent: {
+										notification
+									}
+								})
 						}    
 					 })
 
@@ -108,14 +114,20 @@ export default {
 								console.log('Something went wrong...')    
 						} else {    
 								// console.log(data)
-								models.Notification.create({
+								const notification = models.Notification.create({
 									text: 'messaged you',
 									initiatorId: me.id,
 									read: false,
 									userId: user2,
 									conversationId: conversationId,
 									messageId: _id
-								})    
+								})
+								
+								await pubsub.publish(EVENTS.NOTIFICATION.CREATED, {
+									notificationSent: {
+										notification
+									}
+								})
 						}    
 					 })
 

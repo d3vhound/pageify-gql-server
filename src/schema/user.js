@@ -102,6 +102,7 @@ export default gql`
 		avatar: String
 		cover_image: String
 		bio: String
+		views: Int
 		blocked: Boolean
 		blocking: Boolean
     messages: [Message!]

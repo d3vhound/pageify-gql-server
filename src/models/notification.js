@@ -17,7 +17,7 @@ const notification = (sequelize, DataTypes) => {
 			type: DataTypes.INTEGER,
 		},
 		messageId: {
-			type: DataTypes.INTEGER,
+			type: DataTypes.STRING,
 		},
 		follow_request: {
 			type: DataTypes.BOOLEAN

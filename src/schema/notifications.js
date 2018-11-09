@@ -23,5 +23,6 @@ export default gql`
 		createdAt: String!
 		follow_request: Boolean!
 		conversationId: Int
+		messageId: String
 	}
 `

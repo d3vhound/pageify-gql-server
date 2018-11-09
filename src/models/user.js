@@ -59,6 +59,9 @@ const user = (sequelize, DataTypes) => {
 				len: [0, 120]
 			}
 		},
+		views: {
+			type: DataTypes.INTEGER,
+		},
 		location: {
 			type: DataTypes.STRING,
 		},

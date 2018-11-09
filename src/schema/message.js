@@ -22,6 +22,7 @@ export default gql`
     user: User!
 		createdAt: String!
 		conversationId: Int!
+		notification: Notification
   }
 
 	extend type Subscription {

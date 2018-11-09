@@ -13,6 +13,12 @@ const notification = (sequelize, DataTypes) => {
 		postId: {
 			type: DataTypes.INTEGER,
 		},
+		conversationId: {
+			type: DataTypes.INTEGER,
+		},
+		messageId: {
+			type: DataTypes.INTEGER,
+		},
 		follow_request: {
 			type: DataTypes.BOOLEAN
 		} 

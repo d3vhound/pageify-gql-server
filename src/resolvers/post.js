@@ -348,20 +348,70 @@ export default {
 
 		createComment: combineResolvers(
 			isAuthenticated,
-			async (parent, { postId, text }, { me, models, s3, mixpanel }) => {
+			async (parent, { postId, text }, { me, models, s3, mixpanel, OSClient }) => {
 				const addComment = await models.Comment.create({
 					text: text,
 					postId: postId,
 					userId: me.id
 				})
 
-				// console.log(addComment)
+				const postOwnerId = await models.Post.findById(postId)
+					.then((obj) => {
+						console.log(obj.dataValues.userId)
+						return obj.dataValues.userId
+					})
 
-				if (addComment) {
+				if (postOwnerId !== me.id) {
+
+				const postOwnerUser = await models.User.findById(postOwnerId)
+				
+				var NewNotification = new OneSignal.Notification({
+					contents: {      
+							en: `${postOwnerUser.dataValues.real_name} commented on your post`,     
+					},    
+					"ios_badgeType": "Increase",
+					"ios_badgeCount": 1,
+					include_player_ids: [postOwnerUser.dataValues.onesignal_id],
+					filters: [    
+						{
+							"field": "tag", 
+							"key": "userId", 
+							"relation": "=", 
+							"value": postOwnerUser.dataValues.id
+						},
+						{
+							"field": "tag", 
+							"key": "mentions", 
+							"relation": "=", 
+							"value": "enabled"
+						},   
+					],    
+				})
+
+				OSClient.sendNotification(NewNotification, (err, httpResponse, data) => {    
+					if (err) {    
+							// console.log('Something went wrong...');    
+					} else {    
+							// console.log(data)
+							models.Notification.create({
+								text: 'Commented on your post',
+								initiatorId: me.id,
+								read: false,
+								postId: postId,
+								userId: postOwnerUser.dataValues.id
+							})    
+					}    
+				 })
+
+				} 
+				
+				 if (addComment) {
 					return true
 				}
 
 				return false
+				
+				// console.log(addComment)
 			}),
 		
 			deletePost: combineResolvers(

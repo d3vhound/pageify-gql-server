@@ -91,7 +91,9 @@ export default {
 									text: 'messaged you',
 									initiatorId: me.id,
 									read: false,
-									userId: user1
+									userId: user1,
+									conversationId: conversationId,
+									messageId: _id
 								})    
 						}    
 					 })
@@ -110,7 +112,9 @@ export default {
 									text: 'messaged you',
 									initiatorId: me.id,
 									read: false,
-									userId: user2
+									userId: user2,
+									conversationId: conversationId,
+									messageId: _id
 								})    
 						}    
 					 })
@@ -147,6 +151,14 @@ export default {
 		// },
 		createdAt: async (message, args, { models }) => {
 			return message.createdAt.toString()
+		},
+		notification: async (message, args, { models }) => {
+			return await models.Notification.findById({
+				where: {
+					conversationId: message.conversationId,
+					messageId: message._id
+				}
+			})
 		}
 	},
 

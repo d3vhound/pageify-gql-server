@@ -439,7 +439,13 @@ export default {
 									"key": "userId", 
 									"relation": "=", 
 									"value": postOwner.dataValues.id
-								},  
+								},
+								{
+									"field": "tag", 
+									"key": "likes", 
+									"relation": "=", 
+									"value": "enabled"
+								},   
 							],    
 						})
 						OSClient.sendNotification(NewNotification, (err, httpResponse, data) => {    

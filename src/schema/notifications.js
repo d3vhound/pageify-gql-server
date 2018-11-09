@@ -4,6 +4,8 @@ export default gql`
 
 	extend type Query {
 		notifications: [Notification!]
+		unreadMessageCount: Int
+		unreadActivityCount: Int
 	}
 
 	extend type Mutation {
@@ -20,5 +22,6 @@ export default gql`
 		post: Post
 		createdAt: String!
 		follow_request: Boolean!
+		conversationId: Int
 	}
 `

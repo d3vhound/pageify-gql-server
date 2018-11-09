@@ -364,6 +364,20 @@ export default {
 				if (postOwnerId !== me.id) {
 
 				const postOwnerUser = await models.User.findById(postOwnerId)
+
+				const notification = await models.Notification.create({
+					text: 'Commented on your post',
+					initiatorId: me.id,
+					read: false,
+					postId: postId,
+					userId: postOwnerUser.dataValues.id
+				})
+
+				await pubsub.publish(EVENTS.NOTIFICATION.CREATED, {
+					notificationSent: {
+						notification
+					}
+				})
 				
 				var NewNotification = new OneSignal.Notification({
 					contents: {      
@@ -390,16 +404,17 @@ export default {
 
 				OSClient.sendNotification(NewNotification, (err, httpResponse, data) => {    
 					if (err) {    
-							// console.log('Something went wrong...');    
+							console.log('Something went wrong...', err);    
 					} else {    
 							// console.log(data)
-							models.Notification.create({
-								text: 'Commented on your post',
-								initiatorId: me.id,
-								read: false,
-								postId: postId,
-								userId: postOwnerUser.dataValues.id
-							})    
+							// const notification = models.Notification.create({
+							// 	text: 'Commented on your post',
+							// 	initiatorId: me.id,
+							// 	read: false,
+							// 	postId: postId,
+							// 	userId: postOwnerUser.dataValues.id
+							// })    
+
 					}    
 				 })
 

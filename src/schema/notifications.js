@@ -25,4 +25,14 @@ export default gql`
 		conversationId: Int
 		messageId: String
 	}
+
+	extend type Subscription {
+		notificationSent(
+			receiverId: Int!
+		): NotificationSubData
+	}
+
+	type NotificationSubData {
+		notification: Notification!
+	}
 `

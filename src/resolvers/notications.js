@@ -1,5 +1,7 @@
+import { UserInputError, AuthenticationError, withFilter } from "apollo-server-express"
 import { combineResolvers } from 'graphql-resolvers'
 import { isAuthenticated } from './authorization'
+import pubsub, { EVENTS } from '../subscription'
 import Sequelize from 'sequelize'
 const Op = Sequelize.Op
 
@@ -63,6 +65,18 @@ export default {
 		},
 		createdAt: async (notification, { }, { models }) => {
 			return notification.createdAt.toString()
+		}
+	},
+
+	Subscription: {
+		notificationSent: {
+			subscribe: withFilter(
+				() => pubsub.asyncIterator(EVENTS.NOTIFICATION.CREATED),
+				(payload, variables) => {
+					console.log(payload, '||', variables)
+					return payload.notificationSent.notification.dataValues.userId === variables.receiverId
+				},
+			),
 		}
 	}
 

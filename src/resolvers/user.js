@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { AuthenticationError, UserInputError } from 'apollo-server-express'
+import pubsub, { EVENTS } from '../subscription'
 import uuidv4 from 'uuid/v4'
 import Sequelize from 'sequelize'
 const Op = Sequelize.Op
@@ -333,6 +334,50 @@ export default {
 			}
 
 			else if (followSuccess) {
+				
+				var NewNotification = new OneSignal.Notification({
+					contents: {      
+							en: `${current_user.dataValues.real_name} started following you`,     
+					},    
+					"ios_badgeType": "Increase",
+					"ios_badgeCount": 1,
+					include_player_ids: [other_user.dataValues.onesignal_id],
+					filters: [    
+						{
+							"field": "tag", 
+							"key": "userId", 
+							"relation": "=", 
+							"value": other_user.id
+						},
+						{
+							"field": "tag", 
+							"key": "mentions", 
+							"relation": "=", 
+							"value": "enabled"
+						},   
+					],    
+				})
+
+				OSClient.sendNotification(NewNotification, async (err, httpResponse, data) => {    
+					if (err) {    
+							// console.log('Something went wrong...');    
+					} else {    
+							// console.log(data)
+							const notification = models.Notification.create({
+								text: 'followed you',
+								initiatorId: me.id,
+								read: false,
+								userId: other_user.dataValues.id
+							})
+							
+							await pubsub.publish(EVENTS.NOTIFICATION.CREATED, {
+								notificationSent: {
+									notification
+								}
+							})
+					}    
+				 })
+
 				return true
 			}
 
@@ -463,18 +508,24 @@ export default {
 								},   
 							],    
 						})
-						OSClient.sendNotification(NewNotification, (err, httpResponse, data) => {    
+						OSClient.sendNotification(NewNotification, async (err, httpResponse, data) => {    
 							if (err) {    
 									// console.log('Something went wrong...');    
 							} else {    
 									// console.log(data)
-									models.Notification.create({
+									const notification = models.Notification.create({
 										text: 'Liked your post',
 										initiatorId: me.id,
 										read: false,
 										postId: postId,
 										userId: postOwner.dataValues.id
-									})    
+									})
+									
+									await pubsub.publish(EVENTS.NOTIFICATION.CREATED, {
+										notificationSent: {
+											notification
+										}
+									})
 							}    
 						 })
 						}

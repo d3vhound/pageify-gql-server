@@ -61,6 +61,7 @@ const user = (sequelize, DataTypes) => {
 		},
 		views: {
 			type: DataTypes.INTEGER,
+			defaultValue: 0
 		},
 		location: {
 			type: DataTypes.STRING,

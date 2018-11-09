@@ -159,16 +159,16 @@ const user = (sequelize, DataTypes) => {
 	User.findByLogin = async login => {
 		let user = await User.findOne({
 			where: { username: login },
-		});
+		})
 
 		if (!user) {
 			user = await User.findOne({
 				where: { email: login },
-			});
+			})
 		}
 
-		return user;
-	};
+		return user
+	}
 
 	User.beforeCreate(async user => {
 		user.password = await user.generatePasswordHash()

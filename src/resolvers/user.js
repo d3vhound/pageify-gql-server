@@ -250,7 +250,8 @@ export default {
 			}, {
 					where: {
 						id: me.id
-					}
+					},
+					hooks: false
 				})
 
 			if (updateAvi) {
@@ -274,7 +275,8 @@ export default {
 			}, {
 					where: {
 						id: me.id
-					}
+					},
+					hooks: false
 				})
 
 			if (updateCover) {
@@ -361,6 +363,19 @@ export default {
 
 			return false
 
+		},
+
+		incrementViewCount: async (parent, { userId }, { models, me}) => {
+			const user_to_update = await models.User.findById(userId)
+			const success = await user_to_update.update({
+				views: user_to_update._previousDataValues.views + 1
+			}, {
+				hooks: false
+			})
+			if (success) {
+				return true
+			}
+			return false
 		},
 
 		blockUser: async (parent, { userId }, { models, me}) => {
@@ -505,7 +520,8 @@ export default {
 				}, {
 					where: { 
 						id: me.id 
-					}
+					},
+					hooks: false
 				}).then(() => {
 					return true
 				})

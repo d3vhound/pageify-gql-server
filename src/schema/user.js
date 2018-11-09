@@ -64,6 +64,8 @@ export default gql`
 
 		setInterests(payload: JSON): Boolean!
 
+		incrementViewCount(userId: ID!): Boolean!
+
 		blockUser(
 			userId: ID!
 		): Boolean!

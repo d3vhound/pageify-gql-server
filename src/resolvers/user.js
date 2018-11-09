@@ -513,7 +513,7 @@ export default {
 									// console.log('Something went wrong...');    
 							} else {    
 									// console.log(data)
-									const notification = models.Notification.create({
+									const notification = await models.Notification.create({
 										text: 'Liked your post',
 										initiatorId: me.id,
 										read: false,

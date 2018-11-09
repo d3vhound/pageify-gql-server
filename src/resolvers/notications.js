@@ -13,7 +13,10 @@ export default {
 				return await models.Notification.findAll({
 					where: {
 						userId: me.id
-					}
+					},
+					order: [
+						['createdAt', 'DESC']
+					]
 				})
 			}
 		),

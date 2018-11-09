@@ -68,7 +68,7 @@ export default {
 		recentposts: async (parent, { limit, category }, { models }) => {
 			return await models.Post.findAll({
 				where: {
-					category: category ? category : 'default'
+					category: category ? category : ''
 				},
 				order: [
 					['createdAt', 'DESC']
@@ -82,7 +82,7 @@ export default {
 		topposts: async (parent, { limit, category }, { models }) => {
 			return await models.Post.findAll({
 				where: {
-					category: category ? category : 'default'
+					category: category ? category : ''
 				},
 				attributes: [
 					'id',
@@ -116,7 +116,7 @@ export default {
 					createdAt: {
 						[Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000)
 					},
-					category: category ? category : 'default'
+					category: category ? category : ''
 				},
 				attributes: [
 					'id',

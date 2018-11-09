@@ -130,6 +130,26 @@ const user = (sequelize, DataTypes) => {
 			onDelete: 'cascade',
 			hooks: true
 		})
+		User.belongsToMany(User, {
+			as: 'blocking',
+			through: {
+				model: models.Block,
+				unique: false
+			},
+			foreignKey: 'blocked_id',
+			onDelete: 'cascade',
+			hooks: true
+		})
+		User.belongsToMany(User, {
+			as: 'blocked',
+			through: {
+				model: models.Block,
+				unique: false
+			},
+			foreignKey: 'blocker_id',
+			onDelete: 'cascade',
+			hooks: true
+		})
 	};
 
 	User.findByLogin = async login => {

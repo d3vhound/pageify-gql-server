@@ -22,6 +22,7 @@ export default gql`
     user(id: ID!): User
     me: User
 		search(query: String!): [Results]
+		block_list: [User]
   }
 
 	extend type Mutation {
@@ -61,6 +62,14 @@ export default gql`
 
 		setInterests(payload: JSON): Boolean!
 
+		blockUser(
+			userId: ID!
+		): Boolean!
+
+		unblockUser(
+			userId: ID!
+		): Boolean!
+
 	}
 
 	type Token {
@@ -93,6 +102,8 @@ export default gql`
 		avatar: String
 		cover_image: String
 		bio: String
+		blocked: Boolean
+		blocking: Boolean
     messages: [Message!]
 		following: Boolean
 		following_count: Int

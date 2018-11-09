@@ -82,6 +82,32 @@ export default {
 
 			return await models.User.findById(me.id, { include: [models.Message] })
 		},
+		block_list: async (parent, args, { models, me }) => {
+			if (!me) {
+				throw new AuthenticationError(
+					'Must be signed in',
+				)
+			}
+
+			const blocked_ids = await models.Block.findAll({
+				where: {
+					blocker_id: me.id
+				}
+			}).then((obj) => {
+				let arr = obj.map((id) => {
+					return id.dataValues.blocked_id
+				})
+				return arr
+			})
+
+			return await models.User.findAll({
+				where: {
+					id: {
+						$in: blocked_ids
+					}
+				}
+			})
+		},
 		search: async (parent, { query }, { models, me}) => {
 
 			// query.replace('@', '')
@@ -337,6 +363,45 @@ export default {
 
 		},
 
+		blockUser: async (parent, { userId }, { models, me}) => {
+			if (!me) {
+				return new AuthenticationError('You must be signed in')
+			}
+
+			const current_user = await models.User.findById(me.id)
+			const other_user = await models.User.findById(userId)
+
+			const blockSuccess = await other_user.setBlocking(current_user)
+			await current_user.unfollow(other_user)
+			await other_user.unfollow(current_user)
+			
+
+			if (blockSuccess) {
+				return true
+			}
+
+			return false
+		},
+
+		unblockUser: async (parent, { userId }, { models, me}) => {
+			if (!me) {
+				return new AuthenticationError('You must be signed in')
+			}
+
+			const current_user = await models.User.findById(me.id)
+			const other_user = await models.User.findById(userId)
+
+			const unblockSuccess = await current_user.removeBlocked(other_user)
+
+			console.log(unblockSuccess)
+
+			if (unblockSuccess) {
+				return true
+			}
+
+			return false
+		},
+
 		likePost: async (
 			parent,
 			{ postId },
@@ -489,6 +554,28 @@ export default {
 			const other_user = await models.User.findById(user.id)
 
 			return await current_user.following(other_user)
+		},
+
+		blocked: async (user, args, { me, models}) => {
+			if (!me) {
+				return null
+			}
+
+			const current_user = await models.User.findById(me.id)
+			const other_user = await models.User.findById(user.id)
+
+			return other_user.hasBlocked(current_user)
+		},
+
+		blocking: async (user, args, { me, models}) => {
+			if (!me) {
+				return null
+			}
+
+			const current_user = await models.User.findById(me.id)
+			const other_user = await models.User.findById(user.id)
+
+			return other_user.hasBlocking(current_user)
 		},
 
 		same_user: async(user, args, { me, models }) => {

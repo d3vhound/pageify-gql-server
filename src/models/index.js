@@ -41,6 +41,7 @@ const models = {
 	Like: sequelize.import('./likes'),
 	Notification: sequelize.import('./notification'),
 	Hashtag: sequelize.import('./hashtags'),
+	Block: sequelize.import('./blocking'),
 	HashtagOccurrance: sequelize.import('./hashtag_occurrance')
 }
 

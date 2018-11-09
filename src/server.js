@@ -344,5 +344,26 @@ const createUsersWithMessages = async () => {
 			include: [models.Message, models.Post],
 		},
 	);
+
+	await models.User.create(
+		{
+			username: 'tango',
+			email: 'tango@nextgencode.io',
+			password: 'test123',
+			real_name: 'Tango Foxtrot',
+			private: false,
+			// messages: [
+			// 	{
+			// 		text: 'SQL god'
+			// 	},
+			// 	{
+			// 		text: 'PHP over everything lol',
+			// 	},
+			// ],
+		},
+		{
+			include: [models.Message, models.Post],
+		},
+	);
 };
 

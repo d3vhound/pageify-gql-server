@@ -50,7 +50,26 @@ export default {
 	},
 
 	Mutation: {
-		
+		readNotification: async (parent, { id }, { me, models }) => {
+			if (!me) {
+				return null
+			}
+
+			const notification = await models.Notification.findById(id)
+
+			const setRead = await notification.update({
+				read: true
+			}, {
+				hooks: false
+			})
+
+			if (setRead) {
+				return true
+			}
+
+			return false
+
+		}
 	},
 
 	Notification: {

@@ -82,7 +82,9 @@ export default {
 		recentposts: async (parent, { limit, category }, { models }) => {
 			return await models.Post.findAll({
 				where: {
-					category: category ? category : null
+					category: {
+						[Op.or]: category !== undefined ? [category] : ['entertainment', 'music', 'dance', 'beauty', 'sports', 'design','gaming', 'food drink', 'fashion', 'photography', 'all', 'default']
+					}
 				},
 				order: [
 					['createdAt', 'DESC']
@@ -102,7 +104,9 @@ export default {
 		topposts: async (parent, { limit, category }, { models }) => {
 			return await models.Post.findAll({
 				where: {
-					category: category ? category : null
+					category: {
+						[Op.or]: category !== undefined ? [category] : ['entertainment', 'music', 'dance', 'beauty', 'sports', 'design','gaming', 'food drink', 'fashion', 'photography', 'all', 'default']
+					}
 				},
 				attributes: [
 					'id',
@@ -131,13 +135,14 @@ export default {
 			})
 		},
 		trendingposts: async (parent, { category, limit }, { models }) => {
+			console.log(category)
 			return await models.Post.findAll({
 				where: {
 					createdAt: {
 						[Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000)
 					},
 					category: {
-						[Op.like]: category ? category : allCategories
+						[Op.or]: category !== undefined ? [category] : ['entertainment', 'music', 'dance', 'beauty', 'sports', 'design','gaming', 'food drink', 'fashion', 'photography', 'all', 'default']
 					}
 				},
 				attributes: [
@@ -146,6 +151,7 @@ export default {
 					'type',
 					'userId',
 					'text_color',
+					'category',
 					'bg_color',
 					[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN likes AS L ON L.post_id = P.id WHERE P.id = post.id)'),'likes'],
 					[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN comments AS C ON C.postId = P.id WHERE P.id = post.id)'),'comments'],

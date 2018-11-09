@@ -74,7 +74,13 @@ export default {
 					['createdAt', 'DESC']
 				],
 				include: [
-					models.User 
+					{
+						model: models.User,
+						where: {
+							private_status: false,
+							banned: false
+						}
+					}
 				],
 				limit,
 			})
@@ -99,7 +105,7 @@ export default {
 					{
 						model: models.User,
 						where: {
-							private: false,
+							private_status: false,
 							banned: false
 						}
 					}
@@ -130,7 +136,13 @@ export default {
 					[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN likes AS L ON L.post_id = P.id WHERE P.id = post.id) + (SELECT count(*) FROM posts AS P INNER JOIN comments AS C ON C.postId = P.id WHERE P.id = post.id)'), 'interactions']
 				],
 				include: [
-					models.User,
+					{
+						model: models.User,
+						where: {
+							private_status: false,
+							banned: false
+						}
+					}
 				],
 				order: [
 					[Sequelize.literal('interactions'), 'DESC']

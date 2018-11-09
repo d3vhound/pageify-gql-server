@@ -400,6 +400,26 @@ export default {
 		// 	// return await models.User.findById(post.userId)
 		// 	return await loaders.user.load(post.userId)
 		// },
+		users_liked: async (post, args, { models }) => {
+			const users_that_liked = await models.Like.findAll({
+				where: {
+					post_id: post.id
+				}
+			}).then((obj) => {
+				let arr = obj.map((ids) => {
+					return ids.dataValues.user_id
+				})
+				return arr
+			})
+
+			return await models.User.findAll({
+				where: {
+					id: {
+						$in: users_that_liked
+					}
+				}
+			})
+		},
 
 		createdAt: async (post, args, { models }) => {
 			return post.createdAt.toString()

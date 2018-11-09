@@ -53,6 +53,7 @@ type Post @cacheControl(maxAge: 60, scope: PUBLIC) {
 	createdAt: String!
 	liked: Boolean
 	category: String
+	users_liked: [User]
 	type: String
 	bg_color: String
 	text_color: String

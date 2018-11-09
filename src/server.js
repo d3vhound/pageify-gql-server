@@ -293,7 +293,7 @@ const createUsersWithMessages = async () => {
 			email: 'jp@nextgencode.io',
 			password: 'test123',
 			real_name: 'John Paul',
-			private: true,
+			private_status: false,
 			// messages: [
 			// 	{
 			// 		text: 'SQL god'
@@ -351,7 +351,7 @@ const createUsersWithMessages = async () => {
 			email: 'tango@nextgencode.io',
 			password: 'test123',
 			real_name: 'Tango Foxtrot',
-			private: false,
+			private_status: true,
 			// messages: [
 			// 	{
 			// 		text: 'SQL god'

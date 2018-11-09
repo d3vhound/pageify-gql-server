@@ -39,6 +39,12 @@ extend type Mutation {
 	deleteComment(
 		postId: ID!
 	): Boolean!
+
+	reportPost(
+		postId: ID!
+		spam: Boolean
+		guidelines: Boolean
+	): Boolean!
 }
 
 type Post @cacheControl(maxAge: 60, scope: PUBLIC) {

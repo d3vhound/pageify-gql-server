@@ -456,7 +456,23 @@ export default {
 
 					return false
 				}
-			)
+			),
+
+
+			reportPost: async (parent, { postId, spam, guidelines }, { me, models }) => {
+				const report = await models.Report.create({
+					userId: me.id,
+					postId: postId,
+					spam,
+					guidelines
+				})
+
+				if (report) {
+					return true
+				}
+
+				return false
+			}
 
 	},
 

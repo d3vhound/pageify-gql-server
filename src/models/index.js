@@ -42,7 +42,8 @@ const models = {
 	Notification: sequelize.import('./notification'),
 	Hashtag: sequelize.import('./hashtags'),
 	Block: sequelize.import('./blocking'),
-	HashtagOccurrance: sequelize.import('./hashtag_occurrance')
+	HashtagOccurrance: sequelize.import('./hashtag_occurrance'),
+	Report: sequelize.import('./reports')
 }
 
 Object.keys(models).forEach(key => {

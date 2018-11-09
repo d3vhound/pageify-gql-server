@@ -352,14 +352,29 @@ const createUsersWithMessages = async () => {
 			password: 'test123',
 			real_name: 'Tango Foxtrot',
 			private_status: true,
-			// messages: [
-			// 	{
-			// 		text: 'SQL god'
-			// 	},
-			// 	{
-			// 		text: 'PHP over everything lol',
-			// 	},
-			// ],
+			posts: [
+				{
+					text: 'Testing',
+					type: 'text',
+					category: 'default',
+					text_color: '#FFF',
+					bg_color: '#B533F5'
+				},
+				{
+					text: 'Testing2',
+					type: 'text',
+					category: 'default',
+					text_color: '#FFF',
+					bg_color: '#691B26'
+				},
+				{
+					text: 'Testing3',
+					type: 'text',
+					category: 'default',
+					text_color: '#FFF',
+					bg_color: '#2E75F6'
+				},
+			]
 		},
 		{
 			include: [models.Message, models.Post],

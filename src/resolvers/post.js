@@ -11,6 +11,20 @@ import hashtagRegex from 'hashtag-regex'
 
 const regex = hashtagRegex()
 
+const allCategories = [
+	"entertainment",
+	"music",
+	"dance",
+	"beauty",
+	"sports",
+	"design",
+	"gaming",
+	"food & drink",
+	"fashion",
+	"photography",
+	"all"
+]
+
 const storeUpload = ({ stream, mimetype, s3 }) =>
 	new Promise((resolve, reject) => {
 		const uuidFilename = uuidv4()
@@ -122,7 +136,9 @@ export default {
 					createdAt: {
 						[Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000)
 					},
-					category: category ? category : null
+					category: {
+						[Op.like]: category ? category : allCategories
+					}
 				},
 				attributes: [
 					'id',

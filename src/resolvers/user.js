@@ -363,7 +363,7 @@ export default {
 							// console.log('Something went wrong...');    
 					} else {    
 							// console.log(data)
-							const notification = models.Notification.create({
+							const notification = await models.Notification.create({
 								text: 'followed you',
 								initiatorId: me.id,
 								read: false,

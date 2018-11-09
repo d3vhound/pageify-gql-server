@@ -82,12 +82,12 @@ export default {
 					// console.log('sending notification to', conversation.dataValues.senderId)
 					const userToNotify = await models.User.findById(user1)
 					var NewNotification = constructNotification({ message: `${me.username}: ${text}`, user: userToNotify })
-					OSClient.sendNotification(NewNotification, (err, httpResponse, data) => {    
+					OSClient.sendNotification(NewNotification, async (err, httpResponse, data) => {    
 						if (err) {    
 								console.log('Something went wrong...')    
 						} else {    
 								// console.log(data)
-								const notification = models.Notification.create({
+								const notification = await models.Notification.create({
 									text: 'messaged you',
 									initiatorId: me.id,
 									read: false,
@@ -109,12 +109,12 @@ export default {
 					// console.log('sending notification to', conversation.dataValues.receiverId)
 					const userToNotify = await models.User.findById(user2)
 					var NewNotification = constructNotification({ message: `${me.username}: ${text}`, user: userToNotify })
-					OSClient.sendNotification(NewNotification, (err, httpResponse, data) => {    
+					OSClient.sendNotification(NewNotification, async (err, httpResponse, data) => {    
 						if (err) {    
 								console.log('Something went wrong...')    
 						} else {    
 								// console.log(data)
-								const notification = models.Notification.create({
+								const notification = await models.Notification.create({
 									text: 'messaged you',
 									initiatorId: me.id,
 									read: false,

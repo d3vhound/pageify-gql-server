@@ -310,7 +310,7 @@ export default {
 		followUser: async (
 			parent,
 			{ userId },
-			{ models, me }
+			{ models, me, OSClient }
 		) => {
 
 			if (!me) {

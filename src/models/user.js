@@ -46,7 +46,7 @@ const user = (sequelize, DataTypes) => {
 			allowNull: false,
 			validate: {
 				notEmpty: true,
-				len: [7, 42]
+				len: [7, 142]
 			}
 		},
 		avatar: {
@@ -171,6 +171,10 @@ const user = (sequelize, DataTypes) => {
 	};
 
 	User.beforeCreate(async user => {
+		user.password = await user.generatePasswordHash()
+	})
+
+	User.beforeUpdate(async user => {
 		user.password = await user.generatePasswordHash()
 	})
 

@@ -52,6 +52,8 @@ export default gql`
 
 		updateBio(text: String!): Boolean!
 
+		updatePassword(oldPassword: String! newPassword: String!): Boolean!
+
 		updateUser(
 			location: String, 
 			bio: String, 

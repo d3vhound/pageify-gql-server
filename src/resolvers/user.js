@@ -514,6 +514,40 @@ export default {
 					return true
 				}
 			})
+		},
+
+		updatePassword: async(parent, { oldPassword, newPassword }, { models, me}) => {
+			if (!me) {
+				return new AuthenticationError('Must be signed in')
+			}
+
+			const current_user = await models.User.findById(me.id)
+
+			const checkOldPassword = await current_user.validatePassword(oldPassword)
+
+			console.log(checkOldPassword)
+
+			if (!checkOldPassword) {
+				throw new AuthenticationError('Invalid password')
+			}
+
+			// newPassword = await current_user.generatePasswordHash()
+
+			// console.log(newPassword)
+
+			const updateSuccess = current_user.update({
+				password: newPassword
+			}, {
+				where: {
+					id: me.id
+				}
+			})
+
+			if (!updateSuccess) {
+				return false
+			}
+
+			return true
 		}
 	},
 

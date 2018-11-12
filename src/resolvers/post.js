@@ -85,7 +85,15 @@ export default {
 				offset,
 				where: {
 					spotlight: true
-				}
+				},
+				include: [
+					{
+						model: models.User,
+					},
+					{
+						model: models.File
+					}
+				],
 			})
 		},
 		recentposts: async (parent, { limit, category }, { models }) => {

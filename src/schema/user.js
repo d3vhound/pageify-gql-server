@@ -54,6 +54,8 @@ export default gql`
 
 		updatePassword(oldPassword: String! newPassword: String!): Boolean!
 
+		reportUser(userId: ID!): Boolean!
+
 		updateUser(
 			location: String, 
 			bio: String, 

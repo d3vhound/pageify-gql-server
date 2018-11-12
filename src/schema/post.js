@@ -31,6 +31,10 @@ extend type Mutation {
 		id: ID!
 	): Boolean!
 
+	removeSpotlightPost(
+		id: ID!
+	): Boolean!
+
 	createComment(
 		postId: ID!
 		text: String!

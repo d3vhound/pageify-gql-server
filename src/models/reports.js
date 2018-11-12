@@ -14,7 +14,8 @@ const reports = (sequelize, DataTypes) => {
 	})
 
 	Reports.associate = models => {
-		Reports.belongsTo(models.User)
+		Reports.belongsTo(models.User, { as: "reporting"})
+		Reports.belongsTo(models.User, { as: "reported"})
 		Reports.belongsTo(models.Post)
 	}
 

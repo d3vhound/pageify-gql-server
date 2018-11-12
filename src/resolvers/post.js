@@ -428,6 +428,46 @@ export default {
 				
 				// console.log(addComment)
 			}),
+
+			spotlightPost: async (parent, { id}, { me, models}) => {
+				if (me.admin === true) {
+					const post_spotlight = await models.Post.findById(id)
+						.then((post) => {
+							post.update({ spotlight: true })
+							return post
+						})
+
+					if (post_spotlight) {
+						return true
+					}
+
+					return false
+				}
+
+				throw new UserInputError(
+					'You must be an admin to do this'
+				)
+			},
+
+			removeSpotlightPost: async (parent, { id}, { me, models}) => {
+				if (me.admin === true) {
+					const post_spotlight = await models.Post.findById(id)
+						.then((post) => {
+							post.update({ spotlight: false })
+							return post
+						})
+
+					if (post_spotlight) {
+						return true
+					}
+
+					return false
+				}
+
+				throw new UserInputError(
+					'You must be an admin to do this'
+				)
+			},
 		
 			deletePost: combineResolvers(
 				isAuthenticated,
@@ -461,7 +501,7 @@ export default {
 
 			reportPost: async (parent, { postId, spam, guidelines }, { me, models }) => {
 				const report = await models.Report.create({
-					userId: me.id,
+					reportingId: me.id,
 					postId: postId,
 					spam,
 					guidelines

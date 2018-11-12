@@ -71,8 +71,13 @@ export default {
 			return await models.User.findAll({ include: [models.Message,] });
 		},
 		user: async (parent, { id }, { models }) => {
-			console.log('jere')
-			return await models.User.findById(id, { include: [models.Message,] });
+			let user_queried = models.User.findById(id).then((user) => {
+				user.update({ views: user.views + 1}, { hooks: false })
+
+				return user
+			})
+			// let updated_views_user = await user_queried.update({ views: user_queried.views + 1 }, { hooks: false })
+			return await user_queried
 		},
 		me: async (parent, args, { models, me }) => {
 			if (!me) {
@@ -456,6 +461,19 @@ export default {
 			console.log(unblockSuccess)
 
 			if (unblockSuccess) {
+				return true
+			}
+
+			return false
+		},
+
+		reportUser: async (parent, { userId }, { me, models }) => {
+			const report = await models.Report.create({
+				reportingId: me.id,
+				reportedId: userId
+			})
+
+			if (report) {
 				return true
 			}
 

@@ -79,6 +79,15 @@ export default {
 				
 			})
 		},
+		spotlight: async (parent, { limit, offset }, { models }) => {
+			return await models.Post.findAll({
+				limit,
+				offset,
+				where: {
+					spotlight: true
+				}
+			})
+		},
 		recentposts: async (parent, { limit, category }, { models }) => {
 			return await models.Post.findAll({
 				where: {

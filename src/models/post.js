@@ -1,7 +1,7 @@
 const post = (sequelize, DataTypes) => {
 	const Post = sequelize.define('post', {
 		text: {
-			type: DataTypes.STRING,
+			type: DataTypes.TEXT,
 			validate: { notEmpty: true },
 		},
 		type: {

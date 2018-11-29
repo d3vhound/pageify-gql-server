@@ -18,11 +18,15 @@ import morgan from 'morgan'
 import DataLoader from 'dataloader'
 import OneSignal from 'onesignal-node'
 import { ApolloEngine } from 'apollo-engine'
+const sgMail = require('@sendgrid/mail')
+
 
 // const transport = new timber.transports.HTTPS(`${process.env.TIMBER_API}`)
 // if (process.env.NODE_ENV === 'production') {
 // 	timber.install(transport)
 // }
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 aws.config.update({
 	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -181,6 +185,7 @@ const server = new ApolloServer({
 				OSClient,
 				me,
 				mixpanel,
+				sgMail,
 				secret: process.env.SECRET,
 				loaders: {
 					user: new DataLoader(keys => batchUsers(keys, models)),
@@ -208,7 +213,7 @@ const server = new ApolloServer({
 // const httpServer = http.createServer(app)
 // server.installSubscriptionHandlers(httpServer)
 
-const eraseDatabaseOnSync = false
+const eraseDatabaseOnSync = true
 
 sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
 	if (eraseDatabaseOnSync) {

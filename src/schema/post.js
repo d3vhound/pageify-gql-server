@@ -21,6 +21,7 @@ extend type Mutation {
 		category: String
 		bg_color: String
 		text_color: String
+		location: String
 	): Post!
 
 	deletePost(
@@ -67,6 +68,7 @@ type Post @cacheControl(maxAge: 60, scope: PUBLIC) {
 	type: String
 	bg_color: String
 	text_color: String
+	location: String
 }
 
 type Comment {

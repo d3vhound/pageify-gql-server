@@ -17,6 +17,9 @@ const post = (sequelize, DataTypes) => {
 			type: DataTypes.BOOLEAN,
 			defaultValue: false
 		},
+		location: {
+			type: DataTypes.STRING,
+		},
 		category: {
 			type: DataTypes.STRING,
 			allowNull: false,

@@ -227,7 +227,7 @@ export default {
 
 		createPost: combineResolvers(
 			isAuthenticated,
-			async (parent, { text, media, type, category, bg_color, text_color }, { me, models, s3, mixpanel }) => {
+			async (parent, { text, media, type, category, bg_color, text_color, location }, { me, models, s3, mixpanel }) => {
 				
 				if (!type) {
 					type = 'Default'
@@ -274,7 +274,8 @@ export default {
 					type,
 					category,
 					bg_color,
-					text_color
+					text_color,
+					location
 				})
 					.then(async (post) => {
 						// console.log(post.dataValues.id)

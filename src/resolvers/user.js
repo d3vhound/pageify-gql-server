@@ -633,7 +633,35 @@ export default {
 			}
 
 			return true
-		}
+		},
+
+		forgotPassword: async (parent, { email }, { models, me, sgMail}) => {
+			// if (!me) {
+			// 	return new AuthenticationError('Must be signed in')
+			// }
+	
+			const doesEmailExist = await models.User.findOne({ where: { email }})
+	
+			if (!doesEmailExist) {
+				return false
+			}
+
+			await doesEmailExist.update({
+				password: "reset123"
+			})
+
+			const msg = {
+				to: email,
+				from: 'help@pageifyapp.com',
+				subject: 'Password Reset',
+				text: 'We have successfully process your password reset request. Please use the temporary password "reset123" to login and change your temporary password to a more secure and memorable password. \n Pageify App Team',
+				html: `<h3>Password Reset Request</h3><p>Hello, ${doesEmailExist.dataValues.username}, <br /> Your password has been reset to <u>"reset123"</u>. <p>If you did not request this password reset please email us at help@pageifyapp.com .</p><p>Pageify App Team</p>`
+			}
+
+			await sgMail.send(msg)
+			
+			return true
+		},
 	},
 
 	User: {

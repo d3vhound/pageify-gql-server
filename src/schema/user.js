@@ -15,7 +15,7 @@ export default gql`
 
 	scalar JSON
 	
-	union Results = User | Post | Hashtags
+	union Results = User | Post | Hashtags | Location
 
   extend type Query {
     users: [User!]

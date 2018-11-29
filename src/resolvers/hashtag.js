@@ -24,4 +24,15 @@ export default {
 		
 	},
 
+	Hashtags: {
+		posts_count: async (hashtag, {}, { models }) => {
+			const tags = await models.HashtagOccurrance.findAndCountAll({
+				where: {
+					hashtagId: hashtag.id
+				}
+			})
+			return tags.count
+		}
+	}
+
 }

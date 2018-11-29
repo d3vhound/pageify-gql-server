@@ -339,6 +339,16 @@ export default {
 							})
 						})
 
+						await models.Locations.findOrCreate({ where: { location }})
+							.spread(async (location, created) => {
+								let locationObj = location.get({ plain: true })
+								console.log(locationObj)
+								await models.LocationOccurrance.create({
+									locationId: locationObj.id,
+									postId: id
+								})
+							})
+
 						// let foundHashtags = regex.exec(postText)
 						// console.log(foundHashtags)
 						

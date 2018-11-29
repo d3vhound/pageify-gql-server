@@ -62,6 +62,10 @@ export default {
 				return 'Hashtags'
 			}
 
+			if (obj.location) {
+				return 'Location'
+			}
+
       return null;
     },
 	},
@@ -145,8 +149,17 @@ export default {
 					}
 				}
 			})
+
+			const Locations = await models.Locations.findAll({
+				limit: 20,
+				where: {
+					location: {
+						[Op.like]: `%${query}%`
+					}
+				}
+			})
 			
-			const Results = [...Users, ...Hashtags, ...Posts]
+			const Results = [...Users, ...Hashtags, ...Posts, ...Locations]
 
 			return Results
 		}

@@ -37,13 +37,15 @@ const models = {
 	Replies: sequelize.import('./replies'),
 	Comment: sequelize.import('./comments'),
 	Relationship: sequelize.import('./relationships'),
+	Locations: sequelize.import('./locations'),
+	LocationOccurrance: sequelize.import('./location_occurrance'),
 	Post: sequelize.import('./post'),
 	Like: sequelize.import('./likes'),
 	Notification: sequelize.import('./notification'),
 	Hashtag: sequelize.import('./hashtags'),
 	Block: sequelize.import('./blocking'),
 	HashtagOccurrance: sequelize.import('./hashtag_occurrance'),
-	Report: sequelize.import('./reports')
+	Report: sequelize.import('./reports'),
 }
 
 Object.keys(models).forEach(key => {

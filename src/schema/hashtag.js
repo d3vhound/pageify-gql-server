@@ -12,6 +12,7 @@ export default gql`
 		createdAt: String!
     updatedAt: String!
 		posts_count: Int!
+		post: Post!
 	}
 
 `

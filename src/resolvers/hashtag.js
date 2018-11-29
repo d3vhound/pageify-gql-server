@@ -32,7 +32,18 @@ export default {
 				}
 			})
 			return tags.count
+		},
+		post: async (hashtag, {}, { models }) => {
+			const postId = await models.HashtagOccurrance.findOne({
+				where: {
+					hashtagId: hashtag.id
+				}
+			})
+			return await models.Post.findOne({
+				where: {
+					id: postId.dataValues.postId
+				}
+			})
 		}
 	}
-
 }

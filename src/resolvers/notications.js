@@ -46,7 +46,7 @@ export default {
 			}).then((obj) => {
 				return obj.count
 			})
-		}
+		},
 	},
 
 	Mutation: {
@@ -68,6 +68,26 @@ export default {
 			}
 
 			return false
+
+		},
+		readAllNotifications: async (parent, {}, { me, models }) => {
+			if (!me) {
+				throw new AuthenticationError(
+					'Must be signed in',
+				)
+			}
+
+			const notifications = await models.Notification.findAll({ where: { userId: me.id, read: false }})
+
+			notifications.forEach((item) => {
+				item.update({
+					read: true
+				}, {
+					hooks: false
+				})
+			})
+			
+			return true
 
 		}
 	},

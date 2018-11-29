@@ -9,6 +9,7 @@ export default gql`
 	}
 
 	extend type Mutation {
+		readAllNotifications: Boolean
 		readNotification(id: ID!): Boolean!
 	}
 

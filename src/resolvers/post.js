@@ -105,8 +105,9 @@ export default {
 				})
 				let idsArr = []
 				posts.forEach((post) => {
-					idsArr.push(post.dataValues.id)
+					idsArr.push(post.dataValues.postId)
 				})
+
 				return await models.Post.findAll({
 					where: {
 						id: {
@@ -134,12 +135,12 @@ export default {
 			if (locationId !== undefined) {
 				const posts = await models.LocationOccurrance.findAll({
 					where: {
-						locationId
+						locationId: locationId
 					}
 				})
 				let idsArr = []
 				posts.forEach((post) => {
-					idsArr.push(post.dataValues.id)
+					idsArr.push(post.dataValues.postId)
 				})
 				return await models.Post.findAll({
 					where: {
@@ -196,7 +197,7 @@ export default {
 				})
 				let idsArr = []
 				posts.forEach((post) => {
-					idsArr.push(post.dataValues.id)
+					idsArr.push(post.dataValues.postId)
 				})
 				return await models.Post.findAll({
 					where: {
@@ -241,7 +242,7 @@ export default {
 				})
 				let idsArr = []
 				posts.forEach((post) => {
-					idsArr.push(post.dataValues.id)
+					idsArr.push(post.dataValues.postId)
 				})
 				return await models.Post.findAll({
 					where: {
@@ -320,7 +321,7 @@ export default {
 				})
 				let idsArr = []
 				posts.forEach((post) => {
-					idsArr.push(post.dataValues.id)
+					idsArr.push(post.dataValues.postId)
 				})
 				return await models.Post.findAll({
 					where: {
@@ -370,7 +371,7 @@ export default {
 				})
 				let idsArr = []
 				posts.forEach((post) => {
-					idsArr.push(post.dataValues.id)
+					idsArr.push(post.dataValues.postId)
 				})
 				return await models.Post.findAll({
 					where: {

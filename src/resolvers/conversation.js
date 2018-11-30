@@ -24,7 +24,15 @@ export default {
 			}
 		),
 		conversation: async (parent, { id }, { me, models }) => {
-			return await models.Conversation.findById(id)
+			const convo = await models.Conversation.findById(id)
+
+			if (!convo) {
+				throw new UserInputError(
+					'Conversation does not exist anymore'
+				)
+			}
+
+			return convo
 		}
 	},
 

@@ -432,6 +432,7 @@ export default {
 						'text_color',
 						'category',
 						'bg_color',
+						'createdAt',
 						[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN likes AS L ON L.post_id = P.id WHERE P.id = post.id)'),'likes'],
 						[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN comments AS C ON C.postId = P.id WHERE P.id = post.id)'),'comments'],
 						[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN likes AS L ON L.post_id = P.id WHERE P.id = post.id) + (SELECT count(*) FROM posts AS P INNER JOIN comments AS C ON C.postId = P.id WHERE P.id = post.id)'), 'interactions']

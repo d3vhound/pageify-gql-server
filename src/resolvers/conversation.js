@@ -63,6 +63,24 @@ export default {
 					return err
 				})
 			}
+		),
+		deleteConversation: combineResolvers(
+			isAuthenticated,
+			async (parent, { Id, senderId, receiverId }, { me, models }) => {
+				const conversationSuccess = await models.Conversation.destroy({
+					where: {
+						id: Id,
+						senderId,
+						receiverId
+					}
+				})
+
+				if (conversationSuccess) {
+					return true
+				}
+
+				return false
+			}
 		)
 	},
 

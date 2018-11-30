@@ -141,6 +141,20 @@ const batchCommentsCount = async (keys, models) => {
 	})
 }
 
+const batchHashtags = async (keys, models) => {
+	const tags = await models.HashtagOccurrance.findAll({
+		where: {
+			postId: {
+				$in: keys
+			}
+		}
+	})
+	return keys.map(key => {
+		let filterArr = tags.filter(tag => tag.postId === key)
+		return filterArr
+	})
+}
+
 const server = new ApolloServer({
 	typeDefs: schema,
 	resolvers,
@@ -192,7 +206,8 @@ const server = new ApolloServer({
 					file: new DataLoader(keys => batchFiles(keys, models)),
 					likes: new DataLoader(keys => batchLikesCount(keys, models)),
 					commentsCount: new DataLoader(keys => batchCommentsCount(keys, models)),
-					post: new DataLoader(keys => batchPosts(keys, models))
+					post: new DataLoader(keys => batchPosts(keys, models)),
+					hashtags: new DataLoader(keys => batchHashtags(keys, models))
 				},
 				s3
 			}

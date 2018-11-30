@@ -4,6 +4,7 @@ export default gql`
 	extend type Query {
 		locations: [Location]
 		location(query: String!): [Location]
+		locationPosts(id: ID!): [Post]
 	}
 
 	type Location {

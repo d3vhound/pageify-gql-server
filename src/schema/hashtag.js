@@ -4,6 +4,7 @@ export default gql`
 	extend type Query {
 		hashtags: [Hashtags]
 		hashtag(query: String!): [Hashtags]
+		hashtagPosts(id: ID!): [Post]
 	}
 
 	type Hashtags {

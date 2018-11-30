@@ -69,6 +69,7 @@ type Post @cacheControl(maxAge: 60, scope: PUBLIC) {
 	bg_color: String
 	text_color: String
 	location: String
+	hashtags: [Hashtags]
 }
 
 type Comment {

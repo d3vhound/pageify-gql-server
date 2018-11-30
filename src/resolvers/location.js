@@ -17,6 +17,24 @@ export default {
 					}
 				}
 			})
+		},
+		locationPosts: async (parent, { id }, { me, models }) => {
+			const posts = await models.LocationOccurrance.findAll({
+				where: {
+					locationId: id
+				}
+			})
+			let idsArr = []
+			posts.forEach((post) => {
+				idsArr.push(post.dataValues.id)
+			})
+			return await models.Post.findAll({
+				where: {
+					id: {
+						[Op.in]: idsArr
+					}
+				}
+			})
 		}
 	},
 

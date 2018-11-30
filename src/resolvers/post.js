@@ -570,6 +570,24 @@ export default {
 			})
 		},
 
+		hashtags: async (post, args, { models, loaders }) => {
+			const hashtags = await loaders.hashtags.load(post.id)
+			let ids = []
+			hashtags.forEach((tag) => {
+				ids.push(tag.dataValues.hashtagId)
+			})
+			if (ids.length < 1) {
+				return []
+			}
+			return await models.Hashtag.findAll({
+				where: {
+					id: {
+						[Op.in]: ids
+					}
+				}
+			})
+		},
+
 		createdAt: async (post, args, { models }) => {
 			return post.createdAt.toString()
 		},

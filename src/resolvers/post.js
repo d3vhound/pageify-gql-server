@@ -414,6 +414,7 @@ export default {
 			}
 
 			if (interests !== undefined) {
+				console.log(interests)
 				return await models.Post.findAll({
 					where: {
 						createdAt: {

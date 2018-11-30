@@ -6,10 +6,10 @@ extend type Query {
 	posts: [Post!]
 	post(id: ID!): Post
 	feed(offset: Int, limit: Int): [Post!]
-	trendingposts(locationId: ID! hashtagId: ID! limit: Int!, category: String): [Post!]
+	trendingposts(locationId: ID hashtagId: ID limit: Int!, category: String): [Post!]
 	foryouposts(limit: Int!, category: String): [Post!]
-	recentposts(locationId: ID! hashtagId: ID! limit: Int!, category: String): [Post!]
-	topposts(locationId: ID! hashtagId: ID! limit: Int!, category: String): [Post!]
+	recentposts(locationId: ID hashtagId: ID limit: Int!, category: String): [Post!]
+	topposts(locationId: ID hashtagId: ID limit: Int!, category: String): [Post!]
 	spotlight(limit: Int offset: Int): [Post!]
 }
 

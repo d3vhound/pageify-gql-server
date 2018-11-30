@@ -315,7 +315,7 @@ export default {
 			if (hashtagId !== undefined) {
 				const posts = await models.HashtagOccurrance.findAll({
 					where: {
-						hashtag: hashtagId
+						hashtagId
 					}
 				})
 				let idsArr = []

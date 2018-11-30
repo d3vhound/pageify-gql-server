@@ -96,7 +96,75 @@ export default {
 				],
 			})
 		},
-		recentposts: async (parent, { limit, category }, { models }) => {
+		recentposts: async (parent, { locationId, hashtagId, limit, category }, { models }) => {
+			if (hashtagId !== undefined) {
+				const posts = await models.HashtagOccurrance.findAll({
+					where: {
+						hashtagId
+					}
+				})
+				let idsArr = []
+				posts.forEach((post) => {
+					idsArr.push(post.dataValues.id)
+				})
+				return await models.Post.findAll({
+					where: {
+						id: {
+							[Op.in]: idsArr
+						},
+						category: {
+							[Op.or]: category !== undefined ? [category] : ['entertainment', 'music', 'dance', 'beauty', 'sports', 'design','gaming', 'food drink', 'fashion', 'photography', 'all', 'default']
+						}
+					},
+					order: [
+						['createdAt', 'DESC']
+					],
+					include: [
+						{
+							model: models.User,
+							where: {
+								private_status: false,
+								banned: false
+							}
+						}
+					],
+					limit,
+				})
+			}
+			if (locationId !== undefined) {
+				const posts = await models.LocationOccurrance.findAll({
+					where: {
+						locationId
+					}
+				})
+				let idsArr = []
+				posts.forEach((post) => {
+					idsArr.push(post.dataValues.id)
+				})
+				return await models.Post.findAll({
+					where: {
+						id: {
+							[Op.in]: idsArr
+						},
+						category: {
+							[Op.or]: category !== undefined ? [category] : ['entertainment', 'music', 'dance', 'beauty', 'sports', 'design','gaming', 'food drink', 'fashion', 'photography', 'all', 'default']
+						}
+					},
+					order: [
+						['createdAt', 'DESC']
+					],
+					include: [
+						{
+							model: models.User,
+							where: {
+								private_status: false,
+								banned: false
+							}
+						}
+					],
+					limit,
+				})
+			}
 			return await models.Post.findAll({
 				where: {
 					category: {
@@ -118,7 +186,98 @@ export default {
 				limit,
 			})
 		},
-		topposts: async (parent, { limit, category }, { models }) => {
+		topposts: async (parent, { locationId, hashtagId, limit, category }, { models }) => {
+
+			if (hashtagId !== undefined) {
+				const posts = await models.HashtagOccurrance.findAll({
+					where: {
+						hashtagId
+					}
+				})
+				let idsArr = []
+				posts.forEach((post) => {
+					idsArr.push(post.dataValues.id)
+				})
+				return await models.Post.findAll({
+					where: {
+						id: {
+							[Op.in]: idsArr
+						},
+						category: {
+							[Op.or]: category !== undefined ? [category] : ['entertainment', 'music', 'dance', 'beauty', 'sports', 'design','gaming', 'food drink', 'fashion', 'photography', 'all', 'default']
+						}
+					},
+					attributes: [
+						'id',
+						'text',
+						'type',
+						'userId',
+						'text_color',
+						'bg_color',
+						[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN likes AS L ON L.post_id = P.id WHERE P.id = post.id)'),'likes'],
+						[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN comments AS C ON C.postId = P.id WHERE P.id = post.id)'),'comments'],
+						[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN likes AS L ON L.post_id = P.id WHERE P.id = post.id) + (SELECT count(*) FROM posts AS P INNER JOIN comments AS C ON C.postId = P.id WHERE P.id = post.id)'), 'interactions']
+					],
+					include: [
+						{
+							model: models.User,
+							where: {
+								private_status: false,
+								banned: false
+							}
+						}
+					],
+					order: [
+						[Sequelize.literal('interactions'), 'DESC']
+					],
+					limit,
+				})
+			}
+			if (locationId !== undefined) {
+				const posts = await models.LocationOccurrance.findAll({
+					where: {
+						locationId
+					}
+				})
+				let idsArr = []
+				posts.forEach((post) => {
+					idsArr.push(post.dataValues.id)
+				})
+				return await models.Post.findAll({
+					where: {
+						id: {
+							[Op.in]: idsArr
+						},
+						category: {
+							[Op.or]: category !== undefined ? [category] : ['entertainment', 'music', 'dance', 'beauty', 'sports', 'design','gaming', 'food drink', 'fashion', 'photography', 'all', 'default']
+						}
+					},
+					attributes: [
+						'id',
+						'text',
+						'type',
+						'userId',
+						'text_color',
+						'bg_color',
+						[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN likes AS L ON L.post_id = P.id WHERE P.id = post.id)'),'likes'],
+						[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN comments AS C ON C.postId = P.id WHERE P.id = post.id)'),'comments'],
+						[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN likes AS L ON L.post_id = P.id WHERE P.id = post.id) + (SELECT count(*) FROM posts AS P INNER JOIN comments AS C ON C.postId = P.id WHERE P.id = post.id)'), 'interactions']
+					],
+					include: [
+						{
+							model: models.User,
+							where: {
+								private_status: false,
+								banned: false
+							}
+						}
+					],
+					order: [
+						[Sequelize.literal('interactions'), 'DESC']
+					],
+					limit,
+				})
+			}
 			return await models.Post.findAll({
 				where: {
 					category: {
@@ -151,8 +310,108 @@ export default {
 				limit,
 			})
 		},
-		trendingposts: async (parent, { category, limit }, { models }) => {
+		trendingposts: async (parent, { locationId, hashtagId, category, limit }, { models }) => {
 			console.log(category)
+			if (hashtagId !== undefined) {
+				const posts = await models.HashtagOccurrance.findAll({
+					where: {
+						hashtag: hashtagId
+					}
+				})
+				let idsArr = []
+				posts.forEach((post) => {
+					idsArr.push(post.dataValues.id)
+				})
+				return await models.Post.findAll({
+					where: {
+						id: {
+							[Op.in]: idsArr
+						},
+						createdAt: {
+							[Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000)
+						},
+						category: {
+							[Op.or]: category !== undefined ? [category] : ['entertainment', 'music', 'dance', 'beauty', 'sports', 'design','gaming', 'food drink', 'fashion', 'photography', 'all', 'default']
+						}
+					},
+					attributes: [
+						'id',
+						'text',
+						'type',
+						'userId',
+						'text_color',
+						'category',
+						'bg_color',
+						[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN likes AS L ON L.post_id = P.id WHERE P.id = post.id)'),'likes'],
+						[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN comments AS C ON C.postId = P.id WHERE P.id = post.id)'),'comments'],
+						[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN likes AS L ON L.post_id = P.id WHERE P.id = post.id) + (SELECT count(*) FROM posts AS P INNER JOIN comments AS C ON C.postId = P.id WHERE P.id = post.id)'), 'interactions']
+					],
+					include: [
+						{
+							model: models.User,
+							where: {
+								private_status: false,
+								banned: false
+							}
+						}
+					],
+					order: [
+						[Sequelize.literal('interactions'), 'DESC']
+					],
+					limit,
+				})
+			}
+
+			if (locationId !== undefined) {
+				const posts = await models.HashtagOccurrance.findAll({
+					where: {
+						locationId
+					}
+				})
+				let idsArr = []
+				posts.forEach((post) => {
+					idsArr.push(post.dataValues.id)
+				})
+				return await models.Post.findAll({
+					where: {
+						id: {
+							[Op.in]: idsArr
+						},
+						createdAt: {
+							[Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000)
+						},
+						category: {
+							[Op.or]: category !== undefined ? [category] : ['entertainment', 'music', 'dance', 'beauty', 'sports', 'design','gaming', 'food drink', 'fashion', 'photography', 'all', 'default']
+						}
+					},
+					attributes: [
+						'id',
+						'text',
+						'type',
+						'userId',
+						'text_color',
+						'category',
+						'bg_color',
+						[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN likes AS L ON L.post_id = P.id WHERE P.id = post.id)'),'likes'],
+						[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN comments AS C ON C.postId = P.id WHERE P.id = post.id)'),'comments'],
+						[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN likes AS L ON L.post_id = P.id WHERE P.id = post.id) + (SELECT count(*) FROM posts AS P INNER JOIN comments AS C ON C.postId = P.id WHERE P.id = post.id)'), 'interactions']
+					],
+					include: [
+						{
+							model: models.User,
+							where: {
+								private_status: false,
+								banned: false
+							}
+						}
+					],
+					order: [
+						[Sequelize.literal('interactions'), 'DESC']
+					],
+					limit,
+				})
+			}
+
 			return await models.Post.findAll({
 				where: {
 					createdAt: {

@@ -363,7 +363,7 @@ export default {
 			}
 
 			if (locationId !== undefined) {
-				const posts = await models.HashtagOccurrance.findAll({
+				const posts = await models.LocationOccurrance.findAll({
 					where: {
 						locationId
 					}

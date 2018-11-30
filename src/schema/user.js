@@ -78,6 +78,8 @@ export default gql`
 			userId: ID!
 		): Boolean!
 
+		reportIssue(text: String!): Boolean!
+
 	}
 
 	type Token {

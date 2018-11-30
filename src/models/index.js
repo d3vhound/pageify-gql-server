@@ -46,6 +46,7 @@ const models = {
 	Block: sequelize.import('./blocking'),
 	HashtagOccurrance: sequelize.import('./hashtag_occurrance'),
 	Report: sequelize.import('./reports'),
+	Issue: sequelize.import('./issues')
 }
 
 Object.keys(models).forEach(key => {

@@ -675,6 +675,22 @@ export default {
 			
 			return true
 		},
+
+		reportIssue: async (parent, { text }, { models, me }) => {
+			if (!me) {
+				return new AuthenticationError('Must be signed in')
+			}
+			const issueSuccess = await models.Issue.create({
+				text: text,
+				userId: me.id
+			})
+
+			if (!issueSuccess) {
+				return false
+			}
+
+			return true
+		},
 	},
 
 	User: {

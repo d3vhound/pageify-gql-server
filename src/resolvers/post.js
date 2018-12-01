@@ -414,7 +414,6 @@ export default {
 			}
 
 			if (interests !== undefined) {
-				console.log(interests)
 				return await models.Post.findAll({
 					where: {
 						createdAt: {
@@ -587,7 +586,12 @@ export default {
 								const { stream, filename, mimetype } = await media[0]
 								await storeUpload({ stream, s3, mimetype })
 									.then(async (value) => {
-										// console.log(value)
+										console.log(value)
+										if (!value) {
+											throw new UserInputError(
+												'Please try again'
+											)
+										}
 										await models.File.create({
 											key: value,
 											postId: id
@@ -601,7 +605,12 @@ export default {
 									// console.log(">>>>>>>>>>>>>", stream, filename, mimetype)
 									await storeUpload({ stream, s3, mimetype })
 									.then(async (value) => {
-										// console.log(value)
+										console.log(value)
+										if (!value) {
+											throw new UserInputError(
+												'Please try again'
+											)
+										}
 										await models.File.create({
 											key: value,
 											postId: id
@@ -612,47 +621,48 @@ export default {
 							}
 						}
 
-						const postText = post.dataValues.text
-						// let foundHashtags = postText.match(/#[a-zA-Z0-9_]+/g)
-						let match;
-						let hashtags = []
-						while (match = regex.exec(postText)) {
-							const hashtag = match[0]
-							hashtags.push(hashtag)
-							// console.log(`Matched sequence ${ hashtag } — code points: ${ [...hashtag].length }`)
-						}
-
-						// console.log(hashtags)
-
-						let uniqueHashtags = [...new Set(hashtags)]
-
-						console.log(uniqueHashtags)
-
-						uniqueHashtags.forEach(async (tag) => {
-							await models.Hashtag.findOrCreate({ where: { hashtag: tag }})
-							.spread(async (hashtag, created) => {
-								let tagObj = hashtag.get({ plain: true })
-								await models.HashtagOccurrance.create({
-									hashtagId: tagObj.id,
-									postId: id
-								})
-							})
-						})
-
-						await models.Locations.findOrCreate({ where: { location }})
-							.spread(async (location, created) => {
-								let locationObj = location.get({ plain: true })
-								console.log(locationObj)
-								await models.LocationOccurrance.create({
-									locationId: locationObj.id,
-									postId: id
-								})
-							})
-
 						// let foundHashtags = regex.exec(postText)
 						// console.log(foundHashtags)
 						
 						return post
+					})
+					.catch(err => console.log(err))
+
+					const postText = post.dataValues.text
+						// let foundHashtags = postText.match(/#[a-zA-Z0-9_]+/g)
+					let match;
+					let hashtags = []
+					while (match = regex.exec(postText)) {
+						const hashtag = match[0]
+						hashtags.push(hashtag)
+						// console.log(`Matched sequence ${ hashtag } — code points: ${ [...hashtag].length }`)
+					}
+
+					// console.log(hashtags)
+
+					let uniqueHashtags = [...new Set(hashtags)]
+
+					console.log(uniqueHashtags)
+
+					uniqueHashtags.forEach(async (tag) => {
+						await models.Hashtag.findOrCreate({ where: { hashtag: tag }})
+						.spread(async (hashtag, created) => {
+							let tagObj = hashtag.get({ plain: true })
+							await models.HashtagOccurrance.create({
+								hashtagId: tagObj.id,
+								postId: id
+							})
+						})
+					})
+
+					await models.Locations.findOrCreate({ where: { location }})
+					.spread(async (location, created) => {
+						let locationObj = location.get({ plain: true })
+						console.log(locationObj)
+						await models.LocationOccurrance.create({
+							locationId: locationObj.id,
+							postId: id
+						})
 					})
 
 				// const followers = await models.Relationship.findAll({

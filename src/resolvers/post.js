@@ -583,6 +583,7 @@ export default {
 						if (media !== null && media !== undefined) {
 							console.log(media.length)
 							if (media.length === 1) {
+								console.log('EXECUTING SINGLE FILE UPLOAD')
 								const { stream, filename, mimetype } = await media[0]
 								await storeUpload({ stream, s3, mimetype })
 									.then(async (value) => {
@@ -600,6 +601,7 @@ export default {
 									})
 							} 
 							if (media.length > 1) {
+								console.log('EXECUTING MULTI FILE UPLOAD')
 								await media.forEach(async file => {
 									const { stream, filename, mimetype } = await file
 									// console.log(">>>>>>>>>>>>>", stream, filename, mimetype)

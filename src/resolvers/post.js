@@ -586,14 +586,14 @@ export default {
 								console.log('EXECUTING SINGLE FILE UPLOAD')
 								const { stream, filename, mimetype } = await media[0]
 								await storeUpload({ stream, s3, mimetype })
-									.then(async (value) => {
+									.then((value) => {
 										console.log('FILE KEY FROM DO S3', value)
 										if (!value) {
 											console.log("Error could not upload file")
 											post.destroy()
 											throw "Error could not upload file"
 										}
-										await models.File.create({
+										models.File.create({
 											key: value,
 											postId: id
 										})

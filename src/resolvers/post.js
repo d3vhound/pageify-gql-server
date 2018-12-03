@@ -51,7 +51,7 @@ const storeUpload = ({ stream, mimetype, s3 }) =>
 		})
 
 		stream.on('end', () => console.log('end'))
-		stream.on('error', reject)
+		stream.on('error', reject())
 	})
 
 export default {
@@ -581,17 +581,14 @@ export default {
 						const id = post.dataValues.id
 
 						if (media !== null && media !== undefined) {
-							// console.log(media)
+							console.log(media.length)
 							if (media.length === 1) {
 								const { stream, filename, mimetype } = await media[0]
 								await storeUpload({ stream, s3, mimetype })
 									.then(async (value) => {
-										console.log(value)
+										console.log('FILE KEY FROM DO S3', value)
 										if (!value) {
-											post.destroy()
-											throw new UserInputError(
-												'Please try again'
-											)
+											throw "Error could not upload file"
 										}
 										await models.File.create({
 											key: value,
@@ -600,7 +597,6 @@ export default {
 									})
 									.catch(err => {
 										console.log(err)
-										throw new UserInputError('Please try again')
 									})
 							} 
 							if (media.length > 1) {
@@ -609,12 +605,9 @@ export default {
 									// console.log(">>>>>>>>>>>>>", stream, filename, mimetype)
 									await storeUpload({ stream, s3, mimetype })
 									.then(async (value) => {
-										console.log(value)
+										console.log('FILE KEY FROM DO S3', value)
 										if (!value) {
-											post.destroy()
-											throw new UserInputError(
-												'Please try again'
-											)
+											throw "Error could not upload file"
 										}
 										await models.File.create({
 											key: value,
@@ -622,9 +615,7 @@ export default {
 										})
 									})
 									.catch(err => {
-										post.destroy()
 										console.log(err)
-										throw new UserInputError('Please try again')
 									})
 								})
 							}

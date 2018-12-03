@@ -589,6 +589,8 @@ export default {
 									.then(async (value) => {
 										console.log('FILE KEY FROM DO S3', value)
 										if (!value) {
+											console.log("Error could not upload file")
+											post.destroy()
 											throw "Error could not upload file"
 										}
 										await models.File.create({
@@ -609,6 +611,8 @@ export default {
 									.then(async (value) => {
 										console.log('FILE KEY FROM DO S3', value)
 										if (!value) {
+											console.log("Error could not upload file")
+											post.destroy()
 											throw "Error could not upload file"
 										}
 										await models.File.create({

@@ -25,8 +25,8 @@ const allCategories = [
 	"all"
 ]
 
-const storeUpload = ({ stream, mimetype, s3 }) =>
-	new Promise((resolve, reject) => {
+function storeUpload({ stream, mimetype, s3 }) {
+	return new Promise((resolve, reject) => {
 		const uuidFilename = uuidv4()
 
 		const params = {
@@ -44,15 +44,18 @@ const storeUpload = ({ stream, mimetype, s3 }) =>
 			}
 
 			if (data) {
-				// console.log(data)
 				resolve(data.key)
 				// file_url: data.Location,data.key)
 			}
 		})
 
+		stream.on('error', (err) => {
+			console.log(err)
+			reject()
+		})
 		stream.on('end', () => console.log('end'))
-		stream.on('error', reject())
 	})
+}
 
 export default {
 	Query: {
@@ -580,52 +583,36 @@ export default {
 						// console.log(post.dataValues.id)
 						const id = post.dataValues.id
 
-						if (media !== null && media !== undefined) {
-							console.log(media.length)
 							if (media.length === 1) {
 								console.log('EXECUTING SINGLE FILE UPLOAD')
 								const { stream, filename, mimetype } = await media[0]
-								await storeUpload({ stream, s3, mimetype })
-									.then((value) => {
-										console.log('FILE KEY FROM DO S3', value)
-										if (!value) {
-											console.log("Error could not upload file")
-											post.destroy()
-											throw "Error could not upload file"
-										}
-										models.File.create({
-											key: value,
-											postId: id
-										})
-									})
-									.catch(err => {
-										console.log(err)
-									})
+								const fileKey = await storeUpload({ stream, s3, mimetype})
+								console.log(fileKey)
+								if (!fileKey) {
+									throw "Error"
+								} 
+								await models.File.create({
+									key: fileKey,
+									postId: id
+								})
 							} 
-							if (media.length > 1) {
+							else if (media.length > 1) {
 								console.log('EXECUTING MULTI FILE UPLOAD')
 								await media.forEach(async file => {
 									const { stream, filename, mimetype } = await file
 									// console.log(">>>>>>>>>>>>>", stream, filename, mimetype)
-									await storeUpload({ stream, s3, mimetype })
-									.then(async (value) => {
-										console.log('FILE KEY FROM DO S3', value)
-										if (!value) {
+									const fileKey = await storeUpload({ stream, s3, mimetype })
+										console.log('FILE KEY FROM DO S3', fileKey)
+										if (!fileKey) {
 											console.log("Error could not upload file")
-											post.destroy()
 											throw "Error could not upload file"
 										}
 										await models.File.create({
-											key: value,
+											key: fileKey,
 											postId: id
 										})
-									})
-									.catch(err => {
-										console.log(err)
-									})
 								})
 							}
-						}
 
 						const postText = post.dataValues.text
 						// let foundHashtags = postText.match(/#[a-zA-Z0-9_]+/g)
@@ -668,7 +655,8 @@ export default {
 					})
 					.catch(err => {
 						console.log(err)
-						throw new UserInputError('Please try again')
+						return null
+						// throw new UserInputError('Please try again')
 					})
 				// const followers = await models.Relationship.findAll({
 				// 	where: { followed_id: me.id },
@@ -685,6 +673,8 @@ export default {
 				// 	},
 				// })
 
+				console.log("POST", post)
+			
 				return post
 			}
 		),

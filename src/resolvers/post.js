@@ -584,6 +584,7 @@ export default {
 						let error
 						const id = post.dataValues.id
 
+						if (media !== undefined && media !== null) {
 							if (media.length === 1) {
 								console.log('EXECUTING SINGLE FILE UPLOAD')
 								const { stream, filename, mimetype } = await media[0]
@@ -615,6 +616,7 @@ export default {
 										})
 								})
 							}
+						}
 
 						const postText = post.dataValues.text
 						// let foundHashtags = postText.match(/#[a-zA-Z0-9_]+/g)
@@ -680,7 +682,8 @@ export default {
 				console.log("POST", post)
 				
 				if (!post) {
-					return post.destroy({ force: true })
+					post.destroy({ force: true })
+					return null
 				}
 
 				return post

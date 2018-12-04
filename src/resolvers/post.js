@@ -581,6 +581,7 @@ export default {
 				})
 					.then(async (post) => {
 						// console.log(post.dataValues.id)
+						let error
 						const id = post.dataValues.id
 
 							if (media.length === 1) {
@@ -589,6 +590,7 @@ export default {
 								const fileKey = await storeUpload({ stream, s3, mimetype})
 								console.log(fileKey)
 								if (!fileKey) {
+									console.log("Error could not upload file")
 									throw "Error"
 								} 
 								await models.File.create({
@@ -605,7 +607,7 @@ export default {
 										console.log('FILE KEY FROM DO S3', fileKey)
 										if (!fileKey) {
 											console.log("Error could not upload file")
-											throw "Error could not upload file"
+											throw "Error"
 										}
 										await models.File.create({
 											key: fileKey,
@@ -651,10 +653,12 @@ export default {
 							})
 						})
 						
+
 						return post
 					})
 					.catch(err => {
-						console.log(err)
+						console.log('MAIN CATCH ERR BLOCK', err)
+						console.log(post)
 						return null
 						// throw new UserInputError('Please try again')
 					})
@@ -674,7 +678,11 @@ export default {
 				// })
 
 				console.log("POST", post)
-			
+				
+				if (!post) {
+					return post.destroy({ force: true })
+				}
+
 				return post
 			}
 		),

@@ -37,8 +37,12 @@ const post = (sequelize, DataTypes) => {
 		Post.belongsTo(models.User, {
 			onDelete: 'cascade'
 		})
-		Post.hasMany(models.File)
-		Post.hasMany(models.Comment)
+		Post.hasMany(models.File, {
+			onDelete: 'cascade'
+		})
+		Post.hasMany(models.Comment, {
+			onDelete: 'cascade'
+		})
 		Post.belongsToMany(models.User, {
 			as: 'likes',
 			through: {

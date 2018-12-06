@@ -224,11 +224,10 @@ const server = new ApolloServer({
 })
 
 // server.applyMiddleware({ app, path: '/graphql' })
-
 // const httpServer = http.createServer(app)
 // server.installSubscriptionHandlers(httpServer)
 
-const eraseDatabaseOnSync = false
+const eraseDatabaseOnSync = true
 
 sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
 	if (eraseDatabaseOnSync) {

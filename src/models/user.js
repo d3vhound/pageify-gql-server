@@ -35,18 +35,24 @@ const user = (sequelize, DataTypes) => {
 				args: true,
 				msg: 'That email has been taken.',
 			},
+			isEmail: {
+				args: true,
+				msg: "Please enter a valid email address"
+			},
 			allowNull: false,
 			validate: {
 				notEmpty: true,
-				isEmail: true
 			}
 		},
 		password: {
 			type: DataTypes.STRING,
 			allowNull: false,
+			len: {
+				ags: [7, 142],
+				msg: "Password must be between 7-142 characters"
+			},
 			validate: {
 				notEmpty: true,
-				len: [7, 142]
 			}
 		},
 		avatar: {

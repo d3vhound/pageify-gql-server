@@ -22,6 +22,7 @@ const message = (sequelize, DataTypes) => {
 	Message.associate = models => {
 		Message.belongsTo(models.Conversation)
 		Message.belongsTo(models.User)
+		Message.belongsTo(models.Post)
 	}
 
 	return Message

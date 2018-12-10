@@ -161,6 +161,13 @@ export default {
 
 		// 	return user1
 		// },
+		post: async (message, args, { models }) => {
+			if (!message.postId) {
+				return null
+			}
+			
+			return await models.Post.findByPk(message.postId)
+		},
 		createdAt: async (message, args, { models }) => {
 			return message.createdAt.toString()
 		},

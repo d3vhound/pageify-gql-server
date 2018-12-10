@@ -2,7 +2,30 @@ import { UserInputError, AuthenticationError, withFilter } from "apollo-server-e
 import { combineResolvers } from 'graphql-resolvers'
 import { isAuthenticated } from './authorization'
 import Sequelize from 'sequelize'
+import pubsub, { EVENTS } from '../subscription'
+import uuidv4 from 'uuid/v4'
+import OneSignal from 'onesignal-node'
 const Op = Sequelize.Op
+
+const constructNotification = ({ message, user }) => {
+	// console.log('get user inside construct func', user, message)
+	return new OneSignal.Notification({
+		contents: {      
+				en: message,     
+		},    
+		"ios_badgeType": "Increase",
+		"ios_badgeCount": 1,
+		include_player_ids: [user.dataValues.onesignal_id],
+		filters: [    
+			{
+				"field": "tag", 
+				"key": "userId", 
+				"relation": "=", 
+				"value": user.dataValues.id
+			},  
+		],    
+	})
+}
 
 export default {
 	Query: {
@@ -88,6 +111,120 @@ export default {
 				}
 
 				return false
+			}
+		),
+		sharePost: combineResolvers(
+			isAuthenticated,
+			async (parent, { receiverId, postId }, { me, models, OSClient }) => {
+				const checkConversation = await models.Conversation.findOrCreate({
+					where: {
+						senderId: {
+							[Op.or]: [me.id, receiverId]
+						},
+						receiverId: {
+							[Op.or]: [me.id, receiverId]
+						}
+					},
+					defaults: {
+						senderId: me.id,
+						receiverId,
+					}
+				})
+				.spread((conversation, created) => {
+					if (!created) {
+						return conversation
+					}
+					return conversation
+				})
+				.catch(err => {
+					console.log(err)
+					return false
+				})
+
+				if (!checkConversation) {
+					return false
+				}
+
+				const message = await models.Message.create({
+					text: `${me.username} shared a post`,
+					userId: me.id,
+					conversationId: checkConversation.dataValues.id,
+					_id: uuidv4(),
+					postId
+				}).then(async message => {
+					const user = await models.User.findById(me.id)
+					message.user = user
+					// console.log(message)
+					return message
+				})
+
+				let user1 = checkConversation.dataValues.senderId
+				let user2 = checkConversation.dataValues.receiverId
+
+				
+				
+				if (user1 !== me.id) {
+					// console.log('sending notification to', conversation.dataValues.senderId)
+					const userToNotify = await models.User.findById(user1)
+					var NewNotification = constructNotification({ message: `${me.username}:  Shared a post with you.`, user: userToNotify })
+					OSClient.sendNotification(NewNotification, async (err, httpResponse, data) => {    
+						if (err) {    
+								console.log('Something went wrong...')    
+						} else {    
+								// console.log(data)
+								const notification = await models.Notification.create({
+									text: 'messaged you',
+									initiatorId: me.id,
+									read: false,
+									userId: user1,
+									conversationId: conversationId,
+									messageId: _id
+								})  
+								
+								await pubsub.publish(EVENTS.NOTIFICATION.CREATED, {
+									notificationSent: {
+										notification
+									}
+								})
+						}    
+					 })
+
+				} else if (user2 !== me.id) {
+
+					// console.log('sending notification to', conversation.dataValues.receiverId)
+					const userToNotify = await models.User.findById(user2)
+					var NewNotification = constructNotification({ message: `${me.username}: Shared a post with you.`, user: userToNotify })
+					OSClient.sendNotification(NewNotification, async (err, httpResponse, data) => {    
+						if (err) {    
+								console.log('Something went wrong...')    
+						} else {    
+								// console.log(data)
+								const notification = await models.Notification.create({
+									text: 'messaged you',
+									initiatorId: me.id,
+									read: false,
+									userId: user2,
+									conversationId: conversationId,
+									messageId: _id
+								})
+								
+								await pubsub.publish(EVENTS.NOTIFICATION.CREATED, {
+									notificationSent: {
+										notification
+									}
+								})
+						}    
+					 })
+				}
+
+				await pubsub.publish(EVENTS.MESSAGE.ADDED, {
+					messageAdded: {
+						message
+					}
+				})
+
+				return true
+
 			}
 		)
 	},

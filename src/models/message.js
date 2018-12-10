@@ -12,6 +12,9 @@ const message = (sequelize, DataTypes) => {
 			type: DataTypes.STRING,
 			validate: { notEmpty: true }
 		},
+		postId: {
+			type: DataTypes.INTEGER,
+		}
 	}, {
 		charset: 'utf8mb4',
 	})

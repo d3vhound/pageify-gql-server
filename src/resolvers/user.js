@@ -177,7 +177,7 @@ export default {
 						[Op.like]: `%${query}%`
 					},
 					interests: {
-						[Op.contains]: `%${category}%`
+						[Op.contains]: category
 					}
 				},
 			})
@@ -189,7 +189,7 @@ export default {
 						[Op.like]: `%${query}%`
 					},
 					category: {
-						[Op.like]: `%${category}`
+						[Op.like]: `%${category}%`
 					}
 				}
 			})

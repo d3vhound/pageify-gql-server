@@ -117,7 +117,7 @@ export default {
 							[Op.in]: idsArr
 						},
 						category: {
-							[Op.or]: category !== undefined ? [category] : ['entertainment', 'music', 'dance', 'beauty', 'sports', 'design','gaming', 'food drink', 'fashion', 'photography', 'all', 'default']
+							[Op.or]: category !== undefined ? [category] : ['entertainment', 'music', 'dance', 'beauty', 'sports', 'art & design','gaming', 'food & drink', 'fashion', 'film & photography', 'all', 'default']
 						}
 					},
 					order: [
@@ -151,7 +151,7 @@ export default {
 							[Op.in]: idsArr
 						},
 						category: {
-							[Op.or]: category !== undefined ? [category] : ['entertainment', 'music', 'dance', 'beauty', 'sports', 'design','gaming', 'food drink', 'fashion', 'photography', 'all', 'default']
+							[Op.or]: category !== undefined ? [category] : ['entertainment', 'music', 'dance', 'beauty', 'sports', 'art & design','gaming', 'food & drink', 'fashion', 'film & photography', 'all', 'default']
 						}
 					},
 					order: [
@@ -172,7 +172,7 @@ export default {
 			return await models.Post.findAll({
 				where: {
 					category: {
-						[Op.or]: category !== undefined ? [category] : ['entertainment', 'music', 'dance', 'beauty', 'sports', 'design','gaming', 'food drink', 'fashion', 'photography', 'all', 'default']
+						[Op.or]: category !== undefined ? [category] : ['entertainment', 'music', 'dance', 'beauty', 'sports', 'art & design','gaming', 'food & drink', 'fashion', 'film & photography', 'all', 'default']
 					}
 				},
 				order: [
@@ -208,7 +208,7 @@ export default {
 							[Op.in]: idsArr
 						},
 						category: {
-							[Op.or]: category !== undefined ? [category] : ['entertainment', 'music', 'dance', 'beauty', 'sports', 'design','gaming', 'food drink', 'fashion', 'photography', 'all', 'default']
+							[Op.or]: category !== undefined ? [category] : ['entertainment', 'music', 'dance', 'beauty', 'sports', 'art & design','gaming', 'food & drink', 'fashion', 'film & photography', 'all', 'default']
 						}
 					},
 					attributes: [
@@ -253,7 +253,7 @@ export default {
 							[Op.in]: idsArr
 						},
 						category: {
-							[Op.or]: category !== undefined ? [category] : ['entertainment', 'music', 'dance', 'beauty', 'sports', 'design','gaming', 'food drink', 'fashion', 'photography', 'all', 'default']
+							[Op.or]: category !== undefined ? [category] : ['entertainment', 'music', 'dance', 'beauty', 'sports', 'art & design','gaming', 'food & drink', 'fashion', 'film & photography', 'all', 'default']
 						}
 					},
 					attributes: [
@@ -285,7 +285,7 @@ export default {
 			return await models.Post.findAll({
 				where: {
 					category: {
-						[Op.or]: category !== undefined ? [category] : ['entertainment', 'music', 'dance', 'beauty', 'sports', 'design','gaming', 'food drink', 'fashion', 'photography', 'all', 'default']
+						[Op.or]: category !== undefined ? [category] : ['entertainment', 'music', 'dance', 'beauty', 'sports', 'art & design','gaming', 'food & drink', 'fashion', 'film & photography', 'all', 'default']
 					}
 				},
 				attributes: [
@@ -335,7 +335,7 @@ export default {
 							[Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000)
 						},
 						category: {
-							[Op.or]: category !== undefined ? [category] : ['entertainment', 'music', 'dance', 'beauty', 'sports', 'design','gaming', 'food drink', 'fashion', 'photography', 'all', 'default']
+							[Op.or]: category !== undefined ? [category] : ['entertainment', 'music', 'dance', 'beauty', 'sports', 'art & design','gaming', 'food & drink', 'fashion', 'film & photography', 'all', 'default']
 						}
 					},
 					attributes: [

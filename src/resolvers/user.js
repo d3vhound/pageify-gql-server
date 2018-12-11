@@ -177,7 +177,9 @@ export default {
 						[Op.like]: `%${query}%`
 					},
 					interests: {
-						[Op.contains]: category
+						[Op.contains]: {
+							category
+						}
 					}
 				},
 			})

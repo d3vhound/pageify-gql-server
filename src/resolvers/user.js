@@ -188,9 +188,7 @@ export default {
 					text: {
 						[Op.like]: `%${query}%`
 					},
-					category: {
-						[Op.like]: `%${category}%`
-					}
+					category: category
 				}
 			})
 

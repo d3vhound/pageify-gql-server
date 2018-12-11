@@ -42,4 +42,15 @@ export default {
 		
 	},
 
+	Location: {
+		users: async(location, {}, { models }) => {
+			return await models.User.findAll({
+				where: {
+					location: {
+						[Op.like]: location.location
+					}
+				}
+			})
+		}
+	}
 }

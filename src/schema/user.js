@@ -22,6 +22,7 @@ export default gql`
     user(id: ID!): User
     me: User
 		search(query: String!): [Results]
+		searchCategory(query: String! category: String!): [Results]
 		block_list: [User]
   }
 

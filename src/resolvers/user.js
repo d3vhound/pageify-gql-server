@@ -164,6 +164,59 @@ export default {
 			const Results = [...Users, ...Hashtags, ...Posts, ...Locations]
 
 			return Results
+		},
+		searchCategory: async (parent, { query, category }, { models, me}) => {
+
+			// query.replace('@', '')
+			// query.replace('#', '')
+
+			const Users =  await models.User.findAll({
+				limit: 100,
+				where: {
+					username: {
+						[Op.like]: `%${query}%`
+					},
+					interests: {
+						[Op.contains]: `%${category}%`
+					}
+				},
+			})
+
+			const Posts = await models.Post.findAll({
+				limit: 100,
+				where: {
+					text: {
+						[Op.like]: `%${query}%`
+					},
+					category: {
+						[Op.like]: `%${category}`
+					}
+				}
+			})
+
+			const Hashtags = await models.Hashtag.findAll({
+				limit: 20,
+				where: {
+					hashtag: {
+						[Op.like]: `%${query}%`
+					}
+				}
+			})
+
+			const Locations = await models.Locations.findAll({
+				limit: 20,
+				where: {
+					location: {
+						[Op.like]: `%${query}%`
+					}
+				}
+			})
+
+
+			
+			const Results = [...Users, ...Posts, ...Hashtags, ...Locations]
+
+			return Results
 		}
 	},
 

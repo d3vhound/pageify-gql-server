@@ -12,6 +12,7 @@ export default gql`
 		location: String!
 		createdAt: String!
     updatedAt: String!
+		users: [User!]!
 	}
 
 `

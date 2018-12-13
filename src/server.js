@@ -164,9 +164,6 @@ const server = new ApolloServer({
     calculateCacheControlHeaders: true,
 	},
 	tracing: true,
-	engine: {
-		apiKey: "service:pageify:_aVxPgfzIbpujP7wMl5_uQ",
-	},
 	subscriptions: {
 		onConnect: () => {
 			console.log('Connection')

@@ -590,22 +590,22 @@ export default {
 								const { stream, filename, mimetype } = await media[0]
 								try {
 									const fileKey = await storeUpload({ stream, s3, mimetype})
+									console.log(fileKey)
+									if (!fileKey) {
+										console.log("Error could not upload file")
+										// throw "Error"
+										// await post.destroy({ force: true })
+										// return post
+										throw "Error"
+									} 
+									await models.File.create({
+										key: fileKey,
+										postId: id
+									})
 								} catch(e) {
 									console.log(e)
 									await post.destroy({ force: true })
 								}
-								console.log(fileKey)
-								if (!fileKey) {
-									console.log("Error could not upload file")
-									// throw "Error"
-									// await post.destroy({ force: true })
-									// return post
-									throw "Error"
-								} 
-								await models.File.create({
-									key: fileKey,
-									postId: id
-								})
 							} 
 							else if (media.length > 1) {
 								console.log('EXECUTING MULTI FILE UPLOAD')
@@ -614,10 +614,6 @@ export default {
 									// console.log(">>>>>>>>>>>>>", stream, filename, mimetype)
 									try {
 										const fileKey = await storeUpload({ stream, s3, mimetype })
-									} catch(e) {
-										console.log(e)
-										await post.destroy({ force: true })
-									}
 										console.log('FILE KEY FROM DO S3', fileKey)
 										if (!fileKey) {
 											console.log("Error could not upload file")
@@ -630,6 +626,10 @@ export default {
 											key: fileKey,
 											postId: id
 										})
+									} catch(e) {
+										console.log(e)
+										await post.destroy({ force: true })
+									}
 								})
 							}
 						}
@@ -677,7 +677,7 @@ export default {
 					.catch(err => {
 						console.log('MAIN CATCH ERR BLOCK', err)
 						console.log(post)
-						// return null
+						return null
 						// throw new UserInputError('Please try again')
 					})
 				// const followers = await models.Relationship.findAll({

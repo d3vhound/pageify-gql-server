@@ -588,14 +588,19 @@ export default {
 							if (media.length === 1) {
 								console.log('EXECUTING SINGLE FILE UPLOAD')
 								const { stream, filename, mimetype } = await media[0]
-								const fileKey = await storeUpload({ stream, s3, mimetype})
+								try {
+									const fileKey = await storeUpload({ stream, s3, mimetype})
+								} catch(e) {
+									console.log(e)
+									await post.destroy({ force: true })
+								}
 								console.log(fileKey)
 								if (!fileKey) {
 									console.log("Error could not upload file")
 									// throw "Error"
-									return post
 									// await post.destroy({ force: true })
-									// throw "Error"
+									// return post
+									throw "Error"
 								} 
 								await models.File.create({
 									key: fileKey,
@@ -607,13 +612,18 @@ export default {
 								await media.forEach(async file => {
 									const { stream, filename, mimetype } = await file
 									// console.log(">>>>>>>>>>>>>", stream, filename, mimetype)
-									const fileKey = await storeUpload({ stream, s3, mimetype })
+									try {
+										const fileKey = await storeUpload({ stream, s3, mimetype })
+									} catch(e) {
+										console.log(e)
+										await post.destroy({ force: true })
+									}
 										console.log('FILE KEY FROM DO S3', fileKey)
 										if (!fileKey) {
 											console.log("Error could not upload file")
-											return post
+											// return post
 											// await post.destroy({ force: true })
-											// throw "Error"
+											throw "Error"
 											// throw "Error"
 										}
 										await models.File.create({
@@ -688,7 +698,7 @@ export default {
 				console.log("POST", post)
 				
 				if (!post) {
-					post.destroy({ force: true })
+					// post.destroy({ force: true })
 					return null
 				}
 

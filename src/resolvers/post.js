@@ -591,6 +591,11 @@ export default {
 								const { stream, filename, mimetype } = await media[0]
 								try {
 									const fileKey = await storeUpload({ stream, s3, mimetype, post})
+									.then((value) => value)
+									.catch((error) => {
+										console.log('INSIDE THENCATCH', error)
+										return null
+									})
 									console.log(fileKey)
 									if (!fileKey) {
 										console.log("Error could not upload file")
@@ -615,6 +620,11 @@ export default {
 									// console.log(">>>>>>>>>>>>>", stream, filename, mimetype)
 									try {
 										const fileKey = await storeUpload({ stream, s3, mimetype, post})
+										.then((value) => value)
+										.catch((error) => {
+											console.log('INSIDE THENCATCH', error)
+											return null
+										})
 										console.log('FILE KEY FROM DO S3', fileKey)
 										if (!fileKey) {
 											console.log("Error could not upload file")

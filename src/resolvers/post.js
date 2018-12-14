@@ -593,8 +593,9 @@ export default {
 								if (!fileKey) {
 									console.log("Error could not upload file")
 									// throw "Error"
-									post.destroy({ force: true })
-									return
+									return post
+									// await post.destroy({ force: true })
+									// throw "Error"
 								} 
 								await models.File.create({
 									key: fileKey,
@@ -610,9 +611,10 @@ export default {
 										console.log('FILE KEY FROM DO S3', fileKey)
 										if (!fileKey) {
 											console.log("Error could not upload file")
-											post.destroy({ force: true })
+											return post
+											// await post.destroy({ force: true })
 											// throw "Error"
-											return
+											// throw "Error"
 										}
 										await models.File.create({
 											key: fileKey,

@@ -588,8 +588,8 @@ export default {
 						if (media !== undefined && media !== null) {
 							if (media.length === 1) {
 								console.log('EXECUTING SINGLE FILE UPLOAD')
-								const { stream, filename, mimetype } = await media[0]
 								try {
+									const { stream, filename, mimetype } = await media[0]
 									const fileKey = await storeUpload({ stream, s3, mimetype, post})
 									.then((value) => value)
 									.catch((error) => {
@@ -609,16 +609,16 @@ export default {
 										postId: id
 									})
 								} catch(e) {
-									console.log(e)
+									console.log('CATCH', e)
 									await post.destroy({ force: true })
 								}
 							} 
 							else if (media.length > 1) {
 								console.log('EXECUTING MULTI FILE UPLOAD')
 								await media.forEach(async file => {
-									const { stream, filename, mimetype } = await file
 									// console.log(">>>>>>>>>>>>>", stream, filename, mimetype)
 									try {
+										const { stream, filename, mimetype } = await file
 										const fileKey = await storeUpload({ stream, s3, mimetype, post})
 										.then((value) => value)
 										.catch((error) => {

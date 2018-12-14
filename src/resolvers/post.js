@@ -51,7 +51,7 @@ function storeUpload({ stream, mimetype, s3, post }) {
 
 		stream.on('error', (err) => {
 			console.log('INSIDE STOREUPLOAD FUNC', err)
-			await post.destroy({ force: true })
+			post.destroy({ force: true })
 			reject()
 		})
 		stream.on('end', () => console.log('end'))

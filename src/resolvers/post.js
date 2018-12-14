@@ -591,7 +591,10 @@ export default {
 								try {
 									const { stream, filename, mimetype } = await media[0]
 									const fileKey = await storeUpload({ stream, s3, mimetype, post})
-									.then((value) => value)
+									.then((value) => {
+										console.log('value', value)
+										return value
+									})
 									.catch((error) => {
 										console.log('INSIDE THENCATCH', error)
 										return null

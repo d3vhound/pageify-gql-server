@@ -25,7 +25,7 @@ const allCategories = [
 	"all"
 ]
 
-function storeUpload({ stream, mimetype, s3 }) {
+function storeUpload({ stream, mimetype, s3, post }) {
 	return new Promise((resolve, reject) => {
 		const uuidFilename = uuidv4()
 
@@ -50,7 +50,8 @@ function storeUpload({ stream, mimetype, s3 }) {
 		})
 
 		stream.on('error', (err) => {
-			console.log(err)
+			console.log('INSIDE STOREUPLOAD FUNC', err)
+			await post.destroy({ force: true })
 			reject()
 		})
 		stream.on('end', () => console.log('end'))
@@ -589,7 +590,7 @@ export default {
 								console.log('EXECUTING SINGLE FILE UPLOAD')
 								const { stream, filename, mimetype } = await media[0]
 								try {
-									const fileKey = await storeUpload({ stream, s3, mimetype})
+									const fileKey = await storeUpload({ stream, s3, mimetype, post})
 									console.log(fileKey)
 									if (!fileKey) {
 										console.log("Error could not upload file")
@@ -613,7 +614,7 @@ export default {
 									const { stream, filename, mimetype } = await file
 									// console.log(">>>>>>>>>>>>>", stream, filename, mimetype)
 									try {
-										const fileKey = await storeUpload({ stream, s3, mimetype })
+										const fileKey = await storeUpload({ stream, s3, mimetype, post})
 										console.log('FILE KEY FROM DO S3', fileKey)
 										if (!fileKey) {
 											console.log("Error could not upload file")

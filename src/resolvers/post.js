@@ -661,7 +661,7 @@ export default {
 					.catch(err => {
 						console.log('MAIN CATCH ERR BLOCK', err)
 						console.log(post)
-						return null
+						// return null
 						// throw new UserInputError('Please try again')
 					})
 				// const followers = await models.Relationship.findAll({

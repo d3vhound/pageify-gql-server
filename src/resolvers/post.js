@@ -25,7 +25,7 @@ const allCategories = [
 	"all"
 ]
 
-function storeUpload({ stream, mimetype, s3, post }) {
+function storeUpload({ stream, mimetype, s3,}) {
 	return new Promise((resolve, reject) => {
 		const uuidFilename = uuidv4()
 
@@ -51,7 +51,6 @@ function storeUpload({ stream, mimetype, s3, post }) {
 
 		stream.on('error', (err) => {
 			console.log('INSIDE STOREUPLOAD FUNC', err)
-			post.destroy({ force: true })
 			reject()
 		})
 		stream.on('end', () => console.log('end'))
@@ -590,7 +589,7 @@ export default {
 								console.log('EXECUTING SINGLE FILE UPLOAD')
 								try {
 									const { stream, filename, mimetype } = await media[0]
-									const fileKey = await storeUpload({ stream, s3, mimetype, post})
+									const fileKey = await storeUpload({ stream, s3, mimetype })
 									.then((value) => {
 										console.log('value', value)
 										return value
@@ -623,8 +622,11 @@ export default {
 									// console.log(">>>>>>>>>>>>>", stream, filename, mimetype)
 									try {
 										const { stream, filename, mimetype } = await file
-										const fileKey = await storeUpload({ stream, s3, mimetype, post})
-										.then((value) => value)
+										const fileKey = await storeUpload({ stream, s3, mimetype })
+										.then((value) => {
+											console.log('value', value)
+											return value
+										})
 										.catch((error) => {
 											console.log('INSIDE THENCATCH', error)
 											return null

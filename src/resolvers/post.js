@@ -614,6 +614,7 @@ export default {
 								} catch(e) {
 									console.log('CATCH', e)
 									await post.destroy({ force: true })
+									throw "Error"
 								}
 							} 
 							else if (media.length > 1) {
@@ -643,6 +644,7 @@ export default {
 									} catch(e) {
 										console.log(e)
 										await post.destroy({ force: true })
+										throw "Error"
 									}
 								})
 							}

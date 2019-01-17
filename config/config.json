@@ -1,9 +1,9 @@
 {
 	"development": {
-		"username": "d3vhound",
-		"password": "Scrappy7737!",
-		"database": "pageifytest",
-		"host": "127.0.0.1",
+		"username": "pageifyapi",
+		"password": "Scrappy7737",
+		"database": "pageifyprod",
+		"host": "10.138.44.48",
 		"dialect": "mysql"
 	},
 	"test": {

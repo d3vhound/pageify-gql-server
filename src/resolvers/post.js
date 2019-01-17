@@ -811,13 +811,46 @@ export default {
         isAuthenticated,
         async (parent, { postId, text, user_to_notify, commentId }, { me, models, s3, mixpanel, OSClient }) => {
 
-          const addCommentReply = await models.Comment.create({
-            text: text,
-            postId: postId,
-            userId: me.id,
-            reply_to: commentId
-          })
+          const checkIfCommentIsReply = await models.Comment.findByPk(commentId)
 
+          if (checkIfCommentIsReply.dataValues.reply_to !== null) {
+            console.log('comment is a reply')
+
+            const commentOwner = await models.User.findByPk(checkIfCommentIsReply.userId)
+            
+            const addCommentReply = await models.Comment.create({
+              text: `@${commentOwner.dataValues.username} ${text}`,
+              postId: postId,
+              userId: me.id,
+              reply_to: checkIfCommentIsReply.dataValues.reply_to
+            })
+
+            notifyUsers();
+            
+            if (addCommentReply) {
+              return true;
+            }
+
+            return false
+
+          } else { 
+            const addCommentReply = await models.Comment.create({
+              text: text,
+              postId: postId,
+              userId: me.id,
+              reply_to: commentId
+            })
+
+            notifyUsers();
+
+            if (addCommentReply) {
+              return true;
+            }
+
+            return false
+          }
+
+          async function notifyUsers() {
           if (user_to_notify !== me.id) {
             const commentOwner = await models.User.findById(user_to_notify)
 
@@ -875,6 +908,7 @@ export default {
              })
 
           }
+        }
 
           if (addCommentReply) {
             return true

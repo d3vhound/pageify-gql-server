@@ -49,7 +49,7 @@ extend type Mutation {
   ): Boolean!
 
 	deleteComment(
-		postId: ID!
+		commentId: ID!
 	): Boolean!
 
 	reportPost(

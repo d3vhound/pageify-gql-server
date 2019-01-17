@@ -5,14 +5,17 @@ const comment = (sequelize, DataTypes) => {
 			validate: { 
 				notEmpty: true 
 			}
-		},
+    },
+    reply_to: {
+      type: DataTypes.STRING
+    }
 	}, {
 		charset: 'utf8mb4',
 	});
 
 	Comment.associate = models => {
 		Comment.belongsTo(models.User)
-		Comment.hasMany(models.Replies)
+    Comment.hasMany(models.Replies)
 	}
 
 	return Comment

@@ -805,7 +805,84 @@ export default {
 				return false
 				
 				// console.log(addComment)
-			}),
+      }),
+      
+      createCommentReply: combineResolvers(
+        isAuthenticated,
+        async (parent, { postId, text, user_to_notify, commentId }, { me, models, s3, mixpanel, OSClient }) => {
+
+          const addCommentReply = await models.Comment.create({
+            text: text,
+            postId: postId,
+            userId: me.id,
+            reply_to: commentId
+          })
+
+          if (user_to_notify !== me.id) {
+            const commentOwner = await models.User.findById(user_to_notify)
+
+            const notification = await models.Notification.create({
+              text: 'Replied to your comment',
+              initiatorId: me.id,
+              read: false,
+              postId: postId,
+              userId: commentOwner.dataValues.id
+            })
+
+            await pubsub.publish(EVENTS.NOTIFICATION.CREATED, {
+              notificationSent: {
+                notification
+              }
+            })
+
+            var NewNotification = new OneSignal.Notification({
+              contents: {      
+                  en: `${commentOwner.dataValues.real_name} replied to your comment`,     
+              },    
+              "ios_badgeType": "Increase",
+              "ios_badgeCount": 1,
+              include_player_ids: [commentOwner.dataValues.onesignal_id],
+              filters: [    
+                {
+                  "field": "tag", 
+                  "key": "userId", 
+                  "relation": "=", 
+                  "value": commentOwner.dataValues.id
+                },
+                {
+                  "field": "tag", 
+                  "key": "mentions", 
+                  "relation": "=", 
+                  "value": "enabled"
+                },   
+              ],    
+            })
+    
+            OSClient.sendNotification(NewNotification, (err, httpResponse, data) => {    
+              if (err) {    
+                  console.log('Something went wrong...', err);    
+              } else {    
+                  // console.log(data)
+                  // const notification = models.Notification.create({
+                  // 	text: 'Commented on your post',
+                  // 	initiatorId: me.id,
+                  // 	read: false,
+                  // 	postId: postId,
+                  // 	userId: postOwnerUser.dataValues.id
+                  // })    
+    
+              }    
+             })
+
+          }
+
+          if (addCommentReply) {
+            return true
+          }
+  
+          return false
+
+      }),
 
 			spotlightPost: async (parent, { id}, { me, models}) => {
 				if (me.admin === true) {
@@ -968,7 +1045,8 @@ export default {
 		comments: async (post, args, { models }) => {
 			return await models.Comment.findAll({
 				where: {
-					postId: post.id
+          postId: post.id,
+          reply_to: null
 				},
 				order: [
 					['createdAt', 'DESC']
@@ -1010,6 +1088,13 @@ export default {
 	},
 
 	Comment: {
+    replies: async(comment, args, { models, me, loaders}) => {
+      return await models.Comment.findAll({
+        where: {
+					reply_to: comment.id
+				},
+      })
+    },
 		user: async (comment, args, { models, me, loaders }) => {
 			// return await models.User.findOne({
 			// 	where: {
@@ -1024,7 +1109,7 @@ export default {
 		post: async (comment, args, { models, me}) => {
 			// console.log(comment, args)
 			return null
-		}
+    }
 	},
 
 	Subscription: {

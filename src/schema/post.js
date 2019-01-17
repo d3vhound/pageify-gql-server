@@ -41,6 +41,13 @@ extend type Mutation {
 		text: String!
 	): Boolean!
 
+  createCommentReply(
+    commentId: ID!
+    text: String!
+    user_to_notify: ID!
+    postId: ID!
+  ): Boolean!
+
 	deleteComment(
 		postId: ID!
 	): Boolean!
@@ -78,6 +85,8 @@ type Comment {
 	text: String!
 	createdAt: String!
 	id: ID!
+  reply_to: ID
+  replies: [Comment]
 }
 
 type File2 {

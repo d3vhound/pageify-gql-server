@@ -951,7 +951,27 @@ export default {
 
 					return false
 				}
-			),
+      ),
+      
+      deleteComment: combineResolvers(
+        isAuthenticated,
+        async(parent, { commentId }, { me, models }) => {
+          const isOwner = await models.Comment.findOne({ where: { id: commentId, userId: me.id }})
+
+          if (isOwner) {
+            const deletedComment = await isOwner.destroy()
+
+            if (deletedComment) {
+              return true
+            } else {
+              return false
+            }
+          }
+
+
+          return false
+        }
+      ),
 
 
 			reportPost: async (parent, { postId, spam, guidelines }, { me, models }) => {

@@ -50,7 +50,8 @@ export default {
 			const convo = await models.Conversation.findById(id)
 
       if (me.id !== convo.dataValues.senderId) {
-        if (me.id === convo.dataValue.receiverId) {
+        // check if me is the receiver
+        if (me.id === convo.dataValues.receiverId) {
           console.log('authorized to view convo.')
         } else {
           throw new UserInputError(

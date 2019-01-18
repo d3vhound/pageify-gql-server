@@ -48,7 +48,7 @@ export default {
 		),
 		conversation: async (parent, { id }, { me, models }) => {
 			const convo = await models.Conversation.findById(id)
-
+      console.log(convo.dataValues)
       if (me.id !== convo.dataValues.senderId) {
         // check if me is the receiver
         if (me.id === convo.dataValues.receiverId) {

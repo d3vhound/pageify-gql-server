@@ -38,7 +38,7 @@ function storeUpload({ stream, mimetype, s3,}) {
 		}
 
 
-		s3.createMultipartUpload(params, (err, data) => {
+		s3.upload(params, (err, data) => {
 			if (err) {
 				return console.error('Error', err)
 			}

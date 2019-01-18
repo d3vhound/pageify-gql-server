@@ -34,11 +34,11 @@ function storeUpload({ stream, mimetype, s3,}) {
 			Body: stream,
 			Key: uuidFilename,
 			ContentType: mimetype,
-			ACL: 'public-read'
+      ACL: 'public-read',
 		}
 
 
-		s3.upload(params, (err, data) => {
+		s3.createMultipartUpload(params, (err, data) => {
 			if (err) {
 				return console.error('Error', err)
 			}
@@ -825,6 +825,10 @@ export default {
               reply_to: checkIfCommentIsReply.dataValues.reply_to
             })
 
+            if (me.id === user_to_notify) {
+              console.log('same user replying to own comment')
+            }
+
             notifyUsers();
             
             if (addCommentReply) {
@@ -907,6 +911,8 @@ export default {
               }    
              })
 
+          } else {
+            return;
           }
         }
 

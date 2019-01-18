@@ -44,7 +44,7 @@ const OSClient = new OneSignal.Client({
 const spacesEndpoint = new aws.Endpoint(process.env.SPACE_ENDPOINT)
 
 const s3 = new aws.S3({
-	endpoint: spacesEndpoint
+  endpoint: spacesEndpoint,
 })
 
 let mixpanel = Mixpanel.init('cf9c61b9e7ac9e9d8b06f8b91c0023b4')

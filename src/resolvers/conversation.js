@@ -64,6 +64,14 @@ export default {
             'Not authorized to view conversation'
           )
         }
+      } else if (me.id !== convo.dataValues.receiverId) {
+        if (me.id === convo.dataValues.senderId) {
+          console.log('authorized to view convo.')
+        } else {
+          throw new UserInputError(
+            'Not authorized to view conversation'
+          )
+        }
       }
 
 			return convo

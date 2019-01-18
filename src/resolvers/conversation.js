@@ -48,7 +48,13 @@ export default {
 		),
 		conversation: async (parent, { id }, { me, models }) => {
 			const convo = await models.Conversation.findById(id)
-      console.log(convo)
+      
+      if (!convo) {
+				throw new UserInputError(
+					'Conversation does not exist.'
+				)
+			}
+
       if (me.id !== convo.dataValues.senderId) {
         // check if me is the receiver
         if (me.id === convo.dataValues.receiverId) {
@@ -59,12 +65,6 @@ export default {
           )
         }
       }
-
-			if (!convo) {
-				throw new UserInputError(
-					'Conversation does not exist anymore'
-				)
-			}
 
 			return convo
 		}

@@ -49,10 +49,14 @@ export default {
 		conversation: async (parent, { id }, { me, models }) => {
 			const convo = await models.Conversation.findById(id)
 
-      if (me.id !== convo.dataValues.senderId || me.id !== convo.dataValues.receiverId) {
-        throw new UserInputError(
-					'Not authorized to view conversation'
-        )
+      if (me.id !== convo.dataValues.senderId) {
+        if (me.id === convo.dataValue.receiverId) {
+          console.log('authorized to view convo.')
+        } else {
+          throw new UserInputError(
+            'Not authorized to view conversation'
+          )
+        }
       }
 
 			if (!convo) {

@@ -3,7 +3,7 @@ import { gql } from 'apollo-server-express'
 export default gql`
 
 	extend type Query {
-		notifications: [Notification!]
+		notifications(offset: Int, limit: Int): [Notification!]
 		unreadMessageCount: Int
 		unreadActivityCount: Int
 	}

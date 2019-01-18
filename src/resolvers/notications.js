@@ -9,8 +9,10 @@ export default {
 	Query: {
 		notifications: combineResolvers(
 			isAuthenticated,
-			async (parent, { id }, { me, models }) => {
+			async (parent, { offset, limit }, { me, models }) => {
 				return await models.Notification.findAll({
+          limit,
+          offset,
 					where: {
 						userId: me.id
 					},

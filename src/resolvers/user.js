@@ -699,7 +699,29 @@ export default {
 			}
 
 			return true
-		},
+    },
+    
+    updateEmail: async (parent, { newEmail }, { me, models }) => {
+      if (!me) {
+        return new AuthenticationError('Must be signed in')
+      }
+
+      const current_user = await models.User.findByPk(me.id)
+
+      const updateStatus = current_user.update({
+        email: newEmail
+      }, {
+        where: {
+          id: me.id
+        }
+      })
+
+      if (!updateStatus) {
+        return false
+      }
+
+      return true
+    },
 
 		forgotPassword: async (parent, { email }, { models, me, sgMail}) => {
 			// if (!me) {

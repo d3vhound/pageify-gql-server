@@ -46,7 +46,26 @@ export default {
 				})
 			}
 		),
-		conversation: async (parent, { id }, { me, models }) => {
+		conversation: async (parent, { id, userId }, { me, models }) => {
+      if (!id && userId) {
+        return await models.Conversation.findOrCreate({
+          where: {
+            senderId: {
+              [Op.or]: [me.id, userId]
+            },
+            receiverId: {
+              [Op.or]: [me.id, userId]
+            }
+          },
+          defaults: {
+            senderId: me.id,
+            receiverId: userId
+          }
+        }).spread((conversation, created) => {
+          return conversation
+        })
+      }
+
 			const convo = await models.Conversation.findById(id)
       
       if (!convo) {

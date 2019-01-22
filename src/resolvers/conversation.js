@@ -75,7 +75,26 @@ export default {
       }
 
 			return convo
-		}
+    },
+    
+    conversationByUser: async (parent, { userId }, { me, models }) => {
+      return await models.Conversation.findOrCreate({
+        where: {
+          senderId: {
+            [Op.or]: [me.id, userId]
+          },
+          receiverId: {
+            [Op.or]: [me.id, userId]
+          }
+        },
+        defaults: {
+          senderId: me.id,
+          receiverId: userId
+        }
+      }).spread((conversation, created) => {
+        return conversation
+      })
+    }
 	},
 
 	Mutation: {

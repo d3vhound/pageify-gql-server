@@ -155,13 +155,13 @@ export default {
 		deleteConversation: combineResolvers(
 			isAuthenticated,
 			async (parent, { Id, senderId, receiverId }, { me, models }) => {
-				const conversationSuccess = await models.Conversation.destroy({
+				const conversation = await models.Conversation.findByPk({
 					where: {
 						id: Id,
-						senderId,
-						receiverId
 					}
         })
+
+        const conversationSuccess = conversation.destroy({ force: true })
         
         console.log(conversationSuccess)
 

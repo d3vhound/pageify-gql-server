@@ -160,6 +160,7 @@ export default {
 						id: Id,
 					}
         })
+        
 
         const conversationSuccess = conversation.destroy({ force: true })
         

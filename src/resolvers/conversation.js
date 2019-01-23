@@ -161,7 +161,9 @@ export default {
 						senderId,
 						receiverId
 					}
-				})
+        })
+        
+        console.log(conversationSuccess)
 
 				if (conversationSuccess) {
 					return true

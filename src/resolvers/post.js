@@ -744,7 +744,7 @@ export default {
 				const postOwnerUser = await models.User.findById(postOwnerId)
 
 				const notification = await models.Notification.create({
-					text: 'Commented on your post',
+					text: 'commented on your post',
 					initiatorId: me.id,
 					read: false,
 					postId: postId,

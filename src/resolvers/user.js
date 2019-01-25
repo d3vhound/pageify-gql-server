@@ -598,7 +598,7 @@ export default {
 							} else {    
 									// console.log(data)
 									const notification = await models.Notification.create({
-										text: 'Liked your post',
+										text: 'liked your post',
 										initiatorId: me.id,
 										read: false,
 										postId: postId,

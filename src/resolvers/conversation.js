@@ -73,9 +73,62 @@ export default {
 
             let user1 = conversation.dataValues.senderId
 				    let user2 = conversation.dataValues.receiverId
-            console.log(connectMessage)
-            console.log('--------------')
-            console.log(user1, user2)
+            
+            if (user1 !== me.id) {
+              // console.log('sending notification to', conversation.dataValues.senderId)
+              const userToNotify = await models.User.findByPk(user1)
+              var NewNotification = constructNotification({ message: `${me.username}: connected with your post.`, user: userToNotify })
+              OSClient.sendNotification(NewNotification, async (err, httpResponse, data) => {    
+                if (err) {    
+                    console.log('Something went wrong...')    
+                } else {    
+                    // console.log(data)
+                    const notification = await models.Notification.create({
+                      text: 'messaged you',
+                      initiatorId: me.id,
+                      read: false,
+                      userId: user1,
+                      conversationId: conversation.dataValues.id,
+                      postId: postId,
+                      messageId: connectMessage.dataValues.id
+                    })  
+                    
+                    await pubsub.publish(EVENTS.NOTIFICATION.CREATED, {
+                      notificationSent: {
+                        notification
+                      }
+                    })
+                }    
+               })
+    
+            } else if (user2 !== me.id) {
+    
+              // console.log('sending notification to', conversation.dataValues.receiverId)
+              const userToNotify = await models.User.findByPk(user2)
+              var NewNotification = constructNotification({ message: `${me.username}: connected with your post.`, user: userToNotify })
+              OSClient.sendNotification(NewNotification, async (err, httpResponse, data) => {    
+                if (err) {    
+                    console.log('Something went wrong...')    
+                } else {    
+                    // console.log(data)
+                    const notification = await models.Notification.create({
+                      text: 'messaged you',
+                      initiatorId: me.id,
+                      read: false,
+                      userId: user2,
+                      conversationId: conversation.dataValues.id,
+                      postId: postId,
+                      messageId: connectMessage.dataValues.id
+                    })
+                    
+                    await pubsub.publish(EVENTS.NOTIFICATION.CREATED, {
+                      notificationSent: {
+                        notification
+                      }
+                    })
+                }    
+               })
+            }
           }
 
           return conversation
@@ -238,7 +291,7 @@ export default {
 				if (user1 !== me.id) {
 					// console.log('sending notification to', conversation.dataValues.senderId)
 					const userToNotify = await models.User.findById(user1)
-					var NewNotification = constructNotification({ message: `${me.username}:  Shared a post with you.`, user: userToNotify })
+					var NewNotification = constructNotification({ message: `${me.username}: shared a post with you.`, user: userToNotify })
 					OSClient.sendNotification(NewNotification, async (err, httpResponse, data) => {    
 						if (err) {    
 								console.log('Something went wrong...')    
@@ -266,7 +319,7 @@ export default {
 
 					// console.log('sending notification to', conversation.dataValues.receiverId)
 					const userToNotify = await models.User.findById(user2)
-					var NewNotification = constructNotification({ message: `${me.username}: Shared a post with you.`, user: userToNotify })
+					var NewNotification = constructNotification({ message: `${me.username}: shared a post with you.`, user: userToNotify })
 					OSClient.sendNotification(NewNotification, async (err, httpResponse, data) => {    
 						if (err) {    
 								console.log('Something went wrong...')    

@@ -235,7 +235,7 @@ export default {
 									userId: user1,
                   conversationId: checkConversation.dataValues.id,
                   postId: postId,
-									messageId: _id
+									messageId: message.dataValues.id
 								})  
 								
 								await pubsub.publish(EVENTS.NOTIFICATION.CREATED, {
@@ -263,7 +263,7 @@ export default {
 									userId: user2,
                   conversationId: checkConversation.dataValues.id,
                   postId: postId,
-									messageId: _id
+									messageId: message.dataValues.id
 								})
 								
 								await pubsub.publish(EVENTS.NOTIFICATION.CREATED, {

@@ -46,7 +46,7 @@ export default {
 				})
 			}
 		),
-		conversation: async (parent, { id, userId }, { me, models }) => {
+		conversation: async (parent, { id, userId, connect, postId }, { me, models }) => {
       if (!id && userId) {
         return await models.Conversation.findOrCreate({
           where: {
@@ -61,7 +61,23 @@ export default {
             senderId: me.id,
             receiverId: userId
           }
-        }).spread((conversation, created) => {
+        }).spread(async (conversation, created) => {
+          if (connect && postId) {
+            const connectMessage = await models.Message.create({
+              text: `${me.username} connected with your post.`,
+              userId: me.id,
+              conversationId: conversation.dataValues.id,
+              _id: uuidv4(),
+              postId
+            })
+
+            let user1 = conversation.dataValues.senderId
+				    let user2 = conversation.dataValues.receiverId
+            console.log(connectMessage)
+            console.log('--------------')
+            console.log(user1, user2)
+          }
+
           return conversation
         })
       }

@@ -233,7 +233,8 @@ export default {
 									initiatorId: me.id,
 									read: false,
 									userId: user1,
-									conversationId: conversationId,
+                  conversationId: checkConversation.dataValues.id,
+                  postId: postId,
 									messageId: _id
 								})  
 								
@@ -260,7 +261,8 @@ export default {
 									initiatorId: me.id,
 									read: false,
 									userId: user2,
-									conversationId: conversationId,
+                  conversationId: checkConversation.dataValues.id,
+                  postId: postId,
 									messageId: _id
 								})
 								

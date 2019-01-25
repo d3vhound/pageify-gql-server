@@ -46,7 +46,7 @@ export default {
 				})
 			}
 		),
-		conversation: async (parent, { id, userId, connect, postId }, { me, models }) => {
+		conversation: async (parent, { id, userId, connect, postId }, { me, models, OSClient }) => {
       if (!id && userId) {
         return await models.Conversation.findOrCreate({
           where: {

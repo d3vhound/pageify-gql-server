@@ -43,7 +43,8 @@ function storeUpload({ stream, mimetype, s3,}) {
 				return console.error('Error', err)
 			}
 
-      console.log('storeUpload Data:', data)
+      console.log('storeUpload Data:', data.key)
+      console.log('storeUpload Data:', data.Key)
 
 			if (data) {
 				resolve(data.key)

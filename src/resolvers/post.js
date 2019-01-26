@@ -41,13 +41,11 @@ function storeUpload({ stream, mimetype, s3,}) {
 		s3.upload(params, (err, data) => {
 			if (err) {
 				return console.error('Error', err)
-			}
-
-      console.log('storeUpload Data:', data.key)
+      }
+      
       console.log('storeUpload Data:', data.Key)
-
 			if (data) {
-				resolve(data.key)
+				resolve(data.Key)
 				// file_url: data.Location,data.key)
 			}
 		})

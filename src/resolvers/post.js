@@ -820,7 +820,7 @@ export default {
             const commentOwner = await models.User.findByPk(checkIfCommentIsReply.userId)
             
             const addCommentReply = await models.Comment.create({
-              text: `@${commentOwner.dataValues.username} ${text}`,
+              text: `@${me.dataValues.username} ${text}`,
               postId: postId,
               userId: me.id,
               reply_to: checkIfCommentIsReply.dataValues.reply_to
@@ -875,7 +875,7 @@ export default {
 
             var NewNotification = new OneSignal.Notification({
               contents: {      
-                  en: `${commentOwner.dataValues.real_name} replied to your comment`,     
+                  en: `${me.username} replied to your comment`,     
               },    
               "ios_badgeType": "Increase",
               "ios_badgeCount": 1,

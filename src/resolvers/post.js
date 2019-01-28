@@ -760,7 +760,7 @@ export default {
 				
 				var NewNotification = new OneSignal.Notification({
 					contents: {      
-							en: `${postOwnerUser.dataValues.real_name} commented on your post`,     
+							en: `@${me.username} commented on your post`,     
 					},    
 					"ios_badgeType": "Increase",
 					"ios_badgeCount": 1,

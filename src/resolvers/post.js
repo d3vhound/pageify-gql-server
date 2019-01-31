@@ -875,7 +875,7 @@ export default {
 
             var NewNotification = new OneSignal.Notification({
               contents: {      
-                  en: `${me.username} replied to your comment`,     
+                  en: `@${me.username} replied to your comment`,     
               },    
               "ios_badgeType": "Increase",
               "ios_badgeCount": 1,

@@ -39,7 +39,7 @@ const storeUpload = ({ stream, mimetype, s3 }) =>
 
 			if (data) {
 				// console.log(data)
-				resolve(data.key)
+				resolve(data.Key)
 			}
 		})
 

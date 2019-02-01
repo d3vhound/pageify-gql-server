@@ -83,15 +83,15 @@ export default {
                     console.log('Something went wrong...')    
                 } else {    
                     // console.log(data)
-                    const notification = await models.Notification.create({
-                      text: 'messaged you',
-                      initiatorId: me.id,
-                      read: false,
-                      userId: user1,
-                      conversationId: conversation.dataValues.id,
-                      postId: postId,
-                      messageId: connectMessage.dataValues.id
-                    })  
+                    // const notification = await models.Notification.create({
+                    //   text: 'messaged you',
+                    //   initiatorId: me.id,
+                    //   read: false,
+                    //   userId: user1,
+                    //   conversationId: conversation.dataValues.id,
+                    //   postId: postId,
+                    //   messageId: connectMessage.dataValues.id
+                    // })  
                     
                     await pubsub.publish(EVENTS.NOTIFICATION.CREATED, {
                       notificationSent: {
@@ -111,15 +111,15 @@ export default {
                     console.log('Something went wrong...')    
                 } else {    
                     // console.log(data)
-                    const notification = await models.Notification.create({
-                      text: 'messaged you',
-                      initiatorId: me.id,
-                      read: false,
-                      userId: user2,
-                      conversationId: conversation.dataValues.id,
-                      postId: postId,
-                      messageId: connectMessage.dataValues.id
-                    })
+                    // const notification = await models.Notification.create({
+                    //   text: 'messaged you',
+                    //   initiatorId: me.id,
+                    //   read: false,
+                    //   userId: user2,
+                    //   conversationId: conversation.dataValues.id,
+                    //   postId: postId,
+                    //   messageId: connectMessage.dataValues.id
+                    // })
                     
                     await pubsub.publish(EVENTS.NOTIFICATION.CREATED, {
                       notificationSent: {
@@ -303,15 +303,15 @@ export default {
 								console.log('Something went wrong...')    
 						} else {    
 								// console.log(data)
-								const notification = await models.Notification.create({
-									text: 'messaged you',
-									initiatorId: me.id,
-									read: false,
-									userId: user1,
-                  conversationId: checkConversation.dataValues.id,
-                  postId: postId,
-									messageId: message.dataValues.id
-								})  
+								// const notification = await models.Notification.create({
+								// 	text: 'messaged you',
+								// 	initiatorId: me.id,
+								// 	read: false,
+								// 	userId: user1,
+                //   conversationId: checkConversation.dataValues.id,
+                //   postId: postId,
+								// 	messageId: message.dataValues.id
+								// })  
 								
 								await pubsub.publish(EVENTS.NOTIFICATION.CREATED, {
 									notificationSent: {
@@ -331,15 +331,15 @@ export default {
 								console.log('Something went wrong...')    
 						} else {    
 								// console.log(data)
-								const notification = await models.Notification.create({
-									text: 'messaged you',
-									initiatorId: me.id,
-									read: false,
-									userId: user2,
-                  conversationId: checkConversation.dataValues.id,
-                  postId: postId,
-									messageId: message.dataValues.id
-								})
+								// const notification = await models.Notification.create({
+								// 	text: 'messaged you',
+								// 	initiatorId: me.id,
+								// 	read: false,
+								// 	userId: user2,
+                //   conversationId: checkConversation.dataValues.id,
+                //   postId: postId,
+								// 	messageId: message.dataValues.id
+								// })
 								
 								await pubsub.publish(EVENTS.NOTIFICATION.CREATED, {
 									notificationSent: {

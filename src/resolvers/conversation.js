@@ -211,9 +211,15 @@ export default {
 				})
 				.spread((conversation, created) => {
 					if (!created) {
-						return 'Conversation already exists'
+						return {
+              id: conversation.dataValues.id,
+              message: 'Conversation already exists'
+            }
 					}
-					return 'Successfully created conversation'
+					return {
+            id: conversation.dataValues.id,
+            message: 'Successfully created conversation'
+          }
 				})
 				.catch(err => {
 					// console.log(err)

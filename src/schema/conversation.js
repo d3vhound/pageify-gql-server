@@ -19,9 +19,15 @@ export default gql`
 	}
 
 	extend type Mutation {
-		createConversation(receiverId: Int!): String!
+		createConversation(receiverId: Int!): ConversationCreated!
 		sharePost(receiverId: ID! postId: ID!): Boolean!
 		deleteConversation(Id: ID! senderId: Int receiverId: Int): Boolean!
 	}
+
+
+  type ConversationCreated {
+    id: ID!
+    message: String!
+  }
 
 `

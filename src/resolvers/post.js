@@ -742,7 +742,9 @@ export default {
 
 				if (postOwnerId !== me.id) {
 
-				const postOwnerUser = await models.User.findById(postOwnerId)
+        const postOwnerUser = await models.User.findById(postOwnerId)
+
+        console.log('before create notif text', text);
 
 				const notification = await models.Notification.create({
 					text: 'commented on your post',
@@ -857,6 +859,7 @@ export default {
           }
 
           async function notifyUsers() {
+          console.log('inside notify users, text is:', text);
           if (user_to_notify !== me.id) {
             const commentOwner = await models.User.findById(user_to_notify)
 

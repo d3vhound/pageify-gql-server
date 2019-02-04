@@ -21,7 +21,10 @@ const notification = (sequelize, DataTypes) => {
 		},
 		follow_request: {
 			type: DataTypes.BOOLEAN
-		} 
+    },
+    comment_text: {
+      type: DataTypes.STRING
+    } 
 	})
 
 	Notification.associate = models => {

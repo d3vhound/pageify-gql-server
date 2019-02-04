@@ -25,6 +25,7 @@ export default gql`
 		follow_request: Boolean!
 		conversationId: Int
 		messageId: String
+    comment_text: String
 	}
 
 	extend type Subscription {

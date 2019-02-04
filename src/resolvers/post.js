@@ -749,7 +749,8 @@ export default {
 					initiatorId: me.id,
 					read: false,
 					postId: postId,
-					userId: postOwnerUser.dataValues.id
+          userId: postOwnerUser.dataValues.id,
+          comment_text: text
 				})
 
 				await pubsub.publish(EVENTS.NOTIFICATION.CREATED, {
@@ -864,7 +865,8 @@ export default {
               initiatorId: me.id,
               read: false,
               postId: postId,
-              userId: commentOwner.dataValues.id
+              userId: commentOwner.dataValues.id,
+              comment_text: text
             })
 
             await pubsub.publish(EVENTS.NOTIFICATION.CREATED, {

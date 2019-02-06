@@ -978,6 +978,12 @@ export default {
 					if (isOwner) {
 						const deletedPost = await isOwner.destroy()
 						if (deletedPost) {
+              await models.Notification.destroy({
+                where: {
+                  postId: post.dataValues.id
+                }
+              })
+              
 							return true
 						}
 						return false
@@ -988,6 +994,12 @@ export default {
 						if (post) {
 							const deletedPost = post.destroy()
 							if (deletedPost) {
+                await models.Notification.destroy({
+                  where: {
+                    postId: post.dataValues.id
+                  }
+                })
+
 								return true
 							}
 							return  false

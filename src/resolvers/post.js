@@ -26,6 +26,7 @@ const allCategories = [
 ]
 
 function linkify(str, hashtags){
+  console.log('linkify', hashtags)
   // order matters
   var re = [
       "\\b((?:https?|ftp)://[^\\s\"'<>]+)\\b",
@@ -1077,7 +1078,7 @@ export default {
 
 	Post: {
     text: async (post, args, { models }) => {
-      if (post.hashtags.length) {
+      if (post.hashtags !== undefined || null) {
         return linkify(text, post.hashtags)
       }
 

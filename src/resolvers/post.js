@@ -1079,10 +1079,10 @@ export default {
 	Post: {
     text: async (post, args, { models }) => {
       if (post.hashtags !== undefined || null) {
-        return linkify(text, post.hashtags)
+        return linkify(post.text, post.hashtags)
       }
 
-      return text
+      return post.text
     },
 		// user: async (post, args, { models, loaders }) => {
 		// 	// return await models.User.findById(post.userId)

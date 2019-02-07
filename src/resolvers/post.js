@@ -1121,10 +1121,10 @@ export default {
     },
 
     text: async (post, args, { models }) => {
-      if (post.hashtags !== null || undefined) {
-        console.log('------------- post has hashtags --------------')
-        return linkify(post.text, post.hashtags)
-      }
+      // if (post.hashtags !== null || undefined) {
+      //   console.log('------------- post has hashtags --------------')
+      //   return linkify(post.text, post.hashtags)
+      // }
 
       return post.text
     },

@@ -1077,13 +1077,6 @@ export default {
 	},
 
 	Post: {
-    text: async (post, args, { models }) => {
-      if (post.hashtags !== undefined || null) {
-        return linkify(post.text, post.hashtags)
-      }
-
-      return post.text
-    },
 		// user: async (post, args, { models, loaders }) => {
 		// 	// return await models.User.findById(post.userId)
 		// 	return await loaders.user.load(post.userId)
@@ -1125,7 +1118,16 @@ export default {
 					}
 				}
 			})
-		},
+    },
+
+    text: async (post, args, { models }) => {
+      if (post.hashtags !== null || undefined) {
+        console.log('------------- post has hashtags --------------')
+        return linkify(post.text, post.hashtags)
+      }
+
+      return post.text
+    },
 
 		createdAt: async (post, args, { models }) => {
 			return post.createdAt.toString()

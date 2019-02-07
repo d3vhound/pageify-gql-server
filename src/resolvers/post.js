@@ -43,8 +43,7 @@ function linkify(str, hashtags){
       if(mail)
           return "<a href=\"mailto:" + mail + "\">" + mail + "</a>";
       if (twitler) {
-        const hashtag = hashtags.find(x => x.hashtag === twitler)
-        return `<span>Regular text <a (click)='navigateToHashtag("/tags/${twitler};id=${hashtag.id}")' >${twitler}</a></span>`
+        return `<a (click)='navigateToHashtag("/tags/${twitler}")'>${twitler}</a>`
       }
 
       // shouldnt get here, but just in case
@@ -1080,7 +1079,11 @@ export default {
 		// user: async (post, args, { models, loaders }) => {
 		// 	// return await models.User.findById(post.userId)
 		// 	return await loaders.user.load(post.userId)
-		// },
+    // },
+    text: async (post, args, { models }) => {
+      return linkify(post.text)
+    },
+    
 		users_liked: async (post, args, { models }) => {
 			const users_that_liked = await models.Like.findAll({
 				where: {
@@ -1118,15 +1121,6 @@ export default {
 					}
 				}
 			})
-    },
-
-    text: async (post, args, { models }) => {
-      // if (post.hashtags !== null || undefined) {
-      //   console.log('------------- post has hashtags --------------')
-      //   return linkify(post.text, post.hashtags)
-      // }
-
-      return post.text
     },
 
 		createdAt: async (post, args, { models }) => {

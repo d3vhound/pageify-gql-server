@@ -43,7 +43,7 @@ function linkify(str, hashtags){
       if(mail)
           return "<a href=\"mailto:" + mail + "\">" + mail + "</a>";
       if (twitler) {
-        return `<a (click)='navigateToHashtag("/tags/${twitler}")'>${twitler}</a>`
+        return `<a (click)='navigateToHashtag("/tags/${twitler}")'>#${twitler}</a>`
       }
 
       // shouldnt get here, but just in case
@@ -1009,6 +1009,12 @@ export default {
                   postId: post.dataValues.id
                 }
               })
+
+              // await models.HashtagOccurrance.destroy({
+              //   where: {
+              //     postId: id
+              //   }
+              // })
 
 							return true
 						}

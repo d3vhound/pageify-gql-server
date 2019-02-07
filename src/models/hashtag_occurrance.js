@@ -32,7 +32,7 @@ const hashtagOccurred = (sequelize, DataTypes) => {
 	})
 
 	HashtagOccurred.associate = models => {
-		HashtagOccurred.belongsTo(models.Hashtag, { as: 'hashtag_map', foreignKey: 'hashtagId', constraints: false })
+		HashtagOccurred.belongsTo(models.Hashtag, { as: 'hashtag_map', foreignKey: 'hashtagId', constraints: false, onDelete: 'cascade' })
 	}
 
 	return HashtagOccurred

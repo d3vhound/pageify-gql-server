@@ -5,8 +5,10 @@ const Op = Sequelize.Op
 
 export default {
 	Query: {
-		hashtags: async (parent, { id }, { me, models }) => {
-			return await models.Hashtag.findAll()
+		hashtags: async (parent, { id, limit }, { me, models }) => {
+			return await models.Hashtag.findAll({
+        limit
+      })
 		},
 		hashtag: async (parent, { query }, { me, models }) => {
 			return await models.Hashtag.findAll({

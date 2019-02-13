@@ -221,7 +221,7 @@ export default {
 	Mutation: {
 		signUp: async (
 			parent,
-			{ username, email, real_name, location, birthday, password, onesignal_user_id },
+			{ username, email, real_name, location, birthday, password, onesignal_user_id, category },
 			{ models, secret, mixpanel },
 		) => {
 
@@ -232,7 +232,8 @@ export default {
 					real_name,
 					location,
 					birthday,
-					password
+          password,
+          category
 				}).then(user => {
 					if (onesignal_user_id) {
 						models.User.update({
@@ -639,7 +640,7 @@ export default {
 			// return false
 		},
 
-		updateUser: async (parent, { username, real_name, location, bio, private_status }, { models, me}) => {
+		updateUser: async (parent, { username, real_name, location, bio, private_status, category }, { models, me}) => {
  			return await models.User.findOne({
 				where: {
 					id: me.id
@@ -648,9 +649,10 @@ export default {
 				// console.log(user)
 				const userUpdate = await models.User.update({
 					username: !username ? user._previousDataValues.username : username,
-					real_name: !real_name ? user._previousDataValues.real_name : real_name,
-					location: !location ? user._previousDataValues.location : location,
-					bio: !bio ? user._previousDataValues.bio : bio,
+					real_name: !real_name ? "" : real_name,
+					location: !location ? "" : location,
+          bio: !bio ? "" : bio,
+          category: !category ? "" : category,
 					private_status: private_status === undefined ? user._previousDataValues.private_status : private_status
 				}, {
 					where: { 

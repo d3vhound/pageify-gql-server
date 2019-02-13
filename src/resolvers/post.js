@@ -42,7 +42,7 @@ function linkify(str){
       if(mail)
           return "<a href=\"mailto:" + mail + "\">" + mail + "</a>";
       if (twitler) {
-        const tag = hashtags.find(x => x.hashtag === twitler)
+        const tag = hashtags.find(x => x.hashtag === hashtagToFind)
         return `<a (click)='navigateToHashtag("/tags/${twitler}id=${tag.id}")'>#${twitler}</a>`
       }
 

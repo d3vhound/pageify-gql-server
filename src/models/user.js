@@ -89,7 +89,10 @@ const user = (sequelize, DataTypes) => {
 		},
 		interests: {
 			type: DataTypes.JSON
-		}
+    },
+    category: {
+      type: DataTypes.STRING
+    }
 	});
 
 	User.associate = models => {

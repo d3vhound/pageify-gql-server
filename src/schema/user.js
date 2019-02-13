@@ -35,6 +35,7 @@ export default gql`
 			location: String
 			password: String!
 			onesignal_user_id: String
+      category: String
 		): Token!
 
 		signIn(login: String!, password: String!, onesignal_user_id: String): Token!
@@ -67,6 +68,7 @@ export default gql`
 			real_name: String, 
 			username: String,
 			private_status: Boolean
+      category: String
 		): Boolean!
 
 		setInterests(payload: JSON): Boolean!
@@ -125,6 +127,7 @@ export default gql`
 		followers_array: [User]
 		following_array: [User]
 		interests: JSON
+    category: String
   }
 
 `;

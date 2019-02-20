@@ -956,13 +956,68 @@ export default {
 
       }),
 
-			spotlightPost: async (parent, { id}, { me, models}) => {
+			spotlightPost: async (parent, { id}, { me, models, OSClient}) => {
 				if (me.admin === true) {
 					const post_spotlight = await models.Post.findById(id)
 						.then((post) => {
 							post.update({ spotlight: true })
 							return post
-						})
+            })
+
+          const post_owner = await models.Post.findById(post_spotlight.userId)
+
+          const notification = await models.Notification.create({
+            text: 'added your post to the spotlight',
+            initiatorId: me.id,
+            read: false,
+            postId: id,
+            userId: post_owner.dataValues.id,
+          })
+
+          await pubsub.publish(EVENTS.NOTIFICATION.CREATED, {
+            notificationSent: {
+              notification
+            }
+          })
+
+          var NewNotification = new OneSignal.Notification({
+            contents: {      
+                en: `@${me.username} added your post to the spotlight`,     
+            },    
+            "ios_badgeType": "Increase",
+            "ios_badgeCount": 1,
+            include_player_ids: [post_owner.dataValues.onesignal_id],
+            filters: [    
+              {
+                "field": "tag", 
+                "key": "userId", 
+                "relation": "=", 
+                "value": post_owner.dataValues.id
+              },
+              {
+                "field": "tag", 
+                "key": "mentions", 
+                "relation": "=", 
+                "value": "enabled"
+              },   
+            ],    
+          })
+  
+          OSClient.sendNotification(NewNotification, (err, httpResponse, data) => {    
+            if (err) {    
+                console.log('Something went wrong...', err);    
+            } else {    
+                // console.log(data)
+                // const notification = models.Notification.create({
+                // 	text: 'Commented on your post',
+                // 	initiatorId: me.id,
+                // 	read: false,
+                // 	postId: postId,
+                // 	userId: postOwnerUser.dataValues.id
+                // })    
+  
+            }    
+           })
 
 					if (post_spotlight) {
 						return true

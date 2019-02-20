@@ -964,7 +964,7 @@ export default {
 							return post
             })
 
-          const post_owner = await models.Post.findById(post_spotlight.userId)
+          const post_owner = await models.User.findById(post_spotlight.userId)
 
           const notification = await models.Notification.create({
             text: 'added your post to the spotlight',

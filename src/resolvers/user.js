@@ -760,7 +760,16 @@ export default {
 			const issueSuccess = await models.Issue.create({
 				text: text,
 				userId: me.id
-			})
+      })
+      
+      const msg = {
+				to: 'support@pageifyapp.com',
+				from: me.email,
+				subject: 'Issue Report',
+				text: text
+			}
+
+			await sgMail.send(msg)
 
 			if (!issueSuccess) {
 				return false

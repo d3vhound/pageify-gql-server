@@ -741,8 +741,8 @@ export default {
 			})
 
 			const msg = {
-				to: email,
-				from: 'support@pageifyapp.com',
+        to: email,
+				from: 'Pageify<support@pageifyapp.com>',
 				subject: 'Password Reset',
 				text: 'We have successfully process your password reset request. Please use the temporary password "reset123" to login and change your temporary password to a more secure and memorable password. \n Pageify App Team',
 				html: `<h3>Password Reset Request</h3><p>Hello, ${doesEmailExist.dataValues.username}, <br /> Your password has been reset to <u>"reset123"</u>. <p>If you did not request this password reset please email us at support@pageifyapp.com .</p><p>Pageify App Team</p>`

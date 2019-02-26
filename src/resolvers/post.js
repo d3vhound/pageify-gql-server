@@ -446,7 +446,7 @@ export default {
 
 			if (interests !== undefined) {
         console.log('here')
-				return await models.Post.findAll({
+				const posts = await models.Post.findAll({
 					where: {
 						category: {
 							[Op.or]: interests
@@ -460,7 +460,6 @@ export default {
 						'text_color',
 						'category',
 						'bg_color',
-						'createdAt',
 						[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN likes AS L ON L.post_id = P.id WHERE P.id = post.id)'),'likes'],
 						[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN comments AS C ON C.postId = P.id WHERE P.id = post.id)'),'comments'],
 						[Sequelize.literal('(SELECT count(*) FROM posts AS P INNER JOIN likes AS L ON L.post_id = P.id WHERE P.id = post.id) + (SELECT count(*) FROM posts AS P INNER JOIN comments AS C ON C.postId = P.id WHERE P.id = post.id)'), 'interactions']
@@ -478,7 +477,11 @@ export default {
 						[Sequelize.literal('interactions'), 'DESC']
 					],
 					limit,
-				})
+        })
+        
+        console.log(posts)
+
+        return posts
 			}
 
 			return await models.Post.findAll({

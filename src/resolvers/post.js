@@ -448,9 +448,6 @@ export default {
         console.log('here')
 				return await models.Post.findAll({
 					where: {
-						createdAt: {
-							[Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000)
-						},
 						category: {
 							[Op.or]: interests
 						}

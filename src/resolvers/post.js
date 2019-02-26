@@ -533,7 +533,7 @@ export default {
       console.log(users);
       console.log(usersArr)
 
-      if (!usersArr) {
+      if (!usersArr.length) {
         return []
       }
 

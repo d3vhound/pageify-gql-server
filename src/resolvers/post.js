@@ -534,6 +534,7 @@ export default {
       console.log(usersArr)
 
       if (!usersArr.length) {
+        console.log('return empty arr')
         return []
       }
 

@@ -530,7 +530,10 @@ export default {
 			let usersArr = await users.map(user => {
 				return user.dataValues.followed_id
 			})
-			// usersArr.push(me.id)
+      // usersArr.push(me.id)
+      
+      console.log(users);
+      console.log(usersArr)
 			return await models.Post.findAll({
 				limit,
 				offset,

@@ -522,8 +522,6 @@ export default {
 		},
 
 		feed: async (parent, { offset, limit }, { models, me }, { cacheControl }) => {
-			cacheControl.setCacheHint({ maxAge: 60 })
-
 			const users = await models.Relationship.findAll({
 				where: { follower_id: me.id },
 			})
@@ -534,6 +532,11 @@ export default {
       
       console.log(users);
       console.log(usersArr)
+
+      if (!usersArr) {
+        return []
+      }
+
 			return await models.Post.findAll({
 				limit,
 				offset,

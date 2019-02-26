@@ -342,7 +342,8 @@ export default {
 			})
 		},
 		trendingposts: async (parent, { locationId, hashtagId, category, limit, interests }, { models }) => {
-			console.log(category)
+      console.log(category)
+      console.log(interests)
 			if (hashtagId !== undefined) {
 				const posts = await models.HashtagOccurrance.findAll({
 					where: {
@@ -444,6 +445,7 @@ export default {
 			}
 
 			if (interests !== undefined) {
+        console.log('here')
 				return await models.Post.findAll({
 					where: {
 						createdAt: {

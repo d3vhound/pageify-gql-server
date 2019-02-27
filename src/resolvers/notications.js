@@ -43,7 +43,10 @@ export default {
 			return await models.Notification.findAndCountAll({
 				where: {
 					userId: me.id,
-					read: false,
+          read: false,
+          text: {
+            [Op.ne]: 'messaged you'
+          }
 				}
 			}).then((obj) => {
 				return obj.count

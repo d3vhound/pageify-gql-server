@@ -42,7 +42,7 @@ export default {
 								receiverId: me.id
 							}
 						]
-					}
+          }
 				})
 			}
 		),
@@ -363,6 +363,19 @@ export default {
 	},
 
 	Conversation: {
+    unread_notifications: async (conversation, { limit }, { me, models }) => {
+      const real_convo = conversation.dataValues
+      const meId = real_convo.senderId === me.id ? real_convo.senderId : real_convo.receiverId
+      const otherId = real_convo.senderId === me.id ? real_convo.receiverId : real_convo.senderId
+
+      return await models.Notification.findAll({
+        where: {
+          conversationId: real_convo.id,
+          read: false,
+          initiatorId: otherId
+        }
+      });
+    },
 		messages: async (conversation, { limit }, { models }) => {
 			return await models.Message.findAll({
 				where: {

@@ -16,6 +16,7 @@ export default gql`
 		lastMessage: Message
 		messages(limit: Int): [Message!]
 		meId: Int!
+    unread_notifications: [Notification]
 	}
 
 	extend type Mutation {

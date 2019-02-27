@@ -14,7 +14,10 @@ export default {
           limit,
           offset,
 					where: {
-						userId: me.id
+            userId: me.id,
+            text: {
+              [Op.ne]: 'messaged you'
+            }
 					},
 					order: [
 						['createdAt', 'DESC']

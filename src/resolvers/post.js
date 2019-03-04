@@ -1125,13 +1125,22 @@ export default {
       ),
 
 
-			reportPost: async (parent, { postId, spam, guidelines }, { me, models }) => {
+			reportPost: async (parent, { postId, spam, guidelines }, { sgMail, me, models }) => {
 				const report = await models.Report.create({
 					reportingId: me.id,
 					postId: postId,
 					spam,
 					guidelines
-				})
+        })
+
+        const msg = {
+          to: 'support@pageifyapp.com',
+          from: me.email,
+          subject: 'Post Reported',
+          text: `Post with ID:${postId} has been reported.`
+        }
+  
+        await sgMail.send(msg)
 
 				if (report) {
 					return true

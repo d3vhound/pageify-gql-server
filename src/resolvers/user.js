@@ -753,7 +753,7 @@ export default {
 			return true
 		},
 
-		reportIssue: async (parent, { text }, { models, me }) => {
+		reportIssue: async (parent, { text }, { sgMail, models, me }) => {
 			if (!me) {
 				return new AuthenticationError('Must be signed in')
 			}
